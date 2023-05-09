@@ -7,6 +7,9 @@
         <component :is="item.name" :title="item.title" @remove="onRemove(index)" @edit="onEdit(index)" />
       </a-col>
     </a-row>
+
+    <VisitHour />
+
     <!-- <a-card :bordered="false" :body-style="{ padding: 0 }">
       <div class="ele-cell" style="line-height: 42px">
         <div class="ele-cell-content ele-text-primary workplace-bottom-btn" @click="add">
@@ -41,6 +44,7 @@ import { message } from 'ant-design-vue/es';
 import { PlusCircleOutlined, UndoOutlined } from '@ant-design/icons-vue';
 import ProfileCard from './components/profile-card.vue';
 import LinkCard from './components/link-card.vue';
+import VisitHour from './components/visit-hour.vue';
 const CACHE_KEY = 'workplace-layout';
 
 // 默认布局
