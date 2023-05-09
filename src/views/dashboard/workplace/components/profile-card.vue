@@ -18,27 +18,28 @@
             <ele-tag color="blue" shape="circle" size="small">
               <appstore-filled />
             </ele-tag>
-            <span class="workplace-count-name">项目数</span>
+            <span class="workplace-count-name">超级签名V2余量</span>
           </div>
-          <h2>3</h2>
+          <h2>0台</h2>
         </div>
         <div class="workplace-count-item">
           <div class="workplace-count-header">
             <ele-tag color="orange" shape="circle" size="small">
               <check-square-outlined />
             </ele-tag>
-            <span class="workplace-count-name">待办项</span>
+            <span class="workplace-count-name">超级签名V3余量</span>
           </div>
-          <h2>6 / 24</h2>
+          <h2>0台</h2>
         </div>
         <div class="workplace-count-item">
-          <div class="workplace-count-header">
+          <a-button type="primary">充值</a-button>
+          <!-- <div class="workplace-count-header">
             <ele-tag color="green" shape="circle" size="small">
               <bell-filled />
             </ele-tag>
             <span class="workplace-count-name">消息</span>
           </div>
-          <h2>1,689</h2>
+          <h2>1,689</h2>-->
         </div>
       </div>
     </div>

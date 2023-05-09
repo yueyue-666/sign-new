@@ -26,8 +26,6 @@ export async function getUserInfo() {
       status: 0,
       deleted: 0,
       tenantId: 2,
-      createTime: '2020-01-13 14:43:52',
-      updateTime: '2023-02-06 09:06:51',
       organizationName: 'XXX公司',
       sexName: '男',
       roles: [
@@ -38,8 +36,6 @@ export async function getUserInfo() {
           comments: '管理员',
           deleted: 0,
           tenantId: 2,
-          createTime: '2020-02-26 15:18:37',
-          updateTime: '2020-03-21 15:15:54',
           userId: null
         }
       ],
@@ -58,8 +54,74 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:00:34',
-          updateTime: '2021-11-05 17:33:42',
+          children: null,
+          checked: null
+        },
+        {
+          menuId: 137,
+          parentId: 136,
+          title: '账户首页',
+          path: '/dashboard/workplace',
+          component: '/dashboard/workplace',
+          menuType: 0,
+          sortNumber: 1,
+          authority: null,
+          icon: 'desktop-outlined',
+          hide: 0,
+          meta: null,
+          deleted: 0,
+          tenantId: 2,
+          children: null,
+          checked: null
+        },
+        {
+          menuId: 138,
+          parentId: 136,
+          title: '超级签名V2',
+          path: '/dashboard/V2',
+          component: '/dashboard/V2',
+          menuType: 0,
+          sortNumber: 1,
+          authority: null,
+          icon: 'control-outlined',
+          hide: 0,
+          meta: '{"badge": "New", "badgeColor": "#faad14"}',
+          deleted: 0,
+          tenantId: 2,
+          children: null,
+          checked: null
+        },
+        {
+          menuId: 139,
+          parentId: 136,
+          title: '超级签名V3',
+          path: '/dashboard/V3',
+          component: '/dashboard/V3',
+          menuType: 0,
+          sortNumber: 1,
+          authority: null,
+          icon: 'control-outlined',
+          hide: 0,
+          meta: '{"badge": "New", "badgeColor": "#faad14"}',
+          deleted: 0,
+          tenantId: 2,
+          children: null,
+          checked: null
+        },
+        {
+          menuId: 141,
+          parentId: 136,
+          title: '签发记录',
+          path: '/dashboard/listPage',
+          component: '/dashboard/listPage',
+          menuType: 0,
+          sortNumber: 1,
+          authority: null,
+          icon: 'control-outlined',
+          hide: 0,
+          meta: null,
+          deleted: 0,
+          tenantId: 2,
           children: null,
           checked: null
         },
@@ -77,8 +139,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:07:40',
-          updateTime: '2021-11-05 17:36:12',
           children: null,
           checked: null
         },
@@ -96,8 +156,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:03:51',
-          updateTime: '2022-03-11 15:40:07',
           children: null,
           checked: null
         },
@@ -115,8 +173,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2020-03-21 18:24:27',
-          updateTime: '2020-03-21 18:44:42',
           children: null,
           checked: null
         },
@@ -134,8 +190,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:09:58',
-          updateTime: '2021-11-05 17:37:17',
           children: null,
           checked: null
         },
@@ -153,8 +207,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2020-02-26 12:51:55',
-          updateTime: '2021-11-05 17:32:50',
           children: null,
           checked: null
         },
@@ -172,8 +224,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-10-05 11:13:35',
-          updateTime: '2022-03-11 21:32:21',
           children: null,
           checked: null
         },
@@ -191,27 +241,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2020-03-21 16:43:30',
-          updateTime: '2020-03-21 18:45:40',
-          children: null,
-          checked: null
-        },
-        {
-          menuId: 137,
-          parentId: 136,
-          title: '工作台',
-          path: '/dashboard/workplace',
-          component: '/dashboard/workplace',
-          menuType: 0,
-          sortNumber: 1,
-          authority: null,
-          icon: 'desktop-outlined',
-          hide: 0,
-          meta: null,
-          deleted: 0,
-          tenantId: 2,
-          createTime: '2021-02-02 20:00:37',
-          updateTime: '2021-11-05 17:34:32',
           children: null,
           checked: null
         },
@@ -229,8 +258,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2020-02-26 12:52:06',
-          updateTime: '2020-09-16 11:05:35',
           children: null,
           checked: null
         },
@@ -248,8 +275,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:05:10',
-          updateTime: '2022-03-11 15:40:17',
           children: null,
           checked: null
         },
@@ -267,8 +292,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-10-06 22:26:55',
-          updateTime: '2022-03-11 21:32:10',
           children: null,
           checked: null
         },
@@ -286,8 +309,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:06:35',
-          updateTime: '2021-11-05 17:35:53',
           children: null,
           checked: null
         },
@@ -305,8 +326,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:08:47',
-          updateTime: '2021-11-05 17:36:43',
           children: null,
           checked: null
         },
@@ -321,11 +340,9 @@ export async function getUserInfo() {
           authority: null,
           icon: 'setting-outlined',
           hide: 0,
-          meta: '{"badge": "New", "badgeColor": "#faad14"}',
+          meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2020-02-26 12:51:23',
-          updateTime: '2022-03-11 16:47:36',
           children: null,
           checked: null
         },
@@ -343,8 +360,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2020-03-21 18:24:21',
-          updateTime: '2020-03-21 18:44:36',
           children: null,
           checked: null
         },
@@ -362,8 +377,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2020-03-13 13:30:41',
-          updateTime: '2020-03-21 18:45:34',
           children: null,
           checked: null
         },
@@ -381,8 +394,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:05:26',
-          updateTime: '2022-03-11 21:21:33',
           children: null,
           checked: null
         },
@@ -400,8 +411,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:06:39',
-          updateTime: '2021-11-05 17:35:54',
           children: null,
           checked: null
         },
@@ -419,8 +428,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2020-03-13 13:29:08',
-          updateTime: '2021-11-05 17:32:55',
           children: null,
           checked: null
         },
@@ -438,8 +445,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:07:41',
-          updateTime: '2021-11-05 17:36:20',
           children: null,
           checked: null
         },
@@ -457,8 +462,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:08:49',
-          updateTime: '2021-11-05 17:36:52',
           children: null,
           checked: null
         },
@@ -476,8 +479,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:03:56',
-          updateTime: '2021-11-05 17:35:07',
           children: null,
           checked: null
         },
@@ -495,8 +496,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:10:03',
-          updateTime: '2021-11-05 17:37:19',
           children: null,
           checked: null
         },
@@ -514,8 +513,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-10-05 11:32:12',
-          updateTime: '2022-03-11 21:32:08',
           children: null,
           checked: null
         },
@@ -533,13 +530,11 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:03:28',
-          updateTime: '2021-11-05 17:34:53',
           children: null,
           checked: null
         },
         {
-          menuId: 138,
+          menuId: 141,
           parentId: 136,
           title: '分析页',
           path: '/dashboard/analysis',
@@ -549,11 +544,9 @@ export async function getUserInfo() {
           authority: null,
           icon: 'bar-chart-outlined',
           hide: 0,
-          meta: '{"badge": 1}',
+          // meta: '{"badge": 1}',
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:00:40',
-          updateTime: '2022-03-11 16:47:54',
           children: null,
           checked: null
         },
@@ -571,8 +564,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-05-21 11:11:57',
-          updateTime: '2022-07-20 21:36:45',
           children: null,
           checked: null
         },
@@ -590,13 +581,11 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:10:58',
-          updateTime: '2022-03-11 20:57:04',
           children: null,
           checked: null
         },
         {
-          menuId: 139,
+          menuId: 150,
           parentId: 136,
           title: '监控页',
           path: '/dashboard/monitor',
@@ -609,8 +598,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:03:12',
-          updateTime: '2021-11-05 17:34:41',
           children: null,
           checked: null
         },
@@ -628,8 +615,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:05:07',
-          updateTime: '2021-11-05 17:35:24',
           children: null,
           checked: null
         },
@@ -647,8 +632,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-05-21 11:11:57',
-          updateTime: '2022-07-20 21:36:43',
           children: null,
           checked: null
         },
@@ -666,8 +649,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:05:30',
-          updateTime: '2021-11-05 17:35:45',
           children: null,
           checked: null
         },
@@ -685,8 +666,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:06:48',
-          updateTime: '2021-11-05 17:35:56',
           children: null,
           checked: null
         },
@@ -704,8 +683,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:08:52',
-          updateTime: '2021-11-05 17:36:59',
           children: null,
           checked: null
         },
@@ -723,8 +700,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2020-03-21 01:07:13',
-          updateTime: '2022-03-11 15:37:11',
           children: null,
           checked: null
         },
@@ -742,8 +717,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:04:06',
-          updateTime: '2021-11-05 17:35:17',
           children: null,
           checked: null
         },
@@ -761,8 +734,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2020-09-17 23:20:29',
-          updateTime: '2022-07-20 17:28:00',
           children: null,
           checked: null
         },
@@ -780,8 +751,6 @@ export async function getUserInfo() {
           meta: '{"active": "/list/basic"}',
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:05:26',
-          updateTime: '2022-03-11 17:03:11',
           children: null,
           checked: null
         },
@@ -799,8 +768,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:10:58',
-          updateTime: '2022-07-20 17:34:08',
           children: null,
           checked: null
         },
@@ -818,8 +785,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2020-03-21 18:24:26',
-          updateTime: '2022-03-11 17:08:47',
           children: null,
           checked: null
         },
@@ -837,8 +802,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:15:11',
-          updateTime: '2022-07-20 21:36:40',
           children: null,
           checked: null
         },
@@ -856,8 +819,6 @@ export async function getUserInfo() {
           meta: '{"active": "/list/basic"}',
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:05:26',
-          updateTime: '2022-03-11 17:03:11',
           children: null,
           checked: null
         },
@@ -875,8 +836,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:07:33',
-          updateTime: '2021-11-05 17:36:06',
           children: null,
           checked: null
         },
@@ -894,8 +853,6 @@ export async function getUserInfo() {
           meta: '{"active": "/list/basic"}',
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:05:26',
-          updateTime: '2022-03-11 17:03:11',
           children: null,
           checked: null
         },
@@ -913,8 +870,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:05:26',
-          updateTime: '2022-07-20 21:36:51',
           children: null,
           checked: null
         },
@@ -932,8 +887,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2020-03-21 18:24:20',
-          updateTime: '2022-03-11 17:08:48',
           children: null,
           checked: null
         },
@@ -951,8 +904,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:08:44',
-          updateTime: '2021-11-05 17:36:36',
           children: null,
           checked: null
         },
@@ -970,8 +921,6 @@ export async function getUserInfo() {
           meta: '{"active": "/system/user"}',
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-05-21 11:07:54',
-          updateTime: '2022-07-20 23:05:19',
           children: null,
           checked: null
         },
@@ -989,8 +938,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:11:48',
-          updateTime: '2022-07-20 17:27:15',
           children: null,
           checked: null
         },
@@ -1008,8 +955,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-10-05 11:16:39',
-          updateTime: '2022-07-20 17:27:16',
           children: null,
           checked: null
         },
@@ -1027,8 +972,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:15:03',
-          updateTime: '2022-07-20 17:26:57',
           children: null,
           checked: null
         },
@@ -1046,8 +989,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2020-09-17 23:19:43',
-          updateTime: '2022-07-20 22:27:22',
           children: null,
           checked: null
         },
@@ -1065,8 +1006,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:09:54',
-          updateTime: '2021-11-05 17:37:11',
           children: null,
           checked: null
         },
@@ -1084,8 +1023,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2020-03-21 18:24:33',
-          updateTime: '2022-07-20 17:23:18',
           children: null,
           checked: null
         },
@@ -1103,8 +1040,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-10-05 11:25:15',
-          updateTime: '2022-07-20 17:27:17',
           children: null,
           checked: null
         },
@@ -1122,8 +1057,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:10:52',
-          updateTime: '2021-11-05 17:37:51',
           children: null,
           checked: null
         },
@@ -1141,8 +1074,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:15:01',
-          updateTime: '2021-11-05 17:39:02',
           children: null,
           checked: null
         },
@@ -1160,8 +1091,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2020-03-21 18:24:34',
-          updateTime: '2022-07-20 17:23:22',
           children: null,
           checked: null
         },
@@ -1179,8 +1108,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:11:00',
-          updateTime: '2022-07-20 17:27:18',
           children: null,
           checked: null
         },
@@ -1198,30 +1125,26 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:11:03',
-          updateTime: '2022-07-20 17:27:19',
           children: null,
           checked: null
         },
-        {
-          menuId: 199,
-          parentId: 0,
-          title: '获取授权',
-          path: 'https://eleadmin.com/goods/9',
-          component: null,
-          menuType: 0,
-          sortNumber: 9,
-          authority: null,
-          icon: 'sketch-outlined',
-          hide: 0,
-          meta: null,
-          deleted: 0,
-          tenantId: 2,
-          createTime: '2021-02-02 20:15:18',
-          updateTime: '2022-03-11 21:31:43',
-          children: null,
-          checked: null
-        },
+        // {
+        //   menuId: 199,
+        //   parentId: 0,
+        //   title: '获取授权',
+        //   path: 'https://eleadmin.com/goods/9',
+        //   component: null,
+        //   menuType: 0,
+        //   sortNumber: 9,
+        //   authority: null,
+        //   icon: 'sketch-outlined',
+        //   hide: 0,
+        //   meta: null,
+        //   deleted: 0,
+        //   tenantId: 2,
+        //   children: null,
+        //   checked: null
+        // },
         {
           menuId: 174,
           parentId: 164,
@@ -1236,8 +1159,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-10-05 11:29:03',
-          updateTime: '2022-07-20 17:27:20',
           children: null,
           checked: null
         },
@@ -1255,8 +1176,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-10-10 16:21:45',
-          updateTime: '2022-07-20 17:27:22',
           children: null,
           checked: null
         },
@@ -1274,8 +1193,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:13:49',
-          updateTime: '2022-07-20 17:27:24',
           children: null,
           checked: null
         },
@@ -1293,8 +1210,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:11:49',
-          updateTime: '2022-07-20 17:27:28',
           children: null,
           checked: null
         },
@@ -1312,8 +1227,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-10-05 11:29:56',
-          updateTime: '2022-07-20 17:27:29',
           children: null,
           checked: null
         },
@@ -1331,8 +1244,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-10-05 11:29:56',
-          updateTime: '2022-07-20 17:34:50',
           children: null,
           checked: null
         },
@@ -1350,8 +1261,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:13:57',
-          updateTime: '2022-07-20 17:27:31',
           children: null,
           checked: null
         },
@@ -1369,8 +1278,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-10-10 16:21:45',
-          updateTime: '2022-07-20 17:27:32',
           children: null,
           checked: null
         },
@@ -1388,8 +1295,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-10-05 11:14:28',
-          updateTime: '2023-04-17 18:00:25',
           children: null,
           checked: null
         },
@@ -1407,8 +1312,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-10-05 11:18:35',
-          updateTime: '2023-04-17 18:00:26',
           children: null,
           checked: null
         },
@@ -1426,8 +1329,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:10:55',
-          updateTime: '2023-04-17 18:00:27',
           children: null,
           checked: null
         },
@@ -1445,8 +1346,6 @@ export async function getUserInfo() {
           meta: null,
           deleted: 0,
           tenantId: 2,
-          createTime: '2021-02-02 20:10:55',
-          updateTime: '2023-04-17 18:00:37',
           children: null,
           checked: null
         }
@@ -1483,85 +1382,32 @@ export async function getUnreadNotice() {
       {
         color: '#60B2FC',
         icon: 'NotificationFilled',
-        title: '你收到了一封14份新周报',
-        time: '2020-07-27 18:30:18'
-      },
-      {
-        color: '#F5686F',
-        icon: 'PushpinFilled',
-        title: '许经理同意了你的请假申请',
-        time: '2020-07-27 09:08:36'
-      },
-      {
-        color: '#7CD734',
-        icon: 'VideoCameraFilled',
-        title: '陈总邀请你参加视频会议',
-        time: '2020-07-26 18:30:01'
-      },
-      {
-        color: '#FAAD14',
-        icon: 'CarryOutFilled',
-        title: '你推荐的刘诗雨已通过第三轮面试',
-        time: '2020-07-25 16:38:46'
-      },
-      {
-        color: '#2BCACD',
-        icon: 'BellFilled',
-        title: '你的6月加班奖金已发放',
-        time: '2020-07-25 11:03:31'
+        title:
+          '后台会不定期更换app下载域名，请使用当前最新域名进行下载！！！【平台不接受金融类、网赚、刷单、区块链、配资、股票、海淘，优惠、公益、获取通讯录等类的应用上传，如果涉及以上类型，请自行下架并删除应用！否则平台直接删除并封停账号！】',
+        time: '2023-05-1 18:30:18'
       }
+      // {
+      //   color: '#F5686F',
+      //   icon: 'PushpinFilled',
+      //   title: '许经理同意了你的请假申请',
+      //   time: '2020-07-27 09:08:36'
+      // },
     ],
     letter: [
-      {
-        avatar:
-          'https://cdn.eleadmin.com/20200609/c184eef391ae48dba87e3057e70238fb.jpg',
-        title: 'SunSmile 评论了你的日志',
-        content: '写的不错, 以后多多向你学习~',
-        time: '2020-07-27 18:30:18'
-      },
-      {
-        avatar:
-          'https://cdn.eleadmin.com/20200609/948344a2a77c47a7a7b332fe12ff749a.jpg',
-        title: '刘诗雨 点赞了你的日志',
-        content: '写的不错, 以后多多向你学习~',
-        time: '2020-07-27 09:08:36'
-      },
-      {
-        avatar:
-          'https://cdn.eleadmin.com/20200609/2d98970a51b34b6b859339c96b240dcd.jpg',
-        title: '酷酷的大叔 评论了你的周报',
-        content: '写的不错, 以后多多向你学习~',
-        time: '2020-07-26 18:30:01'
-      },
-      {
-        avatar:
-          'https://cdn.eleadmin.com/20200609/f6bc05af944a4f738b54128717952107.jpg',
-        title: 'Jasmine 点赞了你的周报',
-        content: '写的不错, 以后多多向你学习~',
-        time: '2020-07-25 11:03:31'
-      }
+      // {
+      //   avatar:
+      //     'https://cdn.eleadmin.com/20200609/f6bc05af944a4f738b54128717952107.jpg',
+      //   title: 'Jasmine 点赞了你的周报',
+      //   content: '写的不错, 以后多多向你学习~',
+      //   time: '2020-07-25 11:03:31'
+      // }
     ],
     todo: [
-      {
-        status: 0,
-        title: '刘诗雨的请假审批',
-        description: '刘诗雨在 07-27 18:30 提交的请假申请'
-      },
-      {
-        status: 1,
-        title: '第三方代码紧急变更',
-        description: '需要在 2020-07-27 之前完成'
-      },
-      {
-        status: 2,
-        title: '信息安全考试',
-        description: '需要在 2020-07-26 18:30 前完成'
-      },
-      {
-        status: 2,
-        title: 'EleAdmin发布新版本',
-        description: '需要在 2020-07-25 11:03 前完成'
-      }
+      // {
+      //   status: 2,
+      //   title: 'EleAdmin发布新版本',
+      //   description: '需要在 2020-07-25 11:03 前完成'
+      // }
     ]
   };
 }
