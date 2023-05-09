@@ -30,16 +30,16 @@ router.beforeEach(async (to, from) => {
   if (!from.path.includes(REDIRECT_PATH)) {
     NProgress.start();
   }
-  if (!getToken()) {
-    // 未登录跳转登录界面
-    if (!WHITE_LIST.includes(to.path)) {
-      return {
-        path: '/login',
-        query: to.path === LAYOUT_PATH ? {} : { from: to.path }
-      };
-    }
-    return;
-  }
+  // if (!getToken()) {
+  //   // 未登录跳转登录界面
+  //   if (!WHITE_LIST.includes(to.path)) {
+  //     return {
+  //       path: '/login',
+  //       query: to.path === LAYOUT_PATH ? {} : { from: to.path }
+  //     };
+  //   }
+  //   return;
+  // }
   // 注册动态路由
   const userStore = useUserStore();
   if (!userStore.menus) {

@@ -5,12 +5,10 @@
       <div class="ele-cell-content ele-cell">
         <a-avatar :size="68" :src="loginUser.avatar" />
         <div class="ele-cell-content">
-          <h4 class="ele-elip">
-            早安, {{ loginUser.nickname }}, 开始您一天的工作吧!
-          </h4>
+          <h4 class="ele-elip">{{ UserInfo.username }}</h4>
           <div class="ele-elip ele-text-secondary">
             <cloud-outlined />
-            <em>今日多云转阴，18℃ - 22℃，出门记得穿外套哦~</em>
+            <em>{{ UserInfo.userRole === 1 ? '普通用户' : UserInfo.userRole === 2 ? '代理用户' : '后台管理员'}}</em>
           </div>
         </div>
       </div>
@@ -48,60 +46,64 @@
 </template>
 
 <script setup>
-  import { computed } from 'vue';
-  import {
-    CloudOutlined,
-    AppstoreFilled,
-    CheckSquareOutlined,
-    BellFilled
-  } from '@ant-design/icons-vue';
-  import { useUserStore } from '@/store/modules/user';
+import { computed } from 'vue';
+import {
+  CloudOutlined,
+  AppstoreFilled,
+  CheckSquareOutlined,
+  BellFilled
+} from '@ant-design/icons-vue';
+import { useUserStore } from '@/store/modules/user';
 
-  const userStore = useUserStore();
+const userStore = useUserStore();
 
-  // 当前登录用户信息
-  const loginUser = computed(() => userStore.info ?? {});
+// 当前登录用户信息
+const loginUser = computed(() => userStore.info ?? {});
+
+const UserInfo = computed(() => {
+  return { username: 'admin', userRole: 3 };
+});
 </script>
 
 <style lang="less" scoped>
-  .workplace-user-card {
-    .ele-cell-content {
-      overflow: hidden;
-    }
+.workplace-user-card {
+  .ele-cell-content {
+    overflow: hidden;
+  }
 
-    h4 {
-      margin-bottom: 6px;
-    }
+  h4 {
+    margin-bottom: 6px;
+  }
+}
+
+.workplace-count-group {
+  white-space: nowrap;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.workplace-count-item {
+  display: inline-block;
+  margin: 0 4px 0 24px;
+}
+
+.workplace-count-name {
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 992px) {
+  .workplace-count-item {
+    margin: 0 2px 0 12px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .workplace-user-card {
+    display: block;
   }
 
   .workplace-count-group {
-    white-space: nowrap;
-    text-align: right;
-    flex-shrink: 0;
+    margin-top: 8px;
   }
-
-  .workplace-count-item {
-    display: inline-block;
-    margin: 0 4px 0 24px;
-  }
-
-  .workplace-count-name {
-    margin-left: 8px;
-  }
-
-  @media screen and (max-width: 992px) {
-    .workplace-count-item {
-      margin: 0 2px 0 12px;
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    .workplace-user-card {
-      display: block;
-    }
-
-    .workplace-count-group {
-      margin-top: 8px;
-    }
-  }
+}
 </style>

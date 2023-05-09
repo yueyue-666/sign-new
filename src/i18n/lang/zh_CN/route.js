@@ -4,7 +4,7 @@ export default {
   forget: { _name: '忘记密码' },
   dashboard: {
     _name: 'Dashboard',
-    workplace: { _name: '工作台' },
+    workplace: { _name: '账户首页' },
     analysis: { _name: '分析页' },
     monitor: { _name: '监控页' }
   },
