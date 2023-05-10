@@ -32,7 +32,7 @@
           <h2>{{ UserInfo.enterpriseSignBalance }}台</h2>
         </div>
         <div class="workplace-count-item">
-          <a-button type="primary">充值</a-button>
+          <a-button type="primary" @click="visible=true">充值</a-button>
           <!-- <div class="workplace-count-header">
             <ele-tag color="green" shape="circle" size="small">
               <bell-filled />
@@ -43,6 +43,10 @@
         </div>
       </div>
     </div>
+
+    <ele-modal :width="400" title="充值客服" v-model:visible="visible" :resizable="true" :maxable="true" :footer="false">
+      <div style="padding: 30px 0;">请联系客服</div>
+    </ele-modal>
   </a-card>
 </template>
 
@@ -65,6 +69,9 @@ const loginUser = computed(() => userStore.info ?? {});
 // const UserInfo = computed(() => {
 //   return { username: 'admin', userRole: 3 };
 // });
+
+// 充值
+const visible = ref(false);
 
 const UserInfo = ref({});
 

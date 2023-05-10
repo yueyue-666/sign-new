@@ -1384,11 +1384,11 @@ export async function getUserInfo() {
  * 修改当前登录的用户密码
  */
 export async function updatePassword(data) {
-  const res = await request.put('/auth/password', data);
-  if (res.data.code === 0) {
-    return res.data.message ?? '修改成功';
+  const res = await request.put('/backstage/modifyPassword', data);
+  if (res.data.code === 200) {
+    return res.data.msg ?? '修改成功';
   }
-  return Promise.reject(new Error(res.data.message));
+  return Promise.reject(new Error(res.data.msg));
 }
 
 /**
