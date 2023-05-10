@@ -32,10 +32,10 @@ const visitHourChartRef = ref(null);
 
 useEcharts([visitHourChartRef]);
 
-// 最近 1 小时访问情况折线图配置
+// 最近一周数据统计折线图配置
 const visitHourChartOption = reactive({});
 
-/* 获取最近 1 小时访问情况数据 */
+/* 获取最近一周数据统计数据 */
 const getVisitHourData = () => {
   getVisitHourList()
     .then((data) => {
@@ -44,14 +44,14 @@ const getVisitHourData = () => {
           trigger: 'axis'
         },
         legend: {
-          data: ['浏览量', '访问量'],
+          data: ['IOS消耗量', 'IOS下载量', 'Android下载量'],
           right: 20
         },
         xAxis: [
           {
             type: 'category',
             boundaryGap: false,
-            data: data.map((d) => d.time)
+            data: data.map((d) => d.datetime)
           }
         ],
         yAxis: [
@@ -61,24 +61,34 @@ const getVisitHourData = () => {
         ],
         series: [
           {
-            name: '浏览量',
+            name: 'IOS消耗量',
             type: 'line',
             smooth: true,
             symbol: 'none',
             areaStyle: {
               opacity: 0.5
             },
-            data: data.map((d) => d.views)
+            data: data.map((d) => d.downloadDeductCount)
           },
           {
-            name: '访问量',
+            name: 'IOS下载量',
             type: 'line',
             smooth: true,
             symbol: 'none',
             areaStyle: {
               opacity: 0.5
             },
-            data: data.map((d) => d.visits)
+            data: data.map((d) => d.downloadCount)
+          },
+          {
+            name: 'Android下载量',
+            type: 'line',
+            smooth: true,
+            symbol: 'none',
+            areaStyle: {
+              opacity: 0.5
+            },
+            data: data.map((d) => d.downloadCountAndroid)
           }
         ]
       });

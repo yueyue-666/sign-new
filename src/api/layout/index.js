@@ -14,6 +14,7 @@ export async function getUserInfo() {
       password: '$2a$10$sWH.qQmf/dHMURzE4kN0puBOdB7VWwcDFB2NvwpMaHYz6OFZwQGBy',
       nickname: '管理员',
       avatar: 'https://cdn.eleadmin.com/20200610/avatar.jpg',
+      // avatar: require('@/assets/portrait.jpeg'),
       sex: '1',
       phone: '12345678901',
       email: null,

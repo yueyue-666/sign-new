@@ -46,7 +46,7 @@ export const TAB_KEEP_ALIVE = true;
 export const TOKEN_HEADER_NAME = 'Authorization';
 
 // token 存储的名称
-export const TOKEN_STORE_NAME = 'access_token';
+export const TOKEN_STORE_NAME = 'token';
 
 // 主题配置存储的名称
 export const THEME_STORE_NAME = 'theme';

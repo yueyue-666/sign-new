@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+import { toDateString } from 'ele-admin-pro/es';
 
 /**
  * 获取支付笔数数据
@@ -27,17 +28,31 @@ export async function getSaleroomList() {
 }
 
 /**
- * 获取最近 1 小时访问情况数据
+ * 获取一周数据统计
  * @returns {Promise<Object>}
  */
 export async function getVisitHourList() {
-  const res = await request.get(
-    'https://cdn.eleadmin.com/20200610/analysis-visits.json'
-  );
-  if (res.data.code === 0 && res.data.data) {
+  var date = new Date();
+  // 当前时间
+  var s1 =
+    date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+  // 一周前的时间
+  date.setTime(date.getTime() - 144 * 60 * 60 * 1000);
+  var s2 =
+    date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+
+  let body = {
+    appId: '',
+    endTime: s1 + ' 23:59:59',
+    isCheckSub: false,
+    startTime: s2 + ' 00:00:00'
+  };
+
+  const res = await request.post('/backstage/querySevenDaysDownload', body);
+  if (res.data.code === 200 && res.data.data) {
     return res.data.data;
   }
-  return Promise.reject(new Error(res.data.message));
+  return Promise.reject(new Error(res.data.msg));
 }
 
 /**

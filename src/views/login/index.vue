@@ -19,9 +19,9 @@
           </template>
         </a-input-password>
       </a-form-item>
-      <a-form-item name="code">
+      <a-form-item name="verifyCode">
         <div class="login-input-group">
-          <a-input allow-clear size="large" v-model:value="form.code" :placeholder="t('login.code')">
+          <a-input allow-clear size="large" v-model:value="form.verifyCode" :placeholder="t('login.code')">
             <template #prefix>
               <safety-certificate-outlined />
             </template>
@@ -31,10 +31,10 @@
           </a-button>
         </div>
       </a-form-item>
-      <a-form-item>
+      <!-- <a-form-item>
         <a-checkbox v-model:checked="form.remember">{{ t('login.remember') }}</a-checkbox>
         <router-link to="/forget" class="ele-pull-right" style="line-height: 22px">{{ t('login.forget') }}</router-link>
-      </a-form-item>
+      </a-form-item>-->
       <a-form-item>
         <a-button block size="large" type="primary" :loading="loading" @click="submit">{{ loading ? t('login.loading') : t('login.login') }}</a-button>
       </a-form-item>
@@ -94,10 +94,11 @@ const loading = ref(false);
 
 // 表单数据
 const form = reactive({
-  username: 'admin',
-  password: 'admin',
-  code: '',
-  remember: true
+  username: '',
+  password: '',
+  verifyCode: '',
+  // remember: true
+  verifyCodeKey: ''
 });
 
 // 验证码 base64 数据
@@ -125,7 +126,7 @@ const rules = computed(() => {
         trigger: 'blur'
       }
     ],
-    code: [
+    verifyCode: [
       {
         required: true,
         message: t('login.code'),
@@ -148,19 +149,22 @@ const submit = () => {
     return;
   }
   formRef.value.validate().then(() => {
-    if (form.code.toLowerCase() !== text.value) {
-      message.error('验证码错误');
-      return;
-    }
+    // if (form.code.toLowerCase() !== text.value) {
+    //   message.error('验证码错误');
+    //   return;
+    // }
     loading.value = true;
     login(form)
       .then((msg) => {
         message.success(msg);
-        cleanPageTabs();
-        goHome();
+        // cleanPageTabs();
+        // goHome();
+
+        goHomeRoute('/');
+        window.location.reload();
       })
       .catch((e) => {
-        message.error(e.message);
+        message.error(e.msg);
         loading.value = false;
       });
   });
@@ -168,18 +172,14 @@ const submit = () => {
 
 /* 获取图形验证码 */
 const changeCaptcha = () => {
-  // 这里演示的验证码是后端返回base64格式的形式, 如果后端地址直接是图片请参考忘记密码页面
   getCaptcha()
     .then((data) => {
-      captcha.value = data.base64;
-      // 实际项目后端一般会返回验证码的key而不是直接返回验证码的内容, 登录用key去验证, 你可以根据自己后端接口修改
-      text.value = data.text;
-      // 自动回填验证码, 实际项目去掉这个
-      form.code = data.text;
+      captcha.value = 'data:image/png;base64,' + data.verifyCode;
+      form.verifyCodeKey = data.verifyCodeKey;
       formRef.value?.clearValidate();
     })
     .catch((e) => {
-      message.error(e.message);
+      message.error(e.msg);
     });
 };
 

@@ -19,9 +19,17 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     // 添加 token 到 header
-    const token = getToken();
-    if (token && config.headers) {
-      config.headers[TOKEN_HEADER_NAME] = token;
+    // const token = getToken();
+    // if (token && config.headers) {
+    //   config.headers[TOKEN_HEADER_NAME] = token;
+    // }
+    // return config;
+
+    const token = localStorage.getItem('token') || '';
+
+    if (token) {
+      // 登陆后必传字段
+      config.headers['token'] = token; //	token
     }
     return config;
   },
@@ -35,33 +43,48 @@ service.interceptors.request.use(
  */
 service.interceptors.response.use(
   (res) => {
-    // 登录过期处理
-    if (res.data?.code === 401) {
-      const currentPath = unref(router.currentRoute).path;
-      if (currentPath == LAYOUT_PATH) {
+    // // 登录过期处理
+    // if (res.data?.code === 401) {
+    //   const currentPath = unref(router.currentRoute).path;
+    //   if (currentPath == LAYOUT_PATH) {
+    //     logout(true);
+    //   } else {
+    //     Modal.destroyAll();
+    //     Modal.info({
+    //       title: '系统提示',
+    //       content: '登录状态已过期, 请退出重新登录!',
+    //       okText: '重新登录',
+    //       onOk: () => {
+    //         logout(false, currentPath);
+    //       }
+    //     });
+    //   }
+    //   return Promise.reject(new Error(res.data.message));
+    // }
+    // // token 自动续期
+    // const token = res.headers[TOKEN_HEADER_NAME.toLowerCase()];
+    // if (token) {
+    //   setToken(token);
+    // }
+    // return res;
+
+    if (res.data.code !== 200) {
+      if ([403].includes(res.data.code)) {
         logout(true);
-      } else {
-        Modal.destroyAll();
-        Modal.info({
-          title: '系统提示',
-          content: '登录状态已过期, 请退出重新登录!',
-          okText: '重新登录',
-          onOk: () => {
-            logout(false, currentPath);
-          }
-        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       }
-      return Promise.reject(new Error(res.data.message));
+      // return Promise.reject(new Error(res));
+    } else {
+      return res;
     }
-    // token 自动续期
-    const token = res.headers[TOKEN_HEADER_NAME.toLowerCase()];
-    if (token) {
-      setToken(token);
-    }
-    return res;
   },
   (error) => {
+    console.log(error);
     return Promise.reject(error);
+    // return Promise.reject(new Error(error.response.data.message));
+    // return Promise.reject(error.response.data.message);
   }
 );
 

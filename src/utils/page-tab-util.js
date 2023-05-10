@@ -237,6 +237,7 @@ export function goHomeRoute(from) {
  */
 export function logout(route, from) {
   removeToken();
+  localStorage.clear();
   if (route) {
     router.push({
       path: '/login',

@@ -1,166 +1,219 @@
 <!-- 项目进度 -->
 <template>
-  <a-card
-    :title="title"
-    :bordered="false"
-    :body-style="{ padding: '14px', height: '358px' }"
-  >
-    <template #extra>
-      <more-icon @remove="onRemove" @edit="onEdit" />
-    </template>
-    <a-table
-      row-key="id"
-      size="middle"
-      :pagination="false"
-      :data-source="projectList"
+  <a-card :title="title" :bordered="false" :body-style="{ padding: '14px' }">
+    <ele-pro-table
+      ref="tableRef"
+      size="small"
+      title
+      row-key="menuId"
       :columns="projectColumns"
+      :datasource="projectList"
+      :need-page="false"
+      :lazy-load="true"
+      :expand-icon-column-index="1"
       :scroll="{ x: 600 }"
     >
       <template #bodyCell="{ column, record }">
-        <template v-if="column.key === 'projectName'">
+        <!-- <template v-if="column.key === 'projectName'">
           <a>{{ record.projectName }}</a>
         </template>
         <template v-else-if="column.key === 'status'">
-          <span v-if="record.status === 0" class="ele-text-success">
-            进行中
-          </span>
-          <span v-else-if="record.status === 1" class="ele-text-danger">
-            已延期
-          </span>
-          <span v-else-if="record.status === 2" class="ele-text-warning">
-            未开始
-          </span>
-          <span
-            v-else-if="record.status === 3"
-            class="ele-text-info ele-text-delete"
-          >
-            已结束
-          </span>
+          <span v-if="record.status === 0" class="ele-text-success">进行中</span>
+          <span v-else-if="record.status === 1" class="ele-text-danger">已延期</span>
+          <span v-else-if="record.status === 2" class="ele-text-warning">未开始</span>
+          <span v-else-if="record.status === 3" class="ele-text-info ele-text-delete">已结束</span>
         </template>
         <template v-else-if="column.key === 'progress'">
           <a-progress :percent="record.progress" size="small" />
+        </template>-->
+        <template v-if="column.key === 'name'">
+          <div style="float: left;">
+            <img :src="record.icon" style="width: 50px;height: 50px;border-radius: 6px;" />
+          </div>
+        </template>
+        <template v-else-if="column.key === 'banben'">
+          <div style="font-size: 12px;float: left;line-height: 30px;text-align: left;">
+            <p>v{{ record.version }}</p>
+            <p>{{ record.bundleId }}</p>
+          </div>
+        </template>
+        <template v-else-if="column.key === 'downloadUrl'">
+          <div style="font-size: 12px;float: left;line-height: 30px;text-align: left;">
+            <p>
+              <span>
+                主用：
+                <a :href="record.iosDownloadUrl" target="_blank" rel="noopener noreferrer">{{ record.iosDownloadUrl }}</a>
+              </span>
+            </p>
+            <p>
+              <span>
+                备用：
+                <a :href="record.backupUrl" target="_blank" rel="noopener noreferrer">{{ record.backupUrl }}</a>
+              </span>
+            </p>
+          </div>
+        </template>
+        <template v-else-if="column.key === 'action'">
+          <a-space>
+            <a @click="reply(record)">设置</a>
+            <a-divider type="vertical" />
+            <a-popconfirm placement="topRight" title="确定要删除此消息吗？" @confirm="remove(record)">
+              <a class="ele-text-danger">删除</a>
+            </a-popconfirm>
+          </a-space>
         </template>
       </template>
-    </a-table>
+    </ele-pro-table>
   </a-card>
 </template>
 
 <script setup>
-  import { ref } from 'vue';
-  import MoreIcon from './more-icon.vue';
+import { ref } from 'vue';
+import MoreIcon from './more-icon.vue';
+import request from '@/utils/request';
 
-  defineProps({
-    title: String
-  });
+defineProps({
+  title: String
+});
 
-  const emit = defineEmits(['remove', 'edit']);
-
-  const projectColumns = ref([
-    {
-      key: 'index',
-      align: 'center',
-      width: 38,
-      customRender: ({ index }) => index + 1,
-      fixed: 'left'
-    },
-    {
-      title: '项目名称',
-      key: 'projectName',
-      ellipsis: true,
-      minWidth: 120
-    },
-    {
-      title: '开始时间',
-      dataIndex: 'startDate',
-      align: 'center',
-      minWidth: 100,
-      ellipsis: true
-    },
-    {
-      title: '结束时间',
-      dataIndex: 'endDate',
-      align: 'center',
-      minWidth: 100,
-      ellipsis: true
-    },
-    {
-      title: '状态',
-      key: 'status',
-      align: 'center',
-      width: 90
-    },
-    {
-      title: '进度',
-      key: 'progress',
-      align: 'center',
-      width: 180
+const emit = defineEmits(['remove', 'edit']);
+const projectColumns = ref([
+  {
+    title: '应用名称',
+    align: 'center',
+    key: 'name',
+    ellipsis: true,
+    width: 200
+  },
+  {
+    title: '版本',
+    key: 'banben',
+    align: 'center',
+    width: 200,
+    ellipsis: true
+  },
+  {
+    title: 'Ios消耗量',
+    dataIndex: 'downloadDeductCount',
+    align: 'center',
+    width: 200,
+    ellipsis: true
+  },
+  {
+    title: 'Android下载量',
+    dataIndex: 'downloadCountAndroid',
+    align: 'center',
+    width: 200,
+    ellipsis: true
+  },
+  {
+    title: '下载地址',
+    key: 'downloadUrl',
+    align: 'center',
+    minWidth: 200,
+    ellipsis: true
+  },
+  {
+    title: '应用状态',
+    dataIndex: 'downloadUrl',
+    align: 'center',
+    width: 200,
+    ellipsis: true
+  },
+  {
+    title: '审核状态',
+    dataIndex: 'downloadUrl',
+    align: 'center',
+    width: 200,
+    ellipsis: true
+  },
+  {
+    title: '安装方式',
+    dataIndex: 'downloadUrl',
+    align: 'center',
+    width: 200,
+    ellipsis: true,
+    // if (index.installType === 1) {
+    //     return '滑块验证';
+    //   } else if (index.installType === 0) {
+    //     return '公开';
+    //   } else if (index.installType === 3) {
+    //     return '下载码';
+    //   }
+    customCell: (record) => {
+      return {
+        onClick: (e) => {
+          e.stopPropagation();
+          message.info('点击了创建时间: ' + record.createTime);
+        }
+      };
     }
-  ]);
+  },
+  {
+    title: '备注',
+    width: 200,
+    dataIndex: 'remark',
+    align: 'center',
+    ellipsis: true
+  },
+  {
+    title: '更新时间',
+    width: 200,
+    dataIndex: 'updateTimestamp',
+    align: 'center',
+    ellipsis: true
+  },
+  {
+    title: '操作',
+    key: 'action',
+    width: 200,
+    fixed: 'right',
+    align: 'center'
+  }
+]);
 
-  // 项目进度数据
-  const projectList = ref([]);
+// 项目进度数据
+const projectList = ref([]);
 
-  /* 查询项目进度 */
-  const queryProjectList = () => {
-    projectList.value = [
-      {
-        id: 1,
-        projectName: '项目0000001',
-        status: 0,
-        startDate: '2020-03-01',
-        endDate: '2020-06-01',
-        progress: 30
-      },
-      {
-        id: 2,
-        projectName: '项目0000002',
-        status: 0,
-        startDate: '2020-03-01',
-        endDate: '2020-08-01',
-        progress: 10
-      },
-      {
-        id: 3,
-        projectName: '项目0000003',
-        status: 1,
-        startDate: '2020-01-01',
-        endDate: '2020-05-01',
-        progress: 60
-      },
-      {
-        id: 4,
-        projectName: '项目0000004',
-        status: 1,
-        startDate: '2020-06-01',
-        endDate: '2020-10-01',
-        progress: 0
-      },
-      {
-        id: 5,
-        projectName: '项目0000005',
-        status: 2,
-        startDate: '2020-01-01',
-        endDate: '2020-03-01',
-        progress: 100
-      },
-      {
-        id: 6,
-        projectName: '项目0000006',
-        status: 3,
-        startDate: '2020-01-01',
-        endDate: '2020-03-01',
-        progress: 100
-      }
-    ];
-  };
+/* 查询项目进度 */
+const queryProjectList = () => {
+  let body = { isCheckSub: false, pageNo: 1, pageSize: 2 };
+  request
+    .post('/backstage/getCommonlyUserApp', body)
+    .then((res) => {
+      projectList.value = res.data.data;
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};
 
-  const onRemove = () => {
-    emit('remove');
-  };
+/* 删除单个 */
+const remove = (row) => {
+  if (row.children?.length) {
+    message.error('请先删除子节点');
+    return;
+  }
+  const hide = messageLoading('请求中..', 0);
+  removeMenu(row.menuId)
+    .then((msg) => {
+      hide();
+      message.success(msg);
+      reload();
+    })
+    .catch((e) => {
+      hide();
+      message.error(e.message);
+    });
+};
 
-  const onEdit = () => {
-    emit('edit');
-  };
+const onRemove = () => {
+  emit('remove');
+};
 
-  queryProjectList();
+const onEdit = () => {
+  emit('edit');
+};
+
+queryProjectList();
 </script>

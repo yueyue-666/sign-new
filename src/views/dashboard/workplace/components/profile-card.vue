@@ -20,7 +20,7 @@
             </ele-tag>
             <span class="workplace-count-name">超级签名V2余量</span>
           </div>
-          <h2>0台</h2>
+          <h2>{{ UserInfo.superSignBalance }}台</h2>
         </div>
         <div class="workplace-count-item">
           <div class="workplace-count-header">
@@ -29,7 +29,7 @@
             </ele-tag>
             <span class="workplace-count-name">超级签名V3余量</span>
           </div>
-          <h2>0台</h2>
+          <h2>{{ UserInfo.enterpriseSignBalance }}台</h2>
         </div>
         <div class="workplace-count-item">
           <a-button type="primary">充值</a-button>
@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import {
   CloudOutlined,
   AppstoreFilled,
@@ -55,15 +55,28 @@ import {
   BellFilled
 } from '@ant-design/icons-vue';
 import { useUserStore } from '@/store/modules/user';
+import request from '@/utils/request';
 
 const userStore = useUserStore();
 
 // 当前登录用户信息
 const loginUser = computed(() => userStore.info ?? {});
 
-const UserInfo = computed(() => {
-  return { username: 'admin', userRole: 3 };
-});
+// const UserInfo = computed(() => {
+//   return { username: 'admin', userRole: 3 };
+// });
+
+const UserInfo = ref({});
+
+request
+  .post('/backstage/getUserInfo', {})
+  .then((res) => {
+    console.log(res);
+    UserInfo.value = res.data.data;
+  })
+  .catch((e) => {
+    console.error(e);
+  });
 </script>
 
 <style lang="less" scoped>
