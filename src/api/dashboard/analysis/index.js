@@ -59,24 +59,8 @@ export async function getVisitHourList() {
  * 数据统计
  * @returns {Promise<Object>}
  */
-export async function getSevenDaysDownload() {
-  var date = new Date();
-  // 当前时间
-  var s1 =
-    date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-  // 一周前的时间
-  date.setTime(date.getTime() - 144 * 60 * 60 * 1000);
-  var s2 =
-    date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-
-  let body = {
-    appId: '',
-    endTime: s1 + ' 23:59:59',
-    isCheckSub: false,
-    startTime: s2 + ' 00:00:00'
-  };
-
-  const res = await request.post('/backstage/querySevenDaysDownload', body);
+export async function getSevenDaysDownload(form) {
+  const res = await request.post('/backstage/querySevenDaysDownload', form);
   if (res.data.code === 200 && res.data.data) {
     return res.data.data;
   }

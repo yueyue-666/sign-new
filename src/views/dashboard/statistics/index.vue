@@ -9,15 +9,20 @@
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col :xl="8" :lg="12" :md="12" :sm="24" :xs="24">
-          <a-form-item label="时间">
-            <a-range-picker v-model:value="dateRange" value-format="YYYY-MM-DD" class="ele-fluid" />
+        <a-col :xl="6" :lg="12" :md="12" :sm="24" :xs="24">
+          <a-form-item label="日期">
+            <a-date-picker class="ele-fluid" placeholder="请选择" value-format="YYYY-MM-DD HH:mm:ss" v-model:value="form.startTime" />
+          </a-form-item>
+        </a-col>
+        <a-col :xl="6" :lg="12" :md="12" :sm="24" :xs="24">
+          <a-form-item>
+            <a-date-picker class="ele-fluid" placeholder="请选择" value-format="YYYY-MM-DD HH:mm:ss" v-model:value="form.endTime" />
           </a-form-item>
         </a-col>
         <a-col :xl="6" :lg="12" :md="12" :sm="24" :xs="24">
           <a-form-item class="ele-text-right" :wrapper-col="{ span: 24 }">
             <a-space>
-              <a-button type="primary" @click="search">查询</a-button>
+              <a-button type="primary" @click="getVisitHourData">查询</a-button>
               <a-button @click="reset">重置</a-button>
             </a-space>
           </a-form-item>
@@ -32,9 +37,9 @@
             <div class="ele-cell">
               <div class="ele-cell-content">
                 <span>IOS上月下载:&nbsp;&nbsp;&nbsp;</span>
-                <ele-tag size="mini" shape="round" color="green">标签1</ele-tag>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <ele-tag size="mini" shape="round" color="green">{{ DownloadList.lastMonthUsed }}</ele-tag>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>IOS当月下载:&nbsp;&nbsp;&nbsp;</span>
-                <ele-tag size="mini" shape="round" color="green">标签1</ele-tag>
+                <ele-tag size="mini" shape="round" color="green">{{ DownloadList.currentMonthUsed }}</ele-tag>
               </div>
             </div>
           </template>
@@ -86,9 +91,8 @@ var s1 =
     ? '0' + (date.getMonth() + 1)
     : date.getMonth() + 1) +
     '-') +
-  '-' +
   date.getDate();
-// 一周前的时间
+// 20天前的时间
 date.setTime(date.getTime() - 480 * 60 * 60 * 1000);
 var s2 =
   date.getFullYear() +
@@ -99,26 +103,18 @@ var s2 =
     '-') +
   (date.getDate() + 1 < 10 ? '0' + (date.getDate() + 1) : date.getDate() + 1);
 
-const dateRange = ref([s2, s1]);
-const [d1, d2] = dateRange.value ?? [];
 // 表单数据
 const { form, resetFields } = useFormData({
   ...props.form,
   isCheckSub: false,
-  // appId: '',
-  startTime: d1 ? d1 + ' 00:00:00' : '',
-  endTime: d2 ? d2 + ' 23:59:59' : ''
+  startTime: s2 + ' 00:00:00',
+  endTime: s1 + ' 23:59:59'
 });
 
 /*  重置 */
 const reset = () => {
   resetFields();
-  dateRange.value = ['', ''];
   getVisitHourData();
-};
-
-const search = () => {
-  console.log(form);
 };
 
 const visitHourChartRef = ref(null);
@@ -130,7 +126,6 @@ const getselect = () => {
   request
     .post('/backstage/getAppList', body)
     .then((res) => {
-      console.log(res);
       appList.value = res.data.data;
     })
     .catch((e) => {
@@ -140,12 +135,15 @@ const getselect = () => {
 
 useEcharts([visitHourChartRef]);
 
+// 下载量
+const DownloadList = reactive({});
+
 // 最近一周数据统计折线图配置
 const visitHourChartOption = reactive({});
 
 /* 获取最近一周数据统计数据 */
 const getVisitHourData = () => {
-  getSevenDaysDownload()
+  getSevenDaysDownload(form)
     .then((data) => {
       Object.assign(visitHourChartOption, {
         tooltip: {
@@ -200,6 +198,8 @@ const getVisitHourData = () => {
           }
         ]
       });
+
+      Object.assign(DownloadList, data[0]);
     })
     .catch((e) => {
       message.error(e.message);
