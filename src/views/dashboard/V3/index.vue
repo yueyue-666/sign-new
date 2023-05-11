@@ -5,6 +5,12 @@
       <user-search :where="defaultWhere" @search="reload" />
       <!-- 表格 -->
       <ele-pro-table
+        :bordered="bordered"
+        :custom-row="customRow"
+        :striped="striped"
+        :tools-theme="toolDefault ? 'default' : 'none'"
+        :full-height="fixedHeight ? 'calc(100vh - 168px)' : void 0"
+        :height="tableHeight"
         ref="tableRef"
         row-key="appId"
         :columns="columns"
@@ -13,6 +19,30 @@
         :where="defaultWhere"
         cache-key="proSystemUserTable"
       >
+        <template #toolkit>
+          <a-space size="middle" style="flex-wrap: wrap">
+            <div class="list-tool-item">
+              <span>边框</span>
+              <a-switch v-model:checked="bordered" size="small" />
+            </div>
+            <a-divider type="vertical" />
+            <div class="list-tool-item">
+              <span>斑马线</span>
+              <a-switch v-model:checked="striped" size="small" />
+            </div>
+            <a-divider type="vertical" />
+            <div class="list-tool-item">
+              <span>表头背景</span>
+              <a-switch v-model:checked="toolDefault" size="small" />
+            </div>
+            <a-divider type="vertical" />
+            <div class="list-tool-item">
+              <span>高度铺满</span>
+              <a-switch v-model:checked="fixedHeight" size="small" />
+            </div>
+            <a-divider type="vertical" />
+          </a-space>
+        </template>
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'name'">
             <div style="display: flex;align-items: center;" v-if="record.signType === 1">
@@ -128,16 +158,14 @@
 </template>
 
 <script setup>
-import { createVNode, ref, reactive } from 'vue';
+import { createVNode, ref, reactive, computed } from 'vue';
 import { message, Modal } from 'ant-design-vue/es';
 import {
-  UploadOutlined,
   ExclamationCircleOutlined,
   CopyOutlined,
   AppleOutlined,
   AndroidOutlined
 } from '@ant-design/icons-vue';
-import { messageLoading } from 'ele-admin-pro/es';
 import UserSearch from './components/user-search.vue';
 
 import request from '@/utils/request';
@@ -247,6 +275,41 @@ const columns = ref([
   }
 ]);
 
+// 表格是否显示边框
+const bordered = ref(false);
+
+// 表格是否斑马纹
+const striped = ref(false);
+
+// 表头工具栏风格
+const toolDefault = ref(false);
+
+// 表格固定高度
+const fixedHeight = ref(false);
+// 搜索是否展开
+const searchExpand = ref(false);
+// 表格高度
+const tableHeight = computed(() => {
+  return fixedHeight.value
+    ? searchExpand.value
+      ? 'calc(100vh - 618px)'
+      : 'calc(100vh - 562px)'
+    : void 0;
+});
+const customRow = (record) => {
+  return {
+    // 行点击事件
+    onClick: () => {
+      if (selection.value.some((d) => d.userId === record.userId)) {
+        selection.value = selection.value.filter(
+          (d) => d.userId !== record.userId
+        );
+      } else {
+        selection.value = selection.value.concat([record]);
+      }
+    }
+  };
+};
 // 默认搜索条件
 const defaultWhere = reactive({});
 
@@ -267,30 +330,17 @@ const datasource = ({ page, where, orders, limit }) => {
 const reload = (where) => {
   tableRef?.value?.reload({ page: 1, where });
 };
-
-/* 打开编辑弹窗 */
-const openEdit = (row) => {
-  current.value = row ?? null;
-  showEdit.value = true;
-};
-
-/* 打开编辑弹窗 */
-const openImport = () => {
-  showImport.value = true;
-};
-
-/* 删除单个 */
+// 删除
 const remove = (row) => {
-  const hide = messageLoading('请求中..', 0);
-  removeUser(row.userId)
-    .then((msg) => {
-      hide();
-      message.success(msg);
+  let body = { appId: row.appId };
+  request
+    .post('/ipa/delete_app', body)
+    .then((res) => {
       reload();
+      message.info(res.data.msg);
     })
     .catch((e) => {
-      hide();
-      message.error(e.message);
+      message.error(e.response.data.msg);
     });
 };
 
@@ -317,12 +367,9 @@ const editStatus = (checked, row) => {
     maskClosable: true,
     onOk: () => {
       let body = { appId: row.appId, appStatus: status };
-      // let res =
-      // console.log(res);
       request
         .post('/ipa/update_app', body)
         .then((res) => {
-          console.log(res);
           reload();
           message.success(res.data.msg);
         })
