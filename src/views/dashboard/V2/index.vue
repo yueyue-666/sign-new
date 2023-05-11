@@ -2,7 +2,6 @@
   <div class="ele-body">
     <a-card :bordered="false">
       <!-- 搜索表单 -->
-      <!-- <user-search :where="defaultWhere" @search="reload" /> -->
       <search-form @search="reload" @expand-change="onExpandChange" />
       <!-- 表格 -->
       <ele-pro-table

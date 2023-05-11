@@ -1,45 +1,24 @@
 <template>
-  <div class="ele-body ele-body-card">
-    <!-- 搜索表单 -->
-    <search-form @search="reload" @expand-change="onExpandChange" />
+  <div class="ele-body">
     <a-card :bordered="false">
-      <!-- 提示信息 -->
-      <a-alert type="info" show-icon style="margin-bottom: 16px">
-        <template #message>
-          <span>
-            已选择
-            <b class="ele-text-primary">{{ selection.length }}</b>
-            项数据<em></em>
-          </span>
-          <span>
-            其中冻结状态的用户有
-            <b>{{ selection.filter((d) => d.status === 1).length }} 个</b>
-            <em></em><em></em>
-          </span>
-          <a @click="clearChoose">清空</a>
-        </template>
-      </a-alert>
+      <!-- 搜索表单 -->
+      <search-form @search="reload" @expand-change="onExpandChange" />
       <!-- 表格 -->
       <ele-pro-table
-        ref="tableRef"
-        row-key="userId"
-        title="基础列表"
-        :resizable="true"
         :bordered="bordered"
+        :custom-row="customRow"
         :striped="striped"
         :tools-theme="toolDefault ? 'default' : 'none'"
-        :height="tableHeight"
         :full-height="fixedHeight ? 'calc(100vh - 168px)' : void 0"
+        :height="tableHeight"
+        ref="tableRef"
+        row-key="appId"
         :columns="columns"
         :datasource="datasource"
-        v-model:selection="selection"
-        :custom-row="customRow"
         :scroll="{ x: 1000 }"
-        :row-selection="{ columnWidth: 38 }"
-        cache-key="proListBasicTable"
-        @done="onDone"
+        :where="defaultWhere"
+        cache-key="proSystemUserTable"
       >
-        <!-- 表头工具按钮 -->
         <template #toolkit>
           <a-space size="middle" style="flex-wrap: wrap">
             <div class="list-tool-item">
@@ -62,86 +41,116 @@
               <a-switch v-model:checked="fixedHeight" size="small" />
             </div>
             <a-divider type="vertical" />
-            <a-button type="primary" class="ele-btn-icon" @click="openEdit()">
-              <template #icon>
-                <plus-outlined />
-              </template>
-              <span>新建</span>
-            </a-button>
-            <a-dropdown :disabled="!selection.length">
-              <a-button class="ele-btn-icon">
-                <span>批量操作 <down-outlined class="ele-text-small" /></span>
-              </a-button>
-              <template #overlay>
-                <a-menu @click="onDropClick">
-                  <a-menu-item key="del">批量删除</a-menu-item>
-                  <a-menu-item key="edit">批量修改</a-menu-item>
-                </a-menu>
-              </template>
-            </a-dropdown>
-            <a-divider type="vertical" />
           </a-space>
         </template>
-        <!-- 自定义列 -->
         <template #bodyCell="{ column, record }">
-          <!-- 头像列 -->
-          <template v-if="column.key === 'avatar'">
-            <a-avatar
-              v-if="record.avatar"
-              :src="record.avatar"
-              :size="32"
-              @click.stop=""
-            />
-            <a-avatar v-else class="ele-bg-primary" :size="32" @click.stop="">
-              {{
-                record.nickname && record.nickname.length > 2
-                  ? record.nickname.substring(record.nickname.length - 2)
-                  : record.nickname
-              }}
-            </a-avatar>
+          <template v-if="column.key === 'name'">
+            <div style="display: flex;align-items: center;" v-if="record.signType === 1">
+              <img :src="record.icon" style="width: 50px;height: 50px;border-radius: 6px;" />
+              <div style="display: flex;flex-direction: column;align-items: flex-start;padding-left:10px;">
+                <span>
+                  <span style="color: #0000ff;">{{ record.name.length>5 ? record.name.substring(0, 5) + "..." : record.name}}</span>
+                  <span
+                    v-if="record.type === 4"
+                    style="padding: 0 5px;-webkit-transform-origin-x: 0;-webkit-transform: scale(0.7);background-color: #FFEFDE;color: #E4494A;"
+                  >V3</span>
+                </span>
+                <span>
+                  {{ record.size }}
+                  <android-Outlined v-if="record.apkDownPath" />
+                  <apple-Outlined v-else />
+                </span>
+              </div>
+            </div>
+            <div style="display: flex;align-items: center;" v-else-if="record.signType === 2">
+              <img :src="record.icon" style="width: 50px;height: 50px;border-radius: 6px;" />
+              <div style="display: flex;flex-direction: column;align-items: flex-start;padding-left:10px;">
+                <span>
+                  <span style="color: #0000ff;">{{ record.name.length>5 ? record.name.substring(0, 5) + "..." : record.name}}</span>
+                  <span
+                    v-if="record.type === 4"
+                    style="padding: 0 5px;-webkit-transform-origin-x: 0;-webkit-transform: scale(0.7);background-color: #FFEFDE;color: #E4494A;"
+                  >混合</span>
+                </span>
+                <span>
+                  {{ record.size }}
+                  <android-Outlined v-if="record.apkDownPath" />
+                  <apple-Outlined v-else />
+                </span>
+              </div>
+            </div>
+            <div style="display: flex;align-items: center;" v-else>
+              <img :src="record.icon" style="width: 50px;height: 50px;border-radius: 6px;" />
+              <div style="display: flex;flex-direction: column;align-items: flex-start;padding-left:10px;">
+                <span>
+                  {{ record.name.length>5 ? record.name.substring(0, 5) + "..." : record.name}}
+                  <span
+                    v-if="record.type === 4"
+                    style="padding: 0 5px;-webkit-transform-origin-x: 0;-webkit-transform: scale(0.7);background-color: #FFEFDE;color: #E4494A;"
+                  >V2</span>
+                </span>
+                <span>
+                  {{ getfilesize(record.size) }}
+                  <android-Outlined v-if="record.apkDownPath" />
+                  <apple-Outlined v-else />
+                </span>
+              </div>
+            </div>
           </template>
-          <!-- 用户名列 -->
-          <template v-else-if="column.key === 'nickname'">
-            <router-link
-              :to="'/list/basic/details/' + record.userId"
-              @click.stop=""
-            >
-              {{ record.nickname }}
-            </router-link>
+          <template v-else-if="column.key === 'auditStatus'">
+            <a-tag v-if="record.auditStatus === 0" color="blue">审核中</a-tag>
+            <a-tag v-else-if="record.auditStatus === 1" color="green">审核通过</a-tag>
+            <a-tag v-else color="red">拒绝</a-tag>
           </template>
-          <!-- 状态列 -->
+          <template v-else-if="column.key === 'banben'">
+            <div style="font-size: 12px;float: left;line-height: 30px;text-align: left;">
+              <p>v{{ record.version }}</p>
+              <p>{{ record.bundleId }}</p>
+            </div>
+          </template>
           <template v-else-if="column.key === 'status'">
-            <a-badge
-              :status="['processing', 'error'][record.status]"
-              :text="['正常', '冻结'][record.status]"
+            <a-switch
+              :checked="record.appStatus === 1"
+              @change="(checked) => editStatus(checked, record)"
+              checked-children="上架"
+              un-checked-children="下架"
             />
           </template>
-          <!-- 操作列 -->
+          <template v-else-if="column.key === 'dlUrl'">
+            <div style="font-size: 12px;float: left;line-height: 30px;text-align: left;">
+              <p>
+                <span>
+                  主用：
+                  <a :href="record.iosDownloadUrl" target="_blank" rel="noopener noreferrer">{{ record.iosDownloadUrl }}</a>
+                  <copy-outlined @click="copyDetail(record.iosDownloadUrl)" style="font-size:15px;" />
+                </span>
+              </p>
+              <p>
+                <span>
+                  备用：
+                  <a :href="record.backupUrl" target="_blank" rel="noopener noreferrer">{{ record.backupUrl }}</a>
+                  <copy-outlined @click="copyDetail(record.backupUrl)" style="font-size:15px;" />
+                </span>
+              </p>
+            </div>
+          </template>
           <template v-else-if="column.key === 'action'">
             <a-space>
-              <a @click.stop="openEdit(record)">修改</a>
+              <a @click="reply(record)">设置</a>
               <a-divider type="vertical" />
-              <a class="ele-text-danger" @click.stop="remove(record)">删除</a>
+              <a-popconfirm placement="topRight" title="确定要删除此消息吗？" @confirm="remove(record)">
+                <a class="ele-text-danger">删除</a>
+              </a-popconfirm>
             </a-space>
           </template>
         </template>
-        <!-- 自定义筛选dropdown -->
-        <template
-          #customFilterDropdown="{
-            column,
-            setSelectedKeys,
-            confirm,
-            clearFilters
-          }"
-        >
-          <!-- 用户名 -->
-          <template v-if="column.key === 'nickname'">
-            <nickname-filter
-              :setSelectedKeys="setSelectedKeys"
-              :confirm="confirm"
-              :clearFilters="clearFilters"
-            />
-          </template>
+        <template #customFilterDropdown>
+          <span class="tooltiptext">
+            设置里可修改安装方式
+            <br />公开：用户可自主安装应用
+            <br />滑块验证：用户下载应用时需要滑块验证通过后方可安装应用
+            <br />下载码：用户下载应用时需要输入对应的下载码，验证通过后方可安装应用，设置里可生成下载码
+          </span>
         </template>
       </ele-pro-table>
     </a-card>
@@ -149,272 +158,279 @@
 </template>
 
 <script setup>
-  import { ref, computed, nextTick } from 'vue';
-  import { useRouter } from 'vue-router';
-  import { message } from 'ant-design-vue/es';
-  import { DownOutlined, PlusOutlined } from '@ant-design/icons-vue';
-  import { messageLoading, toDateString } from 'ele-admin-pro/es';
-  import SearchForm from './components/search-form.vue';
-  import NicknameFilter from './components/nickname-filter.vue';
-  import { pageUsers } from '@/api/system/user';
-  import { removePageTab } from '@/utils/page-tab-util';
-  import { useI18n } from 'vue-i18n';
+import { createVNode, ref, reactive, computed } from 'vue';
+import { message, Modal } from 'ant-design-vue/es';
+import {
+  ExclamationCircleOutlined,
+  CopyOutlined,
+  AppleOutlined,
+  AndroidOutlined
+} from '@ant-design/icons-vue';
+import searchForm from './components/search-form.vue';
 
-  const { t } = useI18n();
+import request from '@/utils/request';
+import { pageUsers } from '@/api/system/user';
 
-  const { push } = useRouter();
+// 表格实例
+const tableRef = ref(null);
 
-  // 表格实例
-  const tableRef = ref(null);
-
-  // 表格列配置
-  const columns = computed(() => {
-    return [
-      {
-        key: 'index',
-        width: 52,
-        align: 'center',
-        fixed: 'left',
-        hideInSetting: true,
-        customRender: ({ index }) => index + (tableRef.value?.tableIndex ?? 0)
-      },
-      {
-        width: 80,
-        title: t('list.basic.table.avatar'),
-        key: 'avatar',
-        dataIndex: 'avatar',
-        ellipsis: true,
-        align: 'center'
-      },
-      {
-        title: t('list.basic.table.username'),
-        dataIndex: 'username',
-        sorter: true,
-        showSorterTooltip: false,
-        ellipsis: true,
-        width: 160,
-        minWidth: 100,
-        resizable: true
-      },
-      {
-        title: t('list.basic.table.nickname'),
-        key: 'nickname',
-        dataIndex: 'nickname',
-        sorter: true,
-        showSorterTooltip: false,
-        customFilterDropdown: true,
-        ellipsis: true,
-        width: 160,
-        minWidth: 100,
-        resizable: true
-      },
-      {
-        title: t('list.basic.table.organizationName'),
-        dataIndex: 'organizationName',
-        sorter: true,
-        showSorterTooltip: false,
-        hideInTable: true,
-        ellipsis: true,
-        width: 160,
-        minWidth: 100,
-        resizable: true
-      },
-      {
-        title: t('list.basic.table.phone'),
-        dataIndex: 'phone',
-        sorter: true,
-        showSorterTooltip: false,
-        ellipsis: true,
-        width: 160,
-        minWidth: 100,
-        resizable: true
-      },
-      {
-        title: t('list.basic.table.sexName'),
-        dataIndex: 'sexName',
-        width: 80,
-        align: 'center',
-        sorter: true,
-        showSorterTooltip: false,
-        filters: [
-          {
-            text: '男',
-            value: '男'
-          },
-          {
-            text: '女',
-            value: '女'
-          }
-        ],
-        filterMultiple: false,
-        ellipsis: true
-      },
-      {
-        title: t('list.basic.table.createTime'),
-        dataIndex: 'createTime',
-        sorter: true,
-        showSorterTooltip: false,
-        ellipsis: true,
-        customRender: ({ text }) => toDateString(text),
-        customCell: (record) => {
-          return {
-            onClick: (e) => {
-              e.stopPropagation();
-              message.info('点击了创建时间: ' + record.createTime);
-            }
-          };
-        },
-        defaultSortOrder: 'ascend',
-        width: 160,
-        minWidth: 100,
-        resizable: true
-      },
-      {
-        title: t('list.basic.table.status'),
-        key: 'status',
-        dataIndex: 'status',
-        sorter: true,
-        showSorterTooltip: false,
-        width: 90,
-        align: 'center',
-        ellipsis: true
-      },
-      {
-        title: t('list.basic.table.action'),
-        key: 'action',
-        width: 110,
-        align: 'center',
-        hideInSetting: true,
-        fixed: 'right'
+// 表格列配置
+const columns = ref([
+  {
+    title: '应用名称',
+    align: 'center',
+    key: 'name',
+    ellipsis: true,
+    width: 200,
+    Tooltip: true
+  },
+  {
+    title: '版本',
+    key: 'banben',
+    align: 'center',
+    width: 200,
+    ellipsis: true
+  },
+  {
+    title: 'Ios消耗量',
+    dataIndex: 'downloadDeductCount',
+    align: 'center',
+    width: 120,
+    ellipsis: true
+  },
+  {
+    title: 'Android下载量',
+    dataIndex: 'downloadCountAndroid',
+    align: 'center',
+    width: 120,
+    ellipsis: true
+  },
+  {
+    title: '下载地址',
+    key: 'dlUrl',
+    dataIndex: '',
+    align: 'center',
+    width: 350,
+    ellipsis: true
+  },
+  {
+    title: '应用状态',
+    key: 'status',
+    dataIndex: '',
+    align: 'center',
+    width: 120,
+    ellipsis: true
+  },
+  {
+    title: '审核状态',
+    key: 'auditStatus',
+    align: 'center',
+    width: 120,
+    ellipsis: true
+  },
+  {
+    title: '安装方式',
+    dataIndex: 'installType',
+    align: 'center',
+    width: 200,
+    ellipsis: true,
+    customFilterDropdown: true,
+    customRender: ({ text }) => {
+      if (text === 1) {
+        return '滑块验证';
+      } else if (text === 0) {
+        return '公开';
+      } else {
+        return '下载码';
       }
-    ];
-  });
-
-  // 表格选中数据
-  const selection = ref([]);
-
-  // 表格是否显示边框
-  const bordered = ref(false);
-
-  // 表格是否斑马纹
-  const striped = ref(false);
-
-  // 表头工具栏风格
-  const toolDefault = ref(false);
-
-  // 表格固定高度
-  const fixedHeight = ref(false);
-
-  // 搜索是否展开
-  const searchExpand = ref(false);
-
-  // 表格高度
-  const tableHeight = computed(() => {
-    return fixedHeight.value
-      ? searchExpand.value
-        ? 'calc(100vh - 618px)'
-        : 'calc(100vh - 562px)'
-      : void 0;
-  });
-
-  // 表格数据源
-  const datasource = ({ page, limit, where, orders, filters }) => {
-    return pageUsers({
-      ...where,
-      ...orders,
-      ...filters,
-      page,
-      limit
-    });
-  };
-
-  /* 表格数据请求完成事件 */
-  const onDone = ({ data }) => {
-    // 回显 id 为 19、22、21 的数据的复选框
-    const ids = [19, 22, 21];
-    selection.value = data.filter((d) => d.userId && ids.includes(d.userId));
-  };
-
-  /* 自定义行属性 */
-  const customRow = (record) => {
-    return {
-      // 行点击事件
-      onClick: () => {
-        if (selection.value.some((d) => d.userId === record.userId)) {
-          selection.value = selection.value.filter(
-            (d) => d.userId !== record.userId
-          );
-        } else {
-          selection.value = selection.value.concat([record]);
-        }
+    }
+  },
+  {
+    title: '备注',
+    width: 200,
+    dataIndex: 'remark',
+    align: 'center',
+    ellipsis: true,
+    customRender: ({ text }) => {
+      if (text) {
+        return text;
+      } else {
+        return '--';
       }
-    };
-  };
+    }
+  },
+  {
+    title: '更新时间',
+    width: 200,
+    dataIndex: 'updateTimestamp',
+    align: 'center',
+    ellipsis: true
+  },
+  {
+    title: '操作',
+    key: 'action',
+    width: 200,
+    fixed: 'right',
+    align: 'center'
+  }
+]);
 
-  /* 刷新表格 */
-  const reload = (where) => {
-    selection.value = [];
-    tableRef?.value?.reload({ page: 1, where });
-  };
+// 表格是否显示边框
+const bordered = ref(false);
 
-  /* 清空选择 */
-  const clearChoose = () => {
-    selection.value = [];
-  };
+// 表格是否斑马纹
+const striped = ref(false);
 
-  /* 编辑 */
-  const openEdit = (row) => {
-    const path = row ? '/list/basic/edit' : '/list/basic/add';
-    removePageTab({ key: path });
-    nextTick(() => {
-      push({
-        path,
-        query: row ? { id: row.userId } : undefined
-      });
-    });
-  };
+// 表头工具栏风格
+const toolDefault = ref(false);
 
-  /* 删除 */
-  const remove = (row) => {
-    console.log(row);
-    const hide = messageLoading({
-      content: '请求中...',
-      duration: 0,
-      mask: true
-    });
-    setTimeout(() => {
-      hide();
-      message.info('点击了删除');
-    }, 1500);
-  };
-
-  /* 下拉按钮点击 */
-  const onDropClick = ({ key }) => {
-    if (key === 'del') {
-      message.info('点击了批量删除');
-    } else if (key === 'edit') {
-      message.info('点击了批量修改');
+// 表格固定高度
+const fixedHeight = ref(false);
+// 搜索是否展开
+const searchExpand = ref(false);
+// 表格高度
+const tableHeight = computed(() => {
+  return fixedHeight.value
+    ? searchExpand.value
+      ? 'calc(100vh - 618px)'
+      : 'calc(100vh - 562px)'
+    : void 0;
+});
+const customRow = (record) => {
+  return {
+    // 行点击事件
+    onClick: () => {
+      if (selection.value.some((d) => d.userId === record.userId)) {
+        selection.value = selection.value.filter(
+          (d) => d.userId !== record.userId
+        );
+      } else {
+        selection.value = selection.value.concat([record]);
+      }
     }
   };
+};
+// 默认搜索条件
+const defaultWhere = reactive({});
 
-  /* 搜索展开改变事件 */
-  const onExpandChange = (value) => {
-    searchExpand.value = value;
-  };
+// 表格数据源
+const datasource = ({ page, where, orders, limit }) => {
+  return pageUsers({
+    ...where,
+    ...orders,
+    page: page,
+    size: limit,
+    isCheckSub: false,
+    signType: 2,
+    type: '0'
+  });
+};
+
+/* 搜索 */
+const reload = (where) => {
+  tableRef?.value?.reload({ page: 1, where });
+};
+// 删除
+const remove = (row) => {
+  let body = { appId: row.appId };
+  request
+    .post('/ipa/delete_app', body)
+    .then((res) => {
+      reload();
+      message.info(res.data.msg);
+    })
+    .catch((e) => {
+      message.error(e.response.data.msg);
+    });
+};
+
+// 复制下载地址
+const copyDetail = (value) => {
+  var input_temp = document.createElement('input');
+  input_temp.value = value;
+  document.body.appendChild(input_temp);
+  input_temp.select();
+  document.execCommand('copy');
+  document.body.removeChild(input_temp);
+  message.success('复制成功！');
+};
+
+/* 修改应用状态 */
+
+const editStatus = (checked, row) => {
+  const status = checked ? 1 : 0;
+  var hint = status === 1 ? '上架' : '下架';
+  Modal.confirm({
+    title: '提示',
+    content: '确定' + hint + '吗？',
+    icon: createVNode(ExclamationCircleOutlined),
+    maskClosable: true,
+    onOk: () => {
+      let body = { appId: row.appId, appStatus: status };
+      request
+        .post('/ipa/update_app', body)
+        .then((res) => {
+          reload();
+          message.success(res.data.msg);
+        })
+        .catch((e) => {
+          message.error(e.response.data.msg);
+        });
+    }
+  });
+};
+const getfilesize = (size) => {
+  if (!size) return '';
+  var num = 1024.0;
+  if (size < num) return size + 'B';
+  if (size < Math.pow(num, 2)) return (size / num).toFixed(2) + 'KB';
+  if (size < Math.pow(num, 3))
+    return (size / Math.pow(num, 2)).toFixed(2) + 'M';
+  if (size < Math.pow(num, 4))
+    return (size / Math.pow(num, 3)).toFixed(2) + 'G';
+  return (size / Math.pow(num, 4)).toFixed(2) + 'T';
+};
 </script>
 
 <script>
-  export default {
-    name: 'ListBasic'
-  };
+export default {
+  name: 'V3'
+};
 </script>
 
 <style lang="less" scoped>
-  .list-tool-item {
-    & > span {
-      vertical-align: middle;
-      margin-right: 6px;
-      opacity: 0.9;
-    }
-  }
+.ant-table-filter-dropdown {
+  position: relative;
+  display: inline-block;
+  /* 设置底部的边框 */
+  border-bottom: 1px dashed black;
+}
+
+.ant-table-filter-dropdown .tooltiptext {
+  font-size: 12px;
+  /* 隐藏该元素 */
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  top: 125%;
+  left: 50%;
+  margin-left: -60px;
+  transition: opacity 1s;
+}
+
+.ant-table-filter-dropdown .tooltiptext::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 70%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #555 transparent;
+}
 </style>
