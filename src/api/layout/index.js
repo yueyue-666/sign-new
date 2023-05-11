@@ -144,6 +144,23 @@ export async function getUserInfo() {
           checked: null
         },
         {
+          menuId: 143,
+          parentId: 136,
+          title: '数据统计',
+          path: '/dashboard/statistics',
+          component: '/dashboard/statistics',
+          menuType: 0,
+          sortNumber: 1,
+          authority: null,
+          icon: 'bar-chart-outlined',
+          hide: 0,
+          meta: null,
+          deleted: 0,
+          tenantId: 2,
+          children: null,
+          checked: null
+        },
+        {
           menuId: 155,
           parentId: 154,
           title: '成功页',
