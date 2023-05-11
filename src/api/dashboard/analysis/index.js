@@ -60,6 +60,12 @@ export async function getVisitHourList() {
  * @returns {Promise<Object>}
  */
 export async function getSevenDaysDownload(form) {
+  function getTimestamp(time) {
+    return new Date(time).getTime() / 1000;
+  }
+  if (getTimestamp(form.endTime) - getTimestamp(form.startTime) > 1728000) {
+    return Promise.reject(new Error('查询范围时间不能超过20天'));
+  }
   const res = await request.post('/backstage/querySevenDaysDownload', form);
   if (res.data.code === 200 && res.data.data) {
     return res.data.data;
