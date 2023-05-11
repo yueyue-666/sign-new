@@ -46,7 +46,7 @@
   import useFormData from '@/utils/use-form-data';
   import { setPageTabTitle } from '@/utils/page-tab-util';
   import { getUser } from '@/api/system/user';
-  const ROUTE_PATH = '/list/basic/details';
+  const ROUTE_PATH = '/system/user/details';
 
   const { currentRoute } = useRouter();
 
@@ -65,9 +65,10 @@
   // 请求状态
   const loading = ref(true);
 
+  /*  */
   const query = () => {
-    const { params } = unref(currentRoute);
-    const id = params.id;
+    const { query } = unref(currentRoute);
+    const id = query.id;
     if (!id || form.userId === Number(id)) {
       return;
     }
@@ -80,7 +81,7 @@
           createTime: toDateString(data.createTime)
         });
         // 修改页签标题
-        if (unref(currentRoute).path.startsWith(ROUTE_PATH)) {
+        if (unref(currentRoute).path === ROUTE_PATH) {
           setPageTabTitle(data.nickname + '的信息');
         }
       })
@@ -93,8 +94,8 @@
   watch(
     currentRoute,
     (route) => {
-      const { fullPath } = unref(route);
-      if (!fullPath.startsWith(ROUTE_PATH)) {
+      const { path } = unref(route);
+      if (path !== ROUTE_PATH) {
         return;
       }
       query();
@@ -105,6 +106,6 @@
 
 <script>
   export default {
-    name: 'ListBasicDetails'
+    name: 'SystemUserDetails'
   };
 </script>

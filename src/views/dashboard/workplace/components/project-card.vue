@@ -1,10 +1,6 @@
 <!-- 项目进度 -->
 <template>
   <a-card :title="title" :bordered="false" :body-style="{ padding: '14px' }">
-    <!-- <template #extra>
-      <more-icon @remove="onRemove" @edit="onEdit" />
-    </template>-->
-
     <a-table
       row-key="id"
       size="middle"
@@ -116,10 +112,6 @@
         </template>
       </template>
       <template #customFilterDropdown>
-        <!-- 应用的累计消耗设备量：
-        <br />同一苹果手机设备多次下载
-        <br />
-        同一应用只计算一次消耗量-->
         <span class="tooltiptext">
           应用的累计消耗设备量：
           <br />同一苹果手机设备多次下载
@@ -283,10 +275,10 @@ const editStatus = (checked, row) => {
   });
 };
 
-// 项目进度数据
+// 常用应用列表
 const projectList = ref([]);
 
-/* 查询项目进度 */
+/* 查询常用应用列表 */
 const queryProjectList = () => {
   let body = { isCheckSub: false, pageNo: 1, pageSize: 2 };
   request
@@ -346,12 +338,12 @@ queryProjectList();
 .ant-table-filter-dropdown .tooltiptext {
   font-size: 12px;
   /* 隐藏该元素 */
-  width: 150px;
+  width: 160px;
   background-color: #555;
   color: #fff;
   text-align: center;
   border-radius: 6px;
-  padding: 5px 0;
+  padding: 5px;
   position: absolute;
   /* 设置该元素在z轴处于优先显示的位置，因为其他元素没有设置z—index */
   z-index: 1;

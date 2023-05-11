@@ -4,9 +4,15 @@ import request from '@/utils/request';
  * 分页查询用户
  */
 export async function pageUsers(params) {
-  const res = await request.get('/system/user/page', { params });
-  if (res.data.code === 0) {
-    return res.data.data;
+  // const res = await request.get('/system/user/page', { params });
+  // if (res.data.code === 0) {
+  //   return res.data.data;
+  // }
+  // return Promise.reject(new Error(res.data.message));
+
+  const res = await request.post('/backstage/getAllAppByPage', params);
+  if (res.data.code === 200) {
+    return res.data.data.record;
   }
   return Promise.reject(new Error(res.data.message));
 }

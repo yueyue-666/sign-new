@@ -4,7 +4,7 @@
     <search-form @search="reload" @expand-change="onExpandChange" />
     <a-card :bordered="false">
       <!-- 提示信息 -->
-      <!-- <a-alert type="info" show-icon style="margin-bottom: 16px">
+      <a-alert type="info" show-icon style="margin-bottom: 16px">
         <template #message>
           <span>
             已选择
@@ -20,12 +20,12 @@
           </span>
           <a @click="clearChoose">清空</a>
         </template>
-      </a-alert>-->
+      </a-alert>
       <!-- 表格 -->
       <ele-pro-table
         ref="tableRef"
         row-key="userId"
-        title
+        title="基础列表"
         :resizable="true"
         :bordered="bordered"
         :striped="striped"
