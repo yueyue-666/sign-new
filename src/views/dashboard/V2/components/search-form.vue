@@ -99,7 +99,6 @@
 
 <script setup>
 import { ref } from 'vue';
-import { DownOutlined, UpOutlined } from '@ant-design/icons-vue';
 import useFormData from '@/utils/use-form-data';
 
 const emit = defineEmits(['search', 'expand-change']);
@@ -121,9 +120,6 @@ const openDialog2 = () => {
   visible2.value = true;
 };
 
-// 搜索表单是否展开
-const searchExpand = ref(false);
-
 /* 搜索 */
 const search = () => {
   emit('search', form);
@@ -133,12 +129,6 @@ const search = () => {
 const reset = () => {
   resetFields();
   search();
-};
-
-/* 搜索展开/收起 */
-const toggleExpand = () => {
-  searchExpand.value = !searchExpand.value;
-  emit('expand-change', searchExpand.value);
 };
 
 /* 同意协议 */
