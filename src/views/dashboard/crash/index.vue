@@ -1,15 +1,12 @@
 <template>
   <div class="ele-body">
     <a-card :bordered="false">
-      <!-- 搜索表单 -->
-      <user-search :where="defaultWhere" @search="reload" />
       <!-- 表格 -->
       <ele-pro-table
         ref="tableRef"
         row-key="userId"
         :columns="columns"
         :datasource="datasource"
-        v-model:selection="selection"
         :scroll="{ x: 1000 }"
         :where="defaultWhere"
         cache-key="proSystemUserTable"
@@ -20,50 +17,37 @@
               <template #icon>
                 <plus-outlined />
               </template>
-              <span>新建</span>
-            </a-button>
-            <a-button danger type="primary" class="ele-btn-icon" @click="removeBatch">
-              <template #icon>
-                <delete-outlined />
-              </template>
-              <span>删除</span>
-            </a-button>
-            <a-button type="dashed" class="ele-btn-icon" @click="openImport">
-              <template #icon>
-                <upload-outlined />
-              </template>
-              <span>导入</span>
+              <span>生成(webclip)闪退助手</span>
             </a-button>
           </a-space>
         </template>
+
         <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'nickname'">
-            <router-link :to="'/system/user/details?id=' + record.userId">{{ record.nickname }}</router-link>
+          <template v-if="column.key === 'logo'">
+            <a-avatar :size="50" :src="record.logo" />
           </template>
-          <template v-else-if="column.key === 'roles'">
-            <a-tag v-for="item in record.roles" :key="item.roleId" color="blue">{{ item.roleName }}</a-tag>
+          <template v-else-if="column.key === 'downloadUrl'">
+            <div style="font-size: 12px;float: left;line-height: 30px;text-align: left;">
+              <p>
+                <span>
+                  <a :href="record.downloadUrl" target="_blank" rel="noopener noreferrer">{{ record.downloadUrl }}</a>
+                  <copy-outlined @click="copyDetail(record.downloadUrl)" style="font-size:15px;" />
+                </span>
+              </p>
+            </div>
           </template>
-          <template v-else-if="column.key === 'status'">
-            <a-switch :checked="record.status === 0" @change="(checked) => editStatus(checked, record)" />
+          <template v-else-if="column.key === 'QRdownloadUrl'">
+            <ele-qr-code-svg :value="record.downloadUrl" :size="60" />
           </template>
-          <template v-else-if="column.key === 'action'">
-            <a-space>
-              <a @click="openEdit(record)">修改</a>
-              <a-divider type="vertical" />
-              <a @click="resetPsw(record)">重置密码</a>
-              <a-divider type="vertical" />
-              <a-popconfirm placement="topRight" title="确定要删除此用户吗？" @confirm="remove(record)">
-                <a class="ele-text-danger">删除</a>
-              </a-popconfirm>
-            </a-space>
+          <template v-if="column.key === 'isRemovable'">
+            <a-tag color="red" v-if="record.isRemovable===0">不可移除</a-tag>
+            <a-tag color="green" v-else>可移除</a-tag>
           </template>
         </template>
       </ele-pro-table>
     </a-card>
-    <!-- 编辑弹窗 -->
+    <!-- 生成(webclip)闪退助手弹窗 -->
     <user-edit v-model:visible="showEdit" :data="current" @done="reload" />
-    <!-- 导入弹窗 -->
-    <user-import v-model:visible="showImport" @done="reload" />
   </div>
 </template>
 
@@ -76,17 +60,9 @@ import {
   UploadOutlined,
   ExclamationCircleOutlined
 } from '@ant-design/icons-vue';
-import { toDateString, messageLoading } from 'ele-admin-pro/es';
-import UserSearch from './components/user-search.vue';
+import { toDateString } from 'ele-admin-pro/es';
 import UserEdit from './components/user-edit.vue';
-import UserImport from './components/user-import.vue';
-import {
-  pageUsers,
-  removeUser,
-  removeUsers,
-  updateUserStatus,
-  updateUserPassword
-} from '@/api/system/user';
+import { WebClipList } from '@/api/system/user';
 
 // 表格实例
 const tableRef = ref(null);
@@ -120,11 +96,30 @@ const columns = ref([
     align: 'center',
     width: 120,
     ellipsis: true
+  },
+  {
+    title: '移除方式',
+    key: 'isRemovable',
+    align: 'center',
+    width: 120,
+    ellipsis: true
+  },
+  {
+    title: '嵌入网址',
+    dataIndex: 'url',
+    align: 'center',
+    width: 120,
+    ellipsis: true
+  },
+  {
+    title: '创建时间',
+    align: 'center',
+    dataIndex: 'createTimestamp',
+    sorter: false,
+    showSorterTooltip: false,
+    customRender: ({ text }) => toDateString(text)
   }
 ]);
-
-// 表格选中数据
-const selection = ref([]);
 
 // 当前编辑数据
 const current = ref(null);
@@ -136,21 +131,17 @@ const showEdit = ref(false);
 const showImport = ref(false);
 
 // 默认搜索条件
-const defaultWhere = reactive({
-  username: '',
-  nickname: ''
-});
+const defaultWhere = reactive({});
 
 // 表格数据源
 const datasource = ({ page, limit, where, orders }) => {
-  return pageUsers({ ...where, ...orders, page, limit });
+  return WebClipList({ ...where, ...orders, page, size: limit });
 };
 
 /* 搜索 */
-const reload = (where) => {
-  selection.value = [];
-  tableRef?.value?.reload({ page: 1, where });
-};
+// const reload = (where) => {
+//   tableRef?.value?.reload({ page: 1, where });
+// };
 
 /* 打开编辑弹窗 */
 const openEdit = (row) => {
@@ -161,83 +152,6 @@ const openEdit = (row) => {
 /* 打开编辑弹窗 */
 const openImport = () => {
   showImport.value = true;
-};
-
-/* 删除单个 */
-const remove = (row) => {
-  const hide = messageLoading('请求中..', 0);
-  removeUser(row.userId)
-    .then((msg) => {
-      hide();
-      message.success(msg);
-      reload();
-    })
-    .catch((e) => {
-      hide();
-      message.error(e.message);
-    });
-};
-
-/* 批量删除 */
-const removeBatch = () => {
-  if (!selection.value.length) {
-    message.error('请至少选择一条数据');
-    return;
-  }
-  Modal.confirm({
-    title: '提示',
-    content: '确定要删除选中的用户吗?',
-    icon: createVNode(ExclamationCircleOutlined),
-    maskClosable: true,
-    onOk: () => {
-      const hide = messageLoading('请求中..', 0);
-      removeUsers(selection.value.map((d) => d.userId))
-        .then((msg) => {
-          hide();
-          message.success(msg);
-          reload();
-        })
-        .catch((e) => {
-          hide();
-          message.error(e.message);
-        });
-    }
-  });
-};
-
-/* 重置用户密码 */
-const resetPsw = (row) => {
-  Modal.confirm({
-    title: '提示',
-    content: '确定要重置此用户的密码为"123456"吗?',
-    icon: createVNode(ExclamationCircleOutlined),
-    maskClosable: true,
-    onOk: () => {
-      const hide = messageLoading('请求中..', 0);
-      updateUserPassword(row.userId)
-        .then((msg) => {
-          hide();
-          message.success(msg);
-        })
-        .catch((e) => {
-          hide();
-          message.error(e.message);
-        });
-    }
-  });
-};
-
-/* 修改用户状态 */
-const editStatus = (checked, row) => {
-  const status = checked ? 0 : 1;
-  updateUserStatus(row.userId, status)
-    .then((msg) => {
-      row.status = status;
-      message.success(msg);
-    })
-    .catch((e) => {
-      message.error(e.message);
-    });
 };
 </script>
 

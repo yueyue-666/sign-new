@@ -46,6 +46,17 @@ export async function AllUserOrderByPage(params) {
 }
 
 /**
+ * 分页闪退助手
+ */
+export async function WebClipList(params) {
+  const res = await request.post('/webclip/getWebClipList', params);
+  if (res.data.code === 200) {
+    return res.data.data.record;
+  }
+  return Promise.reject(new Error(res.data.message));
+}
+
+/**
  * 查询用户列表
  */
 export async function listUsers(params) {
