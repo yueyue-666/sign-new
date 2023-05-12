@@ -3,7 +3,7 @@
   <a-card :bordered="false" :body-style="{ padding: '20px' }">
     <div class="ele-cell workplace-user-card">
       <div class="ele-cell-content ele-cell">
-        <a-avatar :size="68" :src="loginUser.avatar" />
+        <a-avatar :size="68" src="../src/assets/portrait.jpeg" />
         <div class="ele-cell-content">
           <h4 class="ele-elip">{{ UserInfo.username }}</h4>
           <div class="ele-elip ele-text-secondary">

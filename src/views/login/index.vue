@@ -161,7 +161,7 @@ const submit = () => {
         // goHome();
 
         goHomeRoute('/');
-        window.location.reload();
+        // window.location.reload();
       })
       .catch((e) => {
         message.error(e.msg);

@@ -29,6 +29,23 @@ export async function IssuingRecords(params) {
 }
 
 /**
+ * 分页财务信息
+ */
+export async function AllUserOrderByPage(params) {
+  function getTimestamp(time) {
+    return new Date(time).getTime() / 1000;
+  }
+  if (getTimestamp(params.endTime) - getTimestamp(params.startTime) > 1728000) {
+    return Promise.reject(new Error('查询范围时间不能超过20天'));
+  }
+  const res = await request.post('/backstage/getAllUserOrderByPage', params);
+  if (res.data.code === 200) {
+    return res.data.data.record;
+  }
+  return Promise.reject(new Error(res.data.message));
+}
+
+/**
  * 查询用户列表
  */
 export async function listUsers(params) {

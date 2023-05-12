@@ -18,7 +18,7 @@
     <div class="ele-admin-header-tool-item">
       <a-dropdown placement="bottom" :overlay-style="{ minWidth: '120px' }">
         <div class="ele-admin-header-avatar">
-          <a-avatar :src="loginUser.avatar">
+          <a-avatar src="../src/assets/portrait.jpeg">
             <template v-if="!loginUser.avatar" #icon>
               <user-outlined />
             </template>

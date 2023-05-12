@@ -158,24 +158,41 @@ export async function getUserInfo() {
           tenantId: 2,
           children: null,
           checked: null
+        },
+        {
+          menuId: 144,
+          parentId: 136,
+          title: '财务信息',
+          path: '/dashboard/finance',
+          component: '/dashboard/finance',
+          menuType: 0,
+          sortNumber: 1,
+          authority: null,
+          icon: 'table-outlined',
+          hide: 0,
+          meta: null,
+          deleted: 0,
+          tenantId: 2,
+          children: null,
+          checked: null
+        },
+        {
+          menuId: 146,
+          parentId: 136,
+          title: '闪退助手',
+          path: '/dashboard/crash',
+          component: '/dashboard/crash',
+          menuType: 0,
+          sortNumber: 1,
+          authority: null,
+          icon: 'compass-outlined',
+          hide: 0,
+          meta: null,
+          deleted: 0,
+          tenantId: 2,
+          children: null,
+          checked: null
         }
-        // {
-        //   menuId: 144,
-        //   parentId: 136,
-        //   title: '财务信息',
-        //   path: '/dashboard/listPage',
-        //   component: '/dashboard/listPage',
-        //   menuType: 0,
-        //   sortNumber: 1,
-        //   authority: null,
-        //   icon: 'check-circle-outlined',
-        //   hide: 0,
-        //   meta: null,
-        //   deleted: 0,
-        //   tenantId: 2,
-        //   children: null,
-        //   checked: null
-        // }
         // {
         //   menuId: 155,
         //   parentId: 154,
