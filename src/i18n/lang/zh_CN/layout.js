@@ -2,7 +2,7 @@
 export default {
   home: '主页',
   header: {
-    profile: '个人中心',
+    profile: '管理后台',
     password: '修改密码',
     logout: '退出登录'
   },

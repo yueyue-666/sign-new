@@ -23,7 +23,7 @@
               <user-outlined />
             </template>
           </a-avatar>
-          <span class="hidden-sm-and-down">{{ loginUser.nickname }}</span>
+          <span class="hidden-sm-and-down">{{ username }}</span>
           <down-outlined style="margin-left: 6px" />
         </div>
         <template #overlay>
@@ -104,12 +104,15 @@ const settingVisible = ref(false);
 // 当前用户信息
 const loginUser = computed(() => userStore.info ?? {});
 
+const username = localStorage.getItem('username');
+
 /* 用户信息下拉点击 */
 const onUserDropClick = ({ key }) => {
   if (key === 'password') {
     passwordVisible.value = true;
   } else if (key === 'profile') {
-    push('/user/profile');
+    // push('/user/profile');
+    console.log('管理后台');
   } else if (key === 'logout') {
     // 退出登录
     Modal.confirm({

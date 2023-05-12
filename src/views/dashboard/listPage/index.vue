@@ -42,7 +42,10 @@
         cache-key="proSystemUserTable"
       >
         <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'action'">{{ record }}</template>
+          <template v-if="column.key === 'signType'">
+            <a-tag v-if="record.signType === 0" color="blue">超级签名V2</a-tag>
+            <a-tag v-else color="green">超级签名V3</a-tag>
+          </template>
         </template>
       </ele-pro-table>
     </a-card>
@@ -65,38 +68,45 @@ const columns = ref([
   {
     title: 'appId',
     dataIndex: 'appId',
+    align: 'center',
     sorter: false,
     showSorterTooltip: false
   },
   {
     title: 'app名字',
     dataIndex: 'appName',
+    align: 'center',
     sorter: false,
     showSorterTooltip: false
   },
   {
     title: '应用类型',
-    dataIndex: 'signType',
-    sorter: false,
-    showSorterTooltip: false
+    key: 'signType',
+    align: 'center',
+    width: 120,
+    ellipsis: true
   },
   {
     title: 'UDID',
     dataIndex: 'udid',
+    align: 'center',
     sorter: false,
     showSorterTooltip: false
   },
   {
     title: 'IP',
     dataIndex: 'ip',
+    align: 'center',
     sorter: false,
     showSorterTooltip: false
   },
   {
     title: '签发时间',
+    align: 'center',
     dataIndex: 'createTimestamp',
     sorter: false,
-    showSorterTooltip: false
+    showSorterTooltip: false,
+    customRender: ({ text }) => toDateString(text)
   }
 ]);
 
