@@ -75,6 +75,23 @@ export async function getUserInfo() {
           checked: null
         },
         {
+          menuId: 152,
+          parentId: 136,
+          title: '应用详情',
+          path: '/dashboard/workplace/edit',
+          component: '/dashboard/workplace/edit',
+          menuType: 0,
+          sortNumber: 4,
+          authority: null,
+          icon: 'team-outlined',
+          hide: 1,
+          meta: '{"active": "/dashboard/workplace"}',
+          deleted: 0,
+          tenantId: 2,
+          children: null,
+          checked: null
+        },
+        {
           menuId: 138,
           parentId: 136,
           title: '超级签名V2',

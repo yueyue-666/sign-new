@@ -103,7 +103,7 @@
         </template>
         <template v-else-if="column.key === 'action'">
           <a-space>
-            <a @click="reply(record)">设置</a>
+            <a @click.stop="openEdit(record)">设置</a>
             <a-divider type="vertical" />
             <a-popconfirm placement="topRight" title="确定要删除此消息吗？" @confirm="remove(record)">
               <a class="ele-text-danger">删除</a>
@@ -123,10 +123,12 @@
 </template>
 
 <script setup>
-import { ref, createVNode } from 'vue';
+import { ref, createVNode, nextTick } from 'vue';
 import MoreIcon from './more-icon.vue';
 import request from '@/utils/request';
 import { messageLoading } from 'ele-admin-pro/es';
+import { removePageTab } from '@/utils/page-tab-util';
+import { useRouter } from 'vue-router';
 import {
   CopyOutlined,
   AppleOutlined,
@@ -137,7 +139,7 @@ import { message, Modal } from 'ant-design-vue/es';
 defineProps({
   title: String
 });
-
+const { push } = useRouter();
 const emit = defineEmits(['remove', 'edit']);
 const projectColumns = ref([
   {
@@ -238,6 +240,18 @@ const projectColumns = ref([
     align: 'center'
   }
 ]);
+
+/* 设置 */
+const openEdit = (row) => {
+  const path = '/dashboard/workplace/edit';
+  removePageTab({ key: path });
+  nextTick(() => {
+    push({
+      path,
+      query: row ? { appId: row.appId } : undefined
+    });
+  });
+};
 
 // 复制下载地址
 const copyDetail = (value) => {

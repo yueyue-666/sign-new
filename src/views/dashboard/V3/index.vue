@@ -2,7 +2,7 @@
   <div class="ele-body">
     <a-card :bordered="false">
       <!-- 搜索表单 -->
-      <user-search :where="defaultWhere" @search="reload" />
+      <search-form @search="reload" @expand-change="onExpandChange" />
       <!-- 表格 -->
       <ele-pro-table
         :bordered="bordered"
@@ -166,7 +166,7 @@ import {
   AppleOutlined,
   AndroidOutlined
 } from '@ant-design/icons-vue';
-import UserSearch from './components/user-search.vue';
+import searchForm from './components/search-form.vue';
 
 import request from '@/utils/request';
 import { pageUsers } from '@/api/system/user';

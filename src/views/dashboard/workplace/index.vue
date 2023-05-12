@@ -2,7 +2,7 @@
   <div class="ele-body ele-body-card">
     <profile-card />
     <statistics-card />
-    <link-card ref="linkCardRef" />
+    <!-- <link-card ref="linkCardRef" /> -->
     <a-row :gutter="16" ref="wrapRef">
       <a-col v-for="(item, index) in data" :key="item.name" :lg="item.lg" :md="item.md" :sm="item.sm" :xs="item.xs">
         <component :is="item.name" :title="item.title" @remove="onRemove(index)" @edit="onEdit(index)" />

@@ -81,25 +81,15 @@
       </template>
     </ele-modal>
 
-    <ele-modal
-      :width="750"
-      title="发布应用"
-      v-model:visible="visible2"
-      :resizable="true"
-      :maxable="true"
-      :multiple="true"
-      :destroy-on-close="false"
-      :move-out="true"
-      :move-out-positive="true"
-      position="center"
-      :footer="false"
-    ></ele-modal>
+    <!-- 发布应用弹窗 -->
+    <user-import v-model:visible="showImport" @done="reload" />
   </a-card>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import useFormData from '@/utils/use-form-data';
+import UserImport from './user-import.vue';
 
 const emit = defineEmits(['search', 'expand-change']);
 
@@ -109,16 +99,14 @@ const { form, resetFields } = useFormData({
 });
 
 const visible1 = ref(false);
-const visible2 = ref(false);
 
 /* 打开弹窗1 */
 const openDialog1 = () => {
   visible1.value = true;
 };
-/* 打开弹窗2 */
-const openDialog2 = () => {
-  visible2.value = true;
-};
+
+// 是否显示发布应用弹窗
+const showImport = ref(false);
 
 /* 搜索 */
 const search = () => {
@@ -130,9 +118,21 @@ const reset = () => {
   resetFields();
   search();
 };
+/* 打开发布应用弹窗 */
+const openImport = () => {
+  showImport.value = true;
+};
 
 /* 同意协议 */
-const onOk = () => {};
+const onOk = () => {
+  visible1.value = false;
+  openImport();
+};
+
+const reload = (where) => {
+  selection.value = [];
+  tableRef?.value?.reload({ page: 1, where });
+};
 </script>
 <style lang="less" scoped>
 li,
