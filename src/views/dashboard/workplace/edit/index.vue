@@ -52,7 +52,7 @@
               <div class="ele-text-secondary ele-cell">
                 <p class="ele-cell-content">
                   下载地址
-                  <a-tag color="green" @click="copyDetail(AppInfo.iosDownloadUrl)">复制</a-tag>
+                  <a-tag color="green" @click="copyDetail(AppInfo.iosDownloadUrl)" style="cursor:pointer;">复制</a-tag>
                 </p>
                 <span style="margin-bottom:1em;">
                   <a-tooltip>
@@ -71,7 +71,7 @@
               <div class="ele-text-secondary ele-cell">
                 <p class="ele-cell-content">
                   备用地址
-                  <a-tag color="green" @click="copyDetail(AppInfo.backupUrl)">复制</a-tag>
+                  <a-tag color="green" @click="copyDetail(AppInfo.backupUrl)" style="cursor:pointer;">复制</a-tag>
                 </p>
                 <span style="margin-bottom:1em;">
                   <a-tooltip>
@@ -141,100 +141,141 @@
         <a-card :bordered="false" :body-style="{ paddingTop: '0px', minHeight: '600px' }">
           <a-tabs v-model:active-key="active" size="large">
             <a-tab-pane tab="基础设置" key="info">
-              <a-form
-                ref="formRef"
-                :model="form"
-                :rules="rules"
-                :label-col="{ lg: 4, md: 6, sm: 4, xs: 24 }"
-                :wrapper-col="{ lg: 20, md: 18, sm: 20, xs: 24 }"
-                style="max-width: 580px; margin-top: 20px"
-              >
-                <a-form-item label="昵称" name="nickname">
-                  <a-input v-model:value="form.nickname" placeholder="请输入昵称" allow-clear />
-                </a-form-item>
-                <a-form-item label="性别" name="sex">
-                  <a-select v-model:value="form.sex" placeholder="请选择性别" allow-clear>
-                    <a-select-option value="保密">保密</a-select-option>
-                    <a-select-option value="男">男</a-select-option>
-                    <a-select-option value="女">女</a-select-option>
-                  </a-select>
-                </a-form-item>
-                <a-form-item label="邮箱" name="email">
-                  <a-input v-model:value="form.email" placeholder="请输入邮箱" allow-clear />
-                </a-form-item>
-                <a-form-item label="个人简介">
-                  <a-textarea v-model:value="form.introduction" placeholder="请输入个人简介" :rows="4" />
-                </a-form-item>
-                <a-form-item label="街道地址">
-                  <a-input v-model:value="form.address" placeholder="请输入街道地址" allow-clear />
-                </a-form-item>
-                <a-form-item label="联系电话:">
-                  <div class="ele-cell">
-                    <a-input v-model:value="form.tellPre" style="width: 65px" />
-                    <div class="ele-cell-content">
-                      <a-input v-model:value="form.tell" placeholder="请输入联系电话" allow-clear />
-                    </div>
-                  </div>
-                </a-form-item>
-                <a-form-item :wrapper-col="{ md: { offset: 6 } }">
-                  <a-button type="primary" :loading="loading" @click="save">{{ loading ? '保存中..' : '保存更改' }}</a-button>
-                </a-form-item>
-              </a-form>
+              <a-spin :spinning="loading">
+                <a-form
+                  ref="formRef"
+                  :model="form"
+                  :rules="rules"
+                  :label-col="{ lg: 4, md: 6, sm: 4, xs: 24 }"
+                  :wrapper-col="{ lg: 20, md: 18, sm: 20, xs: 24 }"
+                  style="max-width: 580px; margin-top: 20px"
+                >
+                  <!-- <a-form-item label="昵称" name="nickname">
+                <a-input v-model:value="form.nickname" placeholder="请输入昵称" allow-clear />
+              </a-form-item>
+              <a-form-item label="邮箱" name="email">
+                <a-input v-model:value="form.email" placeholder="请输入邮箱" allow-clear />
+                  </a-form-item>-->
+                  <a-form-item style="flex-wrap: nowrap">
+                    <template #label>
+                      下载模式 &nbsp;
+                      <a-tooltip title="当用户首次下载应用时，模式一会安装两次描述文件，模式二只会安装一次描述文件">
+                        <info-circle-outlined />
+                      </a-tooltip>
+                    </template>
+                    <a-radio-group v-model:value="form.downloadType">
+                      <a-radio :value="1">模式一</a-radio>
+                      <a-radio :value="2">模式二</a-radio>
+                    </a-radio-group>
+                    <p
+                      v-if="form.downloadType===1"
+                      style="color:red;font-size:12px;margin-bottom:0;"
+                    >当用户在本平台第一次安装V2模式应用时，会安装两次描述文件，重新下载或者再次下载其它本平台应用时，不会出现MDM负载不匹配的情况。</p>
+                    <p
+                      v-if="form.downloadType===2"
+                      style="color:red;font-size:12px;margin-bottom:0;"
+                    >当用户下载V2模式应用时，只会安装一次描述文件，重新下载或者再次下载其它本平台应用时，可能会出现MDM负载不匹配的情况。</p>
+                  </a-form-item>
+
+                  <a-form-item style="flex-wrap: nowrap">
+                    <template #label>
+                      MDM引导 &nbsp;
+                      <a-tooltip title="当用户首次下载应用时，模式一会安装两次描述文件，模式二只会安装一次描述文件">
+                        <info-circle-outlined />
+                      </a-tooltip>
+                    </template>
+                    <a-radio-group v-model:value="form.guideType">
+                      <a-radio :value="1">只弹1次</a-radio>
+                      <a-radio :value="2">每次安装都弹</a-radio>
+                      <a-radio :value="3">不主动弹出</a-radio>
+                      <p
+                        v-if="form.guideType===1"
+                        style="color:red;font-size:12px;margin-bottom:0;"
+                      >用户第一次安装的时候，安装页面会主动弹出【MDM有效负载不匹配】的帮助文档提示框。若用户重新下载时就不会再弹了。</p>
+                      <p v-if="form.guideType===2" style="color:red;font-size:12px;margin-bottom:0;">用户每次安装app都会主动弹出【MDM有效负载不匹配】的帮助提示框。</p>
+                      <p v-if="form.guideType===3" style="color:red;font-size:12px;margin-bottom:0;">用户安装app的时候都不主动弹出【MDM有效负载不匹配】的帮助提示框。</p>
+                    </a-radio-group>
+                  </a-form-item>
+                  <a-form-item style="flex-wrap: nowrap">
+                    <template #label>
+                      安装方式 &nbsp;
+                      <a-tooltip title="当用户首次下载应用时，模式一会安装两次描述文件，模式二只会安装一次描述文件">
+                        <info-circle-outlined />
+                      </a-tooltip>
+                    </template>
+                    <a-radio-group v-model:value="form.installType">
+                      <a-radio :value="0">公开</a-radio>
+                      <a-radio :value="1">滑块验证</a-radio>
+                      <a-radio :value="4">下载码</a-radio>
+                    </a-radio-group>
+                  </a-form-item>
+                  <a-form-item style="flex-wrap: nowrap">
+                    <template #label>
+                      签名模式 &nbsp;
+                      <a-tooltip title="当用户首次下载应用时，模式一会安装两次描述文件，模式二只会安装一次描述文件">
+                        <info-circle-outlined />
+                      </a-tooltip>
+                    </template>
+                    <a-radio-group v-model:value="form.signType">
+                      <a-radio :value="0">V2 模式</a-radio>
+                      <a-radio :value="1">V3 模式</a-radio>
+                      <a-radio :value="2">混合模式</a-radio>
+
+                      <p
+                        v-if="form.signType===0"
+                        style="color:red;font-size:12px;margin-bottom:0;"
+                      >MDM安装模式，若出现负载不匹配等情況，需要用户去设置里面卸载已有的移动管理文件，然后再进行签名安装。</p>
+                      <p v-if="form.signType===1" style="color:red;font-size:12px;margin-bottom:0;">不会出现MDM负载不匹配的问题，可直接安装应用，但需要用户手动信任证书。</p>
+                      <p
+                        v-if="form.signType===2"
+                        style="color:red;font-size:12px;margin-bottom:0;"
+                      >用户优先使用V2的MDM模式进行签名安装，若出现MDM负载不匹配等情况，用户可点击【重试】使用V3模式，减少用户操作步骤，保证用户都能安装成功，提高应用的注册率。</p>
+                    </a-radio-group>
+                  </a-form-item>
+                  <a-form-item label="自动安装" style="flex-wrap: nowrap">
+                    <a-radio-group v-model:value="form.autoInstallFlag">
+                      <a-radio :value="1">开启</a-radio>
+                      <a-radio :value="0">关闭</a-radio>
+                    </a-radio-group>
+                  </a-form-item>
+                  <a-form-item label="闪退助手" style="flex-wrap: nowrap">
+                    <a-radio-group v-model:value="form.antiCrash">
+                      <a-radio :value="1">开启</a-radio>
+                      <a-radio :value="0">关闭</a-radio>
+                      <a-radio :value="2">自定义链接</a-radio>
+                      <a-input v-if="form.antiCrash===2" v-model:value="form.antiCustomUrl" placeholder="建议输入您落地页的链接" allow-clear />
+                    </a-radio-group>
+                  </a-form-item>
+
+                  <a-form-item label="页面语言" name="sex">
+                    <a-select v-model:value="form.lang" placeholder="请选择页面语言" allow-clear>
+                      <a-select-option :value="0">简体中文</a-select-option>
+                      <a-select-option :value="1">英语-English</a-select-option>
+                      <a-select-option :value="2">泰国语-ไทย</a-select-option>
+                      <a-select-option :value="3">越南语-Tiếng Việt</a-select-option>
+                      <a-select-option :value="4">印度语-हिंदी</a-select-option>
+                      <a-select-option :value="5">印度尼西亚-Indonesia</a-select-option>
+                      <a-select-option :value="6">繁體中文（台湾）</a-select-option>
+                      <a-select-option :value="7">自动识别</a-select-option>
+                      <a-select-option :value="8">日语</a-select-option>
+                    </a-select>
+                  </a-form-item>
+                  <a-form-item label="CNZZ统计">
+                    <a-input v-model:value="form.cnzz" placeholder="请输入CNZZ站点ID" allow-clear />
+                  </a-form-item>
+                  <a-form-item label="应用简介">
+                    <a-textarea v-model:value="form.introduction" placeholder="请输入应用简介" :rows="4" />
+                  </a-form-item>
+                  <a-form-item :wrapper-col="{ md: { offset: 6 } }">
+                    <a-button type="primary" :loading="loading" @click="save">{{ loading ? '提交中..' : '提交' }}</a-button>
+                  </a-form-item>
+                </a-form>
+              </a-spin>
             </a-tab-pane>
-            <a-tab-pane tab="账号绑定" key="account">
-              <div class="user-account-list">
-                <div class="ele-cell">
-                  <div class="ele-cell-content">
-                    <div class="ele-cell-title">密保手机</div>
-                    <div class="ele-cell-desc">已绑定手机: 138****8293</div>
-                  </div>
-                  <a>去修改</a>
-                </div>
-                <a-divider />
-                <div class="ele-cell">
-                  <div class="ele-cell-content">
-                    <div class="ele-cell-title">密保邮箱</div>
-                    <div class="ele-cell-desc">已绑定邮箱: eleadmin@eclouds.com</div>
-                  </div>
-                  <a>去修改</a>
-                </div>
-                <a-divider />
-                <div class="ele-cell">
-                  <div class="ele-cell-content">
-                    <div class="ele-cell-title">密保问题</div>
-                    <div class="ele-cell-desc">未设置密保问题</div>
-                  </div>
-                  <a>去设置</a>
-                </div>
-                <a-divider />
-                <div class="ele-cell">
-                  <qq-outlined class="user-account-icon" />
-                  <div class="ele-cell-content">
-                    <div class="ele-cell-title">绑定QQ</div>
-                    <div class="ele-cell-desc">当前未绑定QQ账号</div>
-                  </div>
-                  <a>去绑定</a>
-                </div>
-                <a-divider />
-                <div class="ele-cell">
-                  <wechat-outlined class="user-account-icon" />
-                  <div class="ele-cell-content">
-                    <div class="ele-cell-title">绑定微信</div>
-                    <div class="ele-cell-desc">当前未绑定绑定微信账号</div>
-                  </div>
-                  <a>去绑定</a>
-                </div>
-                <a-divider />
-                <div class="ele-cell">
-                  <alipay-outlined class="user-account-icon" />
-                  <div class="ele-cell-content">
-                    <div class="ele-cell-title">绑定支付宝</div>
-                    <div class="ele-cell-desc">当前未绑定绑定支付宝账号</div>
-                  </div>
-                  <a>去绑定</a>
-                </div>
-              </div>
-            </a-tab-pane>
+            <a-tab-pane tab="页面设置" key="shezhi">222</a-tab-pane>
+            <a-tab-pane tab="签发记录" key="jilu">333</a-tab-pane>
+            <a-tab-pane tab="数据统计" key="tongji">444</a-tab-pane>
+            <a-tab-pane tab="合并安卓" key="hebing">555</a-tab-pane>
           </a-tabs>
         </a-card>
       </a-col>
@@ -273,6 +314,7 @@ import { getUser } from '@/api/system/user';
 import { removePageTab } from '@/utils/page-tab-util';
 import request from '@/utils/request';
 import {
+  InfoCircleOutlined,
   ExclamationCircleOutlined,
   EditOutlined,
   QrcodeOutlined,
@@ -312,14 +354,16 @@ const loginUser = computed(() => userStore.info ?? {});
 
 // 表单数据
 const form = reactive({
-  nickname: loginUser.value.nickname,
-  sex: '保密',
-  email: 'eleadmin@eclouds.com',
-  introduction: loginUser.value.introduction,
-  address: '',
-  tellPre: '0752',
-  tell: '',
-  avatar: 'https://cdn.eleadmin.com/20200610/avatar.jpg'
+  downloadType: '',
+  guideType: '',
+  installType: '',
+  signType: '',
+  autoInstallFlag: 1,
+  antiCrash: '',
+  lang: '',
+  cnzz: '',
+  introduction: '',
+  antiCustomUrl: ''
 });
 
 /* 修改应用状态 */
@@ -373,50 +417,50 @@ const remarksave = () => {
 
 // 表单验证规则
 const rules = reactive({
-  nickname: [
-    {
-      required: true,
-      message: '请输入昵称',
-      type: 'string'
-    }
-  ],
-  sex: [
-    {
-      required: true,
-      message: '请选择性别',
-      type: 'string'
-    }
-  ],
-  email: [
-    {
-      required: true,
-      message: '请输入邮箱',
-      type: 'string'
-    }
-  ]
+  // nickname: [
+  //   {
+  //     required: true,
+  //     message: '请输入昵称',
+  //     type: 'string'
+  //   }
+  // ],
 });
 
-/* 修改登录用户 */
-const updateLoginUser = (obj) => {
-  userStore.setInfo({ ...loginUser.value, ...obj });
-};
+// /* 修改登录用户 */
+// const updateLoginUser = (obj) => {
+//   userStore.setInfo({ ...loginUser.value, ...obj });
+// };
 
 /* 保存更改 */
 const save = () => {
-  if (!formRef.value) {
-    return;
-  }
-  formRef.value
-    .validate()
-    .then(() => {
-      loading.value = true;
-      setTimeout(() => {
-        loading.value = false;
-        message.success('保存成功');
-        updateLoginUser(form);
-      }, 800);
+  loading.value = true;
+  console.log(form);
+
+  const { query } = unref(currentRoute);
+  let body = form;
+  body.appId = query.appId;
+  body.settingPage = 1; // 这个字段没弄明白什么意思
+  body.mdmInstallType = form.downloadType === 1 ? '1' : '0';
+  body.downloadType = form.downloadType + '';
+  body.guideType = form.guideType + '';
+  body.guideTypeType = form.guideType + '';
+  body.installType = form.installType + '';
+  body.signType = form.signType + '';
+  body.signTypeText = form.signType + '';
+  body.antiCrash = form.antiCrash + '';
+  body.cnzz = !form.cnzz ? '' : form.cnzz;
+  body.lang = form.lang + '';
+  body.autoInstallFlag = form.autoInstallFlag + '';
+
+  request
+    .post('/ipa/update_app', body)
+    .then((res) => {
+      downloadAppInfo();
+      loading.value = false;
     })
-    .catch(() => {});
+    .catch((e) => {
+      message.error(e.response.data.msg);
+    });
 };
 
 /* 头像裁剪完成回调 */
@@ -446,6 +490,16 @@ const downloadAppInfo = () => {
     .post('/ipa/download_app_info', body)
     .then((res) => {
       remarkform.remark = res.data.data.remark; // 备注回显
+
+      // 基础设置回显
+      form.downloadType = res.data.data.downloadType;
+      form.guideType = res.data.data.guideType;
+      form.installType = res.data.data.installType;
+      form.signType = res.data.data.signType;
+      form.antiCrash = res.data.data.antiCrash;
+      form.lang = res.data.data.lang;
+      form.cnzz = res.data.data.cnzz;
+      form.introduction = res.data.data.introduction;
       AppInfo.value = res.data.data;
     })
     .catch((e) => {
