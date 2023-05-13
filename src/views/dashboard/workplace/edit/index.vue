@@ -21,7 +21,7 @@
             <div class="ele-cell">
               <edit-outlined />
               <div class="ele-cell-content">
-                <span @click="visible1=true">备注</span>
+                <a @click="visible1=true" style="cursor:pointer;">备注</a>
               </div>
             </div>
             <div class="ele-cell">
@@ -127,7 +127,11 @@
           </div>
           <a-divider style="margin:10px 0;" dashed />
           <div class="ele-text-center">
-            <a-button type="primary" danger>下架</a-button>&nbsp;&nbsp;
+            <a-button
+              type="primary"
+              :danger="AppInfo.appStatus === 1"
+              @click="editStatus(AppInfo.appStatus)"
+            >{{AppInfo.appStatus === 1 ? '下架' : '上架'}}</a-button>&nbsp;&nbsp;
             <a-button type="primary">更新</a-button>&nbsp;&nbsp;
             <a-button @click="onClose">关闭</a-button>
           </div>
@@ -136,7 +140,7 @@
       <a-col :xxl="18" :xl="17" :lg="15" :md="14" :sm="24" :xs="24">
         <a-card :bordered="false" :body-style="{ paddingTop: '0px', minHeight: '600px' }">
           <a-tabs v-model:active-key="active" size="large">
-            <a-tab-pane tab="基本信息" key="info">
+            <a-tab-pane tab="基础设置" key="info">
               <a-form
                 ref="formRef"
                 :model="form"
@@ -243,25 +247,18 @@
       @done="onCrop"
     />
     <!-- 备注弹窗 -->
-    <ele-modal :width="400" title="设置备注" v-model:visible="visible1" :resizable="true" :maxable="true">
-      <a-form ref="formRef" :model="form" :rules="rules" :label-col="{ flex: '70px' }" :wrapper-col="{ flex: '1' }">
-        <a-form-item label="用户名" name="nickname" style="flex-wrap: nowrap">
-          <a-input allow-clear placeholder="请输入用户名" v-model:value="form.nickname" />
-        </a-form-item>
-        <a-form-item label="性别" name="sex">
-          <a-select allow-clear placeholder="请选择性别" v-model:value="form.sex">
-            <a-select-option value="男">男</a-select-option>
-            <a-select-option value="女">女</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item label="手机号" name="phone" style="flex-wrap: nowrap">
-          <a-input allow-clear placeholder="请输入手机号" v-model:value="form.phone" />
-        </a-form-item>
-        <a-form-item label="邮箱" name="email" style="flex-wrap: nowrap">
-          <a-input allow-clear placeholder="请输入邮箱" v-model:value="form.email" />
-        </a-form-item>
-        <a-form-item label="个人简介" style="flex-wrap: nowrap">
-          <a-textarea :rows="4" placeholder="请输入个人简介" v-model:value="form.introduction" />
+    <ele-modal
+      :width="400"
+      title="设置备注"
+      v-model:visible="visible1"
+      :resizable="true"
+      :maxable="true"
+      @cancel="visible1=false"
+      @ok="remarksave"
+    >
+      <a-form ref="remarkformRef" :model="remarkform" :label-col="{ flex: '70px' }" :wrapper-col="{ flex: '1' }">
+        <a-form-item label="备注" style="flex-wrap: nowrap">
+          <a-textarea :rows="4" placeholder="请输入备注" v-model:value="remarkform.remark" />
         </a-form-item>
       </a-form>
     </ele-modal>
@@ -269,13 +266,14 @@
 </template>
 
 <script setup>
-import { ref, unref, reactive, computed } from 'vue';
+import { createVNode, ref, unref, reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { message } from 'ant-design-vue/es';
+import { message, Modal } from 'ant-design-vue/es';
 import { getUser } from '@/api/system/user';
 import { removePageTab } from '@/utils/page-tab-util';
 import request from '@/utils/request';
 import {
+  ExclamationCircleOutlined,
   EditOutlined,
   QrcodeOutlined,
   UploadOutlined,
@@ -294,6 +292,8 @@ const userStore = useUserStore();
 
 //
 const formRef = ref(null);
+//
+const remarkformRef = ref(null);
 
 // tab 页选中
 const active = ref('info');
@@ -321,6 +321,55 @@ const form = reactive({
   tell: '',
   avatar: 'https://cdn.eleadmin.com/20200610/avatar.jpg'
 });
+
+/* 修改应用状态 */
+const editStatus = (checked) => {
+  const status = checked ? 1 : 0;
+  var hint = status === 1 ? '上架' : '下架';
+  Modal.confirm({
+    title: '提示',
+    content: '确定' + hint + '吗？',
+    icon: createVNode(ExclamationCircleOutlined),
+    maskClosable: true,
+    onOk: () => {
+      const { query } = unref(currentRoute);
+      let body = { appId: query.appId, appStatus: status };
+      request
+        .post('/ipa/update_app', body)
+        .then((res) => {
+          downloadAppInfo();
+          message.success(res.data.msg);
+        })
+        .catch((e) => {
+          message.error(e.response.data.msg);
+        });
+    }
+  });
+};
+
+// 备注数据
+const remarkform = reactive({
+  remark: ''
+});
+// 更改备注
+const remarksave = () => {
+  if (!remarkform.remark) {
+    message.info('请输入备注');
+    return;
+  }
+  const { query } = unref(currentRoute);
+  let body = { appId: query.appId, remark: remarkform.remark };
+  request
+    .post('/ipa/update_app', body)
+    .then((res) => {
+      visible1.value = false;
+      message.error(res.data.msg);
+      downloadAppInfo();
+    })
+    .catch((e) => {
+      message.error(e.response.data.msg);
+    });
+};
 
 // 表单验证规则
 const rules = reactive({
@@ -396,8 +445,8 @@ const downloadAppInfo = () => {
   request
     .post('/ipa/download_app_info', body)
     .then((res) => {
+      remarkform.remark = res.data.data.remark; // 备注回显
       AppInfo.value = res.data.data;
-      // message.success(res.data.msg);
     })
     .catch((e) => {
       message.error(e.response.data.msg);

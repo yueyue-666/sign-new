@@ -169,6 +169,6 @@ const copyDetail = (value) => {
 
 <script>
 export default {
-  name: 'SystemUser'
+  name: 'crash'
 };
 </script>

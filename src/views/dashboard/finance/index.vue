@@ -182,6 +182,6 @@ getselect();
 
 <script>
 export default {
-  name: 'SystemUser'
+  name: 'finance'
 };
 </script>

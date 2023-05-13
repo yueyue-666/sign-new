@@ -184,6 +184,6 @@ getselect();
 
 <script>
 export default {
-  name: 'SystemUser'
+  name: 'listPage'
 };
 </script>

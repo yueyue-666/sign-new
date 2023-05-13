@@ -1,6 +1,6 @@
 <!-- 用户导入弹窗 -->
 <template>
-  <ele-modal :width="520" :footer="null" title="导入用户" :visible="visible" @update:visible="updateVisible">
+  <ele-modal :width="520" :footer="null" title="发布应用" :visible="visible" @update:visible="updateVisible">
     <a-spin :spinning="loading">
       <div style="max-width: 800px; margin: 0 auto">
         <div style="margin: 10px 0 30px 0">

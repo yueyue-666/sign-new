@@ -208,3 +208,9 @@ const getVisitHourData = () => {
 getselect();
 getVisitHourData();
 </script>
+
+<script>
+export default {
+  name: 'statistics'
+};
+</script>

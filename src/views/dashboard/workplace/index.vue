@@ -189,7 +189,7 @@ import ProjectCard from './components/project-card.vue';
 import UserList from './components/user-list.vue';
 
 export default {
-  name: 'DashboardWorkplace',
+  name: 'workplace',
   components: {
     ActivitiesCard,
     TaskCard,

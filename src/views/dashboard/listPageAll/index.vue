@@ -394,7 +394,7 @@ const getfilesize = (size) => {
 
 <script>
 export default {
-  name: 'V3'
+  name: 'listPageAll'
 };
 </script>
 
