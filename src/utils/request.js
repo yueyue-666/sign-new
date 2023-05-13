@@ -26,10 +26,12 @@ service.interceptors.request.use(
     // return config;
 
     const token = localStorage.getItem('token') || '';
+    const refreshToken = localStorage.getItem('refreshToken') || '';
 
     if (token) {
       // 登陆后必传字段
       config.headers['token'] = token; //	token
+      config.headers['refreshToken'] = refreshToken; //	refreshToken
     }
     return config;
   },
