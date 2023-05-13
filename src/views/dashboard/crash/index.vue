@@ -56,6 +56,7 @@ import { createVNode, ref, reactive } from 'vue';
 import { message, Modal } from 'ant-design-vue/es';
 import {
   PlusOutlined,
+  CopyOutlined,
   DeleteOutlined,
   UploadOutlined,
   ExclamationCircleOutlined
@@ -152,6 +153,17 @@ const openEdit = (row) => {
 /* 打开编辑弹窗 */
 const openImport = () => {
   showImport.value = true;
+};
+
+// 复制下载地址
+const copyDetail = (value) => {
+  var input_temp = document.createElement('input');
+  input_temp.value = value;
+  document.body.appendChild(input_temp);
+  input_temp.select();
+  document.execCommand('copy');
+  document.body.removeChild(input_temp);
+  message.success('复制成功！');
 };
 </script>
 
