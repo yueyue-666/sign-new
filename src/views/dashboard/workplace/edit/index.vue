@@ -180,7 +180,7 @@
                   <a-form-item style="flex-wrap: nowrap">
                     <template #label>
                       MDM引导 &nbsp;
-                      <a-tooltip title="当用户首次下载应用时，模式一会安装两次描述文件，模式二只会安装一次描述文件">
+                      <a-tooltip title="若用户是第一次使用MDM的签名，有助于提高用户安装MDM签名的成功率。">
                         <info-circle-outlined />
                       </a-tooltip>
                     </template>
@@ -199,7 +199,7 @@
                   <a-form-item style="flex-wrap: nowrap">
                     <template #label>
                       安装方式 &nbsp;
-                      <a-tooltip title="当用户首次下载应用时，模式一会安装两次描述文件，模式二只会安装一次描述文件">
+                      <a-tooltip title="公开：用户可自主安装应用，滑块验证：用户下载应用时需要滑块验证通过后方可安装应用，下载码：用户下载应用时需要输入对应的下载码，验证通过后方可安装应用">
                         <info-circle-outlined />
                       </a-tooltip>
                     </template>
@@ -212,7 +212,9 @@
                   <a-form-item style="flex-wrap: nowrap">
                     <template #label>
                       签名模式 &nbsp;
-                      <a-tooltip title="当用户首次下载应用时，模式一会安装两次描述文件，模式二只会安装一次描述文件">
+                      <a-tooltip
+                        title="超级签名V2模式：MDM签名模式，安装时如果与其他家MDM平台冲突可能会出现MDM有效负载不匹配问题。，超级签V3模式：可以解决与其他家MDM冲突的问题，不会出现MDM有效负载不匹配的问题。，混合模式：当MDM的V2无法安装的情况下会自动切换到V3模式，确保用户能够正常下载APP。"
+                      >
                         <info-circle-outlined />
                       </a-tooltip>
                     </template>
@@ -232,13 +234,25 @@
                       >用户优先使用V2的MDM模式进行签名安装，若出现MDM负载不匹配等情况，用户可点击【重试】使用V3模式，减少用户操作步骤，保证用户都能安装成功，提高应用的注册率。</p>
                     </a-radio-group>
                   </a-form-item>
-                  <a-form-item label="自动安装" style="flex-wrap: nowrap">
+                  <a-form-item style="flex-wrap: nowrap">
+                    <template #label>
+                      自动安装 &nbsp;
+                      <a-tooltip title="开启自动安装后，苹果手机用户打开下载页面时会自动弹出允许描述文件的安装提示">
+                        <info-circle-outlined />
+                      </a-tooltip>
+                    </template>
                     <a-radio-group v-model:value="form.autoInstallFlag">
                       <a-radio :value="1">开启</a-radio>
                       <a-radio :value="0">关闭</a-radio>
                     </a-radio-group>
                   </a-form-item>
-                  <a-form-item label="闪退助手" style="flex-wrap: nowrap">
+                  <a-form-item style="flex-wrap: nowrap">
+                    <template #label>
+                      闪退助手 &nbsp;
+                      <a-tooltip title="签名完成后会提示用户安装闪退助手，桌面会生成一个闪退助手图标，打开闪退助手后可以直接重新下载当前应用，利于提高用户留存率">
+                        <info-circle-outlined />
+                      </a-tooltip>
+                    </template>
                     <a-radio-group v-model:value="form.antiCrash">
                       <a-radio :value="1">开启</a-radio>
                       <a-radio :value="0">关闭</a-radio>
@@ -247,7 +261,13 @@
                     </a-radio-group>
                   </a-form-item>
 
-                  <a-form-item label="页面语言" name="sex">
+                  <a-form-item name="sex">
+                    <template #label>
+                      页面语言 &nbsp;
+                      <a-tooltip title="应用下载页面的显示语言">
+                        <info-circle-outlined />
+                      </a-tooltip>
+                    </template>
                     <a-select v-model:value="form.lang" placeholder="请选择页面语言" allow-clear>
                       <a-select-option :value="0">简体中文</a-select-option>
                       <a-select-option :value="1">英语-English</a-select-option>
@@ -272,9 +292,78 @@
                 </a-form>
               </a-spin>
             </a-tab-pane>
-            <a-tab-pane tab="页面设置" key="shezhi">222</a-tab-pane>
-            <a-tab-pane tab="签发记录" key="jilu">333</a-tab-pane>
-            <a-tab-pane tab="数据统计" key="tongji">444</a-tab-pane>
+            <a-tab-pane tab="页面设置" key="shezhi">
+              <a-spin :spinning="loading">
+                <a-form
+                  ref="formRef2"
+                  :model="form2"
+                  :label-col="{ lg: 4, md: 6, sm: 4, xs: 24 }"
+                  :wrapper-col="{ lg: 20, md: 18, sm: 20, xs: 24 }"
+                  style="max-width: 580px; margin-top: 20px"
+                >
+                  <!-- <a-form-item label="昵称" name="nickname">
+                <a-input v-model:value="form.nickname" placeholder="请输入昵称" allow-clear />
+              </a-form-item>
+              <a-form-item label="邮箱" name="email">
+                <a-input v-model:value="form.email" placeholder="请输入邮箱" allow-clear />
+                  </a-form-item>-->
+                  <a-form-item style="flex-wrap: nowrap">
+                    <template #label>
+                      页面模板 &nbsp;
+                      <a-tooltip title="若用户对MDM下载流程不熟悉的情况下可选择模板二">
+                        <info-circle-outlined />
+                      </a-tooltip>
+                    </template>
+                    <a-radio-group v-model:value="form2.downloadStyle">
+                      <a-radio :value="1">模板一</a-radio>
+                      <a-radio :value="2">模板二</a-radio>
+                    </a-radio-group>
+                    <p v-if="form2.downloadStyle===1" style="color:red;font-size:12px;margin-bottom:0;">App Store经典下载页模板</p>
+                    <p v-if="form2.downloadStyle===2" style="color:red;font-size:12px;margin-bottom:0;">下载页顶部会展示MDM安装的引导教程</p>
+                  </a-form-item>
+                  <a-form-item label="在线客服">
+                    <a-textarea v-model:value="form2.chatLink" placeholder="填写在线客服网址，下载页面将展示客服信息" :rows="4" />
+                  </a-form-item>
+                  <a-form-item label="评论标题">
+                    <a-input v-model:value="form2.commentTitle" placeholder="请输入评论标题" allow-clear />
+                  </a-form-item>
+                  <a-form-item label="评论内容">
+                    <a-textarea v-model:value="form2.comment" placeholder="请输入评论内容" :rows="4" />
+                  </a-form-item>
+                  <a-form-item label="应用截图" style="flex-wrap: nowrap">
+                    <a-radio-group v-model:value="form2.imageType">
+                      <a-radio :value="0">竖屏</a-radio>
+                      <a-radio :value="1">横屏</a-radio>
+                    </a-radio-group>
+                    <p v-if="form2.imageType===0">
+                      <span style="color: #999;font-size: 12px;">
+                        建议上传
+                        <label style="color: red;" class="slide-size-hint">720*1280</label>图片，
+                        最多上传
+                        <label style="color: red;">6</label>张
+                      </span>
+                    </p>
+                    <p v-if="form2.imageType===1">
+                      <span style="color: #999;font-size: 12px;">
+                        建议上传
+                        <label style="color: red;" class="slide-size-hint">1920*1080</label>图片，
+                        最多上传
+                        <label style="color: red;">6</label>张
+                      </span>
+                    </p>
+                  </a-form-item>
+                  <a-form-item :wrapper-col="{ md: { offset: 6 } }">
+                    <a-button type="primary" :loading="loading" @click="save2">{{ loading ? '提交中..' : '提交' }}</a-button>
+                  </a-form-item>
+                </a-form>
+              </a-spin>
+            </a-tab-pane>
+            <a-tab-pane tab="签发记录" key="jilu">
+              <list-page ref="listPage" />
+            </a-tab-pane>
+            <a-tab-pane tab="数据统计" key="tongji">
+              <statistics />
+            </a-tab-pane>
             <a-tab-pane tab="合并安卓" key="hebing">555</a-tab-pane>
           </a-tabs>
         </a-card>
@@ -313,6 +402,9 @@ import { message, Modal } from 'ant-design-vue/es';
 import { getUser } from '@/api/system/user';
 import { removePageTab } from '@/utils/page-tab-util';
 import request from '@/utils/request';
+import ListPage from './component/list-page.vue';
+import Statistics from './component/statistics.vue';
+
 import {
   InfoCircleOutlined,
   ExclamationCircleOutlined,
@@ -334,6 +426,8 @@ const userStore = useUserStore();
 
 //
 const formRef = ref(null);
+//
+const formRef2 = ref(null);
 //
 const remarkformRef = ref(null);
 
@@ -365,6 +459,9 @@ const form = reactive({
   introduction: '',
   antiCustomUrl: ''
 });
+
+// 表单数据
+const form2 = reactive({});
 
 /* 修改应用状态 */
 const editStatus = (checked) => {
@@ -431,7 +528,7 @@ const rules = reactive({
 //   userStore.setInfo({ ...loginUser.value, ...obj });
 // };
 
-/* 保存更改 */
+/* 基础设置保存更改 */
 const save = () => {
   loading.value = true;
   console.log(form);
@@ -451,6 +548,28 @@ const save = () => {
   body.cnzz = !form.cnzz ? '' : form.cnzz;
   body.lang = form.lang + '';
   body.autoInstallFlag = form.autoInstallFlag + '';
+
+  request
+    .post('/ipa/update_app', body)
+    .then((res) => {
+      downloadAppInfo();
+      loading.value = false;
+    })
+    .catch((e) => {
+      message.error(e.response.data.msg);
+    });
+};
+
+/* 页面设置保存更改 */
+const save2 = () => {
+  loading.value = true;
+  console.log(form2);
+
+  const { query } = unref(currentRoute);
+  let body = form2;
+  body.appId = query.appId;
+
+  // body.autoInstallFlag = form.autoInstallFlag + '';
 
   request
     .post('/ipa/update_app', body)
