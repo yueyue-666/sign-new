@@ -191,19 +191,6 @@ const columns = ref([
   }
 ]);
 
-const appList = ref({});
-// 获取应用下拉
-const getselect = () => {
-  let body = { isCheckSub: 'false', userId: localStorage.getItem('userId') };
-  request
-    .post('/backstage/getAppList', body)
-    .then((res) => {
-      appList.value = res.data.data;
-    })
-    .catch((e) => {
-      message.error(e.response.data.msg);
-    });
-};
 const { push } = useRouter();
 // 打开用户界面
 const openyonghu = (row) => {
@@ -324,12 +311,10 @@ const remarksave = () => {
       message.error(e.response.data.msg);
     });
 };
-
-getselect();
 </script>
 
 <script>
 export default {
-  name: 'listPage'
+  name: 'Subordinaterecharge'
 };
 </script>
