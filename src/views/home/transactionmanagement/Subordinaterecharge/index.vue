@@ -246,7 +246,7 @@ const remove = (row) => {
     .post('/backstage/deleteOrderRecord', body)
     .then((res) => {
       reload();
-      message.error(res.data.msg);
+      message.success(res.data.msg);
     })
     .catch((e) => {
       message.error(e.response.data.msg);
@@ -304,7 +304,7 @@ const remarksave = () => {
     .post('/backstage/modifyOrderRecordRemark', body)
     .then((res) => {
       visible1.value = false;
-      message.error(res.data.msg);
+      message.success(res.data.msg);
       reload();
     })
     .catch((e) => {

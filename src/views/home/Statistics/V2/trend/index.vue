@@ -45,7 +45,8 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, unref } from 'vue';
+import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue/es';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -60,7 +61,6 @@ import {
 import VChart from 'vue-echarts';
 import { trendStat } from '@/api/system/user';
 import useEcharts from '@/utils/use-echarts';
-
 use([
   CanvasRenderer,
   LineChart,
@@ -68,6 +68,7 @@ use([
   TooltipComponent,
   LegendComponent
 ]);
+const { currentRoute } = useRouter();
 
 // 表格实例
 const tableRef = ref(null);
@@ -148,9 +149,12 @@ var s2 =
     '-') +
   (date.getDate() + 1 < 10 ? '0' + (date.getDate() + 1) : date.getDate() + 1);
 
+const { query } = unref(currentRoute);
+
 // 表单数据
 const { form, resetFields } = useFormData({
   ...props.form,
+  username: query.username ? query.username : '',
   // isCheckSub: false,
   startTime: s2 + ' 00:00:00',
   endTime: s1 + ' 23:59:59'

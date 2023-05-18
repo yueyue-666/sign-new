@@ -504,7 +504,7 @@ const remarksave = () => {
     .post('/ipa/update_app', body)
     .then((res) => {
       visible1.value = false;
-      message.error(res.data.msg);
+      message.success(res.data.msg);
       downloadAppInfo();
     })
     .catch((e) => {

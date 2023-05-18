@@ -63,6 +63,17 @@ export async function UserStatistics(params) {
 }
 
 /**
+ * 分页用户管理
+ */
+export async function AllUserInfo(params) {
+  const res = await request.post('/backstage/getAllUserInfo', params);
+  if (res.data.code === 200) {
+    return res.data.data.record;
+  }
+  return Promise.reject(new Error(res.data.message));
+}
+
+/**
  * 签发走势
  */
 export async function trendStat(params) {
