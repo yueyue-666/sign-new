@@ -3,13 +3,6 @@
     <a-form :label-col="{ xl: 7, lg: 5, md: 7, sm: 4 }" :wrapper-col="{ xl: 17, lg: 19, md: 17, sm: 20 }">
       <a-row :gutter="8">
         <a-col :xl="6" :lg="12" :md="12" :sm="24" :xs="24">
-          <a-form-item label="应用">
-            <a-select v-model:value="form.appId" placeholder="请选择" allow-clear>
-              <a-select-option :value="item.appId" v-for="(item,i) in appList" :key="i">{{ item.appName }}</a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-        <a-col :xl="6" :lg="12" :md="12" :sm="24" :xs="24">
           <a-form-item label="日期">
             <a-date-picker class="ele-fluid" placeholder="请选择" value-format="YYYY-MM-DD HH:mm:ss" v-model:value="form.startTime" />
           </a-form-item>
@@ -17,6 +10,11 @@
         <a-col :xl="6" :lg="12" :md="12" :sm="24" :xs="24">
           <a-form-item>
             <a-date-picker class="ele-fluid" placeholder="请选择" value-format="YYYY-MM-DD HH:mm:ss" v-model:value="form.endTime" />
+          </a-form-item>
+        </a-col>
+        <a-col :xl="6" :lg="12" :md="12" :sm="24" :xs="24">
+          <a-form-item>
+            <a-input allow-clear :maxlength="20" placeholder="用户" v-model:value="form.username" />
           </a-form-item>
         </a-col>
         <a-col :xl="6" :lg="12" :md="12" :sm="24" :xs="24">
@@ -30,25 +28,19 @@
       </a-row>
     </a-form>
 
-    <!-- <a-row :gutter="24">
-      <a-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
-        <a-alert show-icon type="info" icon>
-          <template #message>
-            <div class="ele-cell">
-              <div class="ele-cell-content">
-                <span>IOS上月下载:&nbsp;&nbsp;&nbsp;</span>
-                <ele-tag size="mini" shape="round" color="green">{{ DownloadList.lastMonthUsed }}</ele-tag>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>IOS当月下载:&nbsp;&nbsp;&nbsp;</span>
-                <ele-tag size="mini" shape="round" color="green">{{ DownloadList.currentMonthUsed }}</ele-tag>
-              </div>
-            </div>
-          </template>
-        </a-alert>
-      </a-col>
-    </a-row>-->
-
-    <!-- <v-chart ref="visitHourChartRef" :option="visitHourChartOption" style="padding-top:50px;height: 600px" /> -->
     <v-chart ref="saleChartRef" :option="visitHourChartOption" style="padding-top:50px;height: 600px" />
+    <a-card :bordered="false" title :body-style="{ padding: '16px 6px 0 0' }">
+      <!-- 表格 -->
+      <ele-pro-table
+        ref="tableRef"
+        row-key="userId"
+        :columns="columns"
+        :datasource="datasource"
+        :scroll="{ x: 1000 }"
+        :where="defaultWhere"
+        cache-key="proSystemUserTable"
+      ></ele-pro-table>
+    </a-card>
   </a-card>
 </template>
 
@@ -66,7 +58,6 @@ import {
   LegendComponent
 } from 'echarts/components';
 import VChart from 'vue-echarts';
-// import { getSevenDaysDownload } from '@/api/dashboard/analysis';
 import { trendStat } from '@/api/system/user';
 import useEcharts from '@/utils/use-echarts';
 
@@ -78,10 +69,62 @@ use([
   LegendComponent
 ]);
 
+// 表格实例
+const tableRef = ref(null);
+
+// 表格列配置
+const columns = ref([
+  {
+    title: '日期',
+    dataIndex: 'day',
+    width: 120,
+    align: 'center',
+    sorter: false,
+    showSorterTooltip: false
+  },
+  {
+    title: '充值量',
+    dataIndex: 'totalCharges',
+    align: 'center',
+    width: 120,
+    sorter: false,
+    showSorterTooltip: false,
+    customRender: ({ text }) => {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    }
+  },
+  {
+    title: '签发消耗总量',
+    dataIndex: 'totalSigns',
+    align: 'center',
+    width: 120,
+    ellipsis: true,
+    customRender: ({ text }) => {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    }
+  }
+]);
+
+// 表格数据源
+const datasource = ({ page, limit, where, orders }) => {
+  return trendStat({ ...form, ...orders, page, size: limit });
+};
+
 const props = defineProps({
   // 默认搜索条件
   where: Object
 });
+
+// 默认搜索条件
+const defaultWhere = reactive({});
 
 // 日期范围选择
 var date = new Date();
@@ -120,20 +163,6 @@ const reset = () => {
 };
 
 const visitHourChartRef = ref(null);
-
-const appList = ref({});
-// 获取应用下拉
-const getselect = () => {
-  let body = { isCheckSub: 'false', userId: localStorage.getItem('userId') };
-  request
-    .post('/backstage/getAppList', body)
-    .then((res) => {
-      appList.value = res.data.data;
-    })
-    .catch((e) => {
-      message.error(e.response.data.msg);
-    });
-};
 
 useEcharts([visitHourChartRef]);
 
@@ -197,7 +226,6 @@ const getVisitHourData = () => {
       message.error(e.message);
     });
 };
-getselect();
 getVisitHourData();
 </script>
 
