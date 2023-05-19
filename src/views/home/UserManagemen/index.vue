@@ -42,12 +42,26 @@
         :where="defaultWhere"
         cache-key="proSystemUserTable"
       >
+        <!-- :toolkit="[]" -->
+        <template #toolbar>
+          <a-space :size="10">
+            <a-button type="primary" class="ele-btn-icon" @click="visible5=true">
+              <template #icon>
+                <plus-outlined />
+              </template>
+              <span>添加</span>
+            </a-button>
+          </a-space>
+        </template>
         <template #bodyCell="{ column,record }">
           <template v-if="column.key === 'appCounts'">
             <a @click="openyonghu(record)">{{ record.appCounts }}</a>
           </template>
+          <template v-else-if="column.key === 'status'">
+            <a-tag color="green" v-if="record.status === 0">启用</a-tag>
+            <a-tag color="red" v-else>禁用</a-tag>
+          </template>
           <template v-else-if="column.key === 'SignUsedV2'">
-            <!-- <a-tag color="green">处理成功</a-tag> -->
             <p>
               今日：
               <a @click="openqianfa(record)">{{ record.todaySuperSignUsed }}</a>
@@ -89,6 +103,30 @@
                 <a class="ele-text-danger">删除</a>
               </a-popconfirm>
             </a-space>
+          </template>
+          <template v-else-if="column.key === 'isUseV3'">
+            <a-switch
+              :checked="record.isUseV3 === 1"
+              @change="(checked) => editisUseV3(checked, record)"
+              checked-children="开启"
+              un-checked-children="关闭"
+            />
+          </template>
+          <template v-else-if="column.key === 'isUseMix'">
+            <a-switch
+              :checked="record.isUseMix === 1"
+              @change="(checked) => editisUseMix(checked, record)"
+              checked-children="开启"
+              un-checked-children="关闭"
+            />
+          </template>
+          <template v-else-if="column.key === 'isOpenAppDeduct'">
+            <a-switch
+              :checked="record.isOpenAppDeduct === 1"
+              @change="(checked) => editisOpenAppDeduct(checked, record)"
+              checked-children="开启"
+              un-checked-children="关闭"
+            />
           </template>
         </template>
       </ele-pro-table>
@@ -200,11 +238,31 @@
         </div>
       </a-form>
     </ele-modal>
+
+    <!-- 添加用户弹窗 -->
+    <ele-modal
+      :width="400"
+      title="添加用户"
+      v-model:visible="visible5"
+      :resizable="true"
+      :maxable="true"
+      @cancel="visible5cancel"
+      @ok="addusersave"
+    >
+      <a-form ref="setpassformRef" :model="adduserform" :label-col="{ flex: '120px' }" :wrapper-col="{ flex: '1' }">
+        <a-form-item label="用户名">
+          <a-input class="ele-fluid" placeholder="请输入用户名" v-model:value="adduserform.username" />
+        </a-form-item>
+        <a-form-item label="密码">
+          <a-input class="ele-fluid" placeholder="请输入密码" v-model:value="adduserform.password" />
+        </a-form-item>
+      </a-form>
+    </ele-modal>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, nextTick } from 'vue';
+import { ref, createVNode, reactive, nextTick } from 'vue';
 import { toDateString } from 'ele-admin-pro/es';
 import useFormData from '@/utils/use-form-data';
 import request from '@/utils/request';
@@ -212,7 +270,11 @@ import { message, Modal } from 'ant-design-vue/es';
 import { AllUserInfo } from '@/api/system/user';
 import { removePageTab } from '@/utils/page-tab-util';
 import { useRouter } from 'vue-router';
-import { InfoCircleOutlined } from '@ant-design/icons-vue';
+import {
+  PlusOutlined,
+  InfoCircleOutlined,
+  ExclamationCircleOutlined
+} from '@ant-design/icons-vue';
 // 表格实例
 const tableRef = ref(null);
 
@@ -250,6 +312,34 @@ const columns = ref([
   {
     title: '超级签名V3',
     key: 'SignUsedV3',
+    align: 'center',
+    width: 120,
+    ellipsis: true
+  },
+  {
+    title: '状态',
+    key: 'status',
+    align: 'center',
+    width: 120,
+    ellipsis: true
+  },
+  {
+    title: 'V3模式',
+    key: 'isUseV3',
+    align: 'center',
+    width: 120,
+    ellipsis: true
+  },
+  {
+    title: '混合模式',
+    key: 'isUseMix',
+    align: 'center',
+    width: 120,
+    ellipsis: true
+  },
+  {
+    title: '打开App扣量',
+    key: 'isOpenAppDeduct',
     align: 'center',
     width: 120,
     ellipsis: true
@@ -353,7 +443,7 @@ const remove = (row) => {
       message.error(e.response.data.msg);
     });
 };
-
+// ----------------------------------------------
 // 点击备注
 const mark = (row) => {
   visible1.value = true;
@@ -390,7 +480,7 @@ const remarksave = () => {
       message.error(e.response.data.msg);
     });
 };
-
+// ----------------------------------------------
 // 点击充值
 const recharge = (row) => {
   visible2.value = true;
@@ -440,15 +530,16 @@ const setpass = (row) => {
 
 const setpassformRef = ref(null);
 
-// 是否显示充值弹窗
+// ----------------------------------------------
+// 是否显示密码弹窗
 const visible3 = ref(false);
 
-// 充值数据
+// 密码数据
 const setpassform = reactive({
   userId: ''
 });
 
-// 充值
+// 密码
 const setpasssave = () => {
   if (!setpassform.newPassword) {
     message.info('请输入密码');
@@ -471,7 +562,6 @@ const setpasssave = () => {
     });
 };
 
-// 余量报警
 const BalanceNotice = (row) => {
   visible4.value = true;
   BalanceNoticeform.userId = row.userId;
@@ -480,17 +570,15 @@ const BalanceNotice = (row) => {
   BalanceNoticeform.publicAlarmTelegrams = JSON.parse(row.telegramIds);
 };
 
-const BalanceNoticeformRef = ref(null);
-
-// 是否显示充值弹窗
+// 是否显示密码弹窗
 const visible4 = ref(false);
 
-// 充值数据
+// 密码数据
 const BalanceNoticeform = reactive({
   userId: ''
 });
 
-// 充值
+// 密码
 const BalanceNoticesave = () => {
   var alarms = BalanceNoticeform.publicAlarmTelegrams;
   if (alarms) {
@@ -519,6 +607,121 @@ const BalanceNoticesave = () => {
       message.error(e.response.data.msg);
     });
 };
+
+// ----------------------------------------------
+
+// 是否显示添加弹窗
+const visible5 = ref(false);
+
+// 添加数据
+const adduserform = reactive({});
+
+// 关闭添加弹窗
+const visible5cancel = () => {
+  adduserform.username = '';
+  adduserform.password = '';
+  visible5.value = false;
+};
+
+// 添加
+const addusersave = () => {
+  if (!adduserform.username) {
+    message.info('请输入用户名');
+    return;
+  }
+  if (!adduserform.password) {
+    message.info('请输入密码');
+    return;
+  }
+  let body = {
+    username: adduserform.username,
+    password: adduserform.password
+  };
+  request
+    .post('/backstage/addUser', body)
+    .then((res) => {
+      visible5cancel();
+      message.success(res.data.msg);
+      reload();
+    })
+    .catch((e) => {
+      message.error(e.response.data.msg);
+    });
+};
+// ----------------------------------------------
+/* V3模式 */
+const editisUseV3 = (checked, row) => {
+  const isOpen = checked ? 1 : 0;
+  var hint = isOpen === 1 ? '开启' : '关闭';
+  Modal.confirm({
+    title: '提示',
+    content: '确定' + hint + '吗？',
+    icon: createVNode(ExclamationCircleOutlined),
+    maskClosable: true,
+    onOk: () => {
+      let body = { userId: row.userId, isOpen: isOpen, type: 1 };
+      request
+        .post('/backstage/settingSignType', body)
+        .then((res) => {
+          reload();
+          message.success(res.data.msg);
+        })
+        .catch((e) => {
+          message.error(e.response.data.msg);
+        });
+    }
+  });
+};
+
+/* 混合模式 */
+const editisUseMix = (checked, row) => {
+  const isOpen = checked ? 1 : 0;
+  var hint = isOpen === 1 ? '开启' : '关闭';
+  Modal.confirm({
+    title: '提示',
+    content: '确定' + hint + '吗？',
+    icon: createVNode(ExclamationCircleOutlined),
+    maskClosable: true,
+    onOk: () => {
+      let body = { userId: row.userId, isOpen: isOpen, type: 2 };
+      request
+        .post('/backstage/settingSignType', body)
+        .then((res) => {
+          reload();
+          message.success(res.data.msg);
+        })
+        .catch((e) => {
+          message.error(e.response.data.msg);
+        });
+    }
+  });
+};
+
+/* 打开app扣量 */
+const editisOpenAppDeduct = (checked, row) => {
+  const isOpen = checked ? 1 : 0;
+  var hint = isOpen === 1 ? '开启' : '关闭';
+  Modal.confirm({
+    title: '提示',
+    content: '确定' + hint + '吗？',
+    icon: createVNode(ExclamationCircleOutlined),
+    maskClosable: true,
+    onOk: () => {
+      let body = { userId: row.userId, isOpenAppDeduct: isOpen };
+      request
+        .post('/backstage/setIsOpenAppDeduct', body)
+        .then((res) => {
+          reload();
+          message.success(res.data.msg);
+        })
+        .catch((e) => {
+          message.error(e.response.data.msg);
+        });
+    }
+  });
+};
+
+// ----------------------------------------------
 </script>
 
 <script>
