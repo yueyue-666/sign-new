@@ -24,7 +24,7 @@
           </a-col>
           <a-col :xl="5" :lg="12" :md="12" :sm="24" :xs="24">
             <a-form-item>
-              <a-input allow-clear :maxlength="20" placeholder="用户" v-model:value="form.userName" />
+              <a-input allow-clear :maxlength="20" placeholder="用户" v-model:value="form.username" />
             </a-form-item>
           </a-col>
           <a-col :xl="4" :lg="12" :md="12" :sm="24" :xs="24">
@@ -120,7 +120,7 @@ const openyonghu = (row) => {
   nextTick(() => {
     push({
       path,
-      query: row ? { userName: row.userName } : undefined
+      query: row ? { username: row.username } : undefined
     });
   });
 };

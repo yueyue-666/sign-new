@@ -285,7 +285,7 @@
 </template>
 
 <script setup>
-import { ref, createVNode, reactive, nextTick } from 'vue';
+import { ref, createVNode, reactive, nextTick, unref } from 'vue';
 import { toDateString } from 'ele-admin-pro/es';
 import useFormData from '@/utils/use-form-data';
 import request from '@/utils/request';
@@ -298,6 +298,9 @@ import {
   InfoCircleOutlined,
   ExclamationCircleOutlined
 } from '@ant-design/icons-vue';
+
+const { currentRoute } = useRouter();
+
 // 表格实例
 const tableRef = ref(null);
 
@@ -429,8 +432,10 @@ const openqianfa = (row) => {
   });
 };
 
+const { query } = unref(currentRoute);
 // 表单数据
 const { form, resetFields } = useFormData({
+  username: query.username ? query.username : '',
   back: false
 });
 

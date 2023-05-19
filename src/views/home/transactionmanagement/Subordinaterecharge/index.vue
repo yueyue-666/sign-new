@@ -199,7 +199,7 @@ const openyonghu = (row) => {
   nextTick(() => {
     push({
       path,
-      query: row ? { userName: row.userName } : undefined
+      query: row ? { username: row.userName } : undefined
     });
   });
 };
