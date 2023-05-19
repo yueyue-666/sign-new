@@ -91,6 +91,20 @@
           </template>
           <template v-else-if="column.key === 'action'">
             <a-space>
+              <a-switch
+                :checked="record.userRole === 2"
+                @change="(checked) => editmodifyAuth(checked, record)"
+                checked-children="代&nbsp;&nbsp;理"
+                un-checked-children="非代理"
+              />
+              <a-divider type="vertical" />
+              <a-switch
+                :checked="record.status === 0"
+                @change="(checked) => editstatus(checked, record)"
+                checked-children="开启"
+                un-checked-children="禁用"
+              />
+              <a-divider type="vertical" />
               <a class="ele-text-success" @click="mark(record)">备注</a>
               <a-divider type="vertical" />
               <a class="ele-text-success" @click="recharge(record)">充值</a>
@@ -127,6 +141,15 @@
               checked-children="开启"
               un-checked-children="关闭"
             />
+          </template>
+          <template v-else-if="column.key === 'urlType'">
+            <a-select v-model:value="record.urlType" placeholder="请选择" allow-clear @change="pick(record,record.urlType)">
+              <a-select-option :value="0">小客户链接</a-select-option>
+              <a-select-option :value="1">中客户链接</a-select-option>
+              <a-select-option :value="2">大客户链接1</a-select-option>
+              <a-select-option :value="3">大客户链接2</a-select-option>
+              <a-select-option :value="4">IP链接</a-select-option>
+            </a-select>
           </template>
         </template>
       </ele-pro-table>
@@ -345,6 +368,13 @@ const columns = ref([
     ellipsis: true
   },
   {
+    title: '链接类型',
+    key: 'urlType',
+    align: 'center',
+    width: 200,
+    ellipsis: true
+  },
+  {
     title: '备注',
     dataIndex: 'remark',
     align: 'center',
@@ -368,7 +398,7 @@ const columns = ref([
   {
     title: '操作',
     key: 'action',
-    width: 500,
+    width: 450,
     fixed: 'right',
     align: 'center'
   }
@@ -672,7 +702,7 @@ const editisUseV3 = (checked, row) => {
     }
   });
 };
-
+// ----------------------------------------------
 /* 混合模式 */
 const editisUseMix = (checked, row) => {
   const isOpen = checked ? 1 : 0;
@@ -696,7 +726,7 @@ const editisUseMix = (checked, row) => {
     }
   });
 };
-
+// ----------------------------------------------
 /* 打开app扣量 */
 const editisOpenAppDeduct = (checked, row) => {
   const isOpen = checked ? 1 : 0;
@@ -720,8 +750,68 @@ const editisOpenAppDeduct = (checked, row) => {
     }
   });
 };
-
 // ----------------------------------------------
+/* 禁用启用状态 */
+const editstatus = (checked, row) => {
+  const isOpen = checked ? 0 : 1;
+  var hint = isOpen === 0 ? '开启' : '禁用';
+  Modal.confirm({
+    title: '提示',
+    content: '确定' + hint + '吗？',
+    icon: createVNode(ExclamationCircleOutlined),
+    maskClosable: true,
+    onOk: () => {
+      let body = { userId: row.userId, status: isOpen };
+      request
+        .post('/backstage/enableDisableUser', body)
+        .then((res) => {
+          reload();
+          message.success(res.data.msg);
+        })
+        .catch((e) => {
+          message.error(e.response.data.msg);
+        });
+    }
+  });
+};
+// ----------------------------------------------
+/* 设置代理 */
+const editmodifyAuth = (checked, row) => {
+  const isOpen = checked ? 2 : 1;
+  var hint = isOpen === 2 ? '设置为代理' : '取消代理';
+  Modal.confirm({
+    title: '提示',
+    content: '确定' + hint + '吗？',
+    icon: createVNode(ExclamationCircleOutlined),
+    maskClosable: true,
+    onOk: () => {
+      let body = { userId: row.userId, userRole: isOpen };
+      request
+        .post('/backstage/modifyAuth', body)
+        .then((res) => {
+          reload();
+          message.success(res.data.msg);
+        })
+        .catch((e) => {
+          message.error(e.response.data.msg);
+        });
+    }
+  });
+};
+// ----------------------------------------------
+/* 设置链接类型 */
+const pick = (row, e) => {
+  let body = { userId: row.userId, urlType: e };
+  request
+    .post('/backstage/settingUserUrlType', body)
+    .then((res) => {
+      reload();
+      message.success(res.data.msg);
+    })
+    .catch((e) => {
+      message.error(e.response.data.msg);
+    });
+};
 </script>
 
 <script>
