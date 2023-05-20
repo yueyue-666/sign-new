@@ -10,7 +10,8 @@ import { getToken, setToken } from './token-util';
 import { logout } from './page-tab-util';
 
 const service = axios.create({
-  baseURL: API_BASE_URL
+  baseURL: API_BASE_URL,
+  timeout: 10000
 });
 
 /**
@@ -32,6 +33,10 @@ service.interceptors.request.use(
       // 登陆后必传字段
       config.headers['token'] = token; //	token
       config.headers['refreshToken'] = refreshToken; //	refreshToken
+      if (config.method === 'post') {
+        // post请求加时间戳
+        config.url = config.url + '?jstime=' + new Date().getTime();
+      }
     }
     return config;
   },

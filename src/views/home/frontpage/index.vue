@@ -80,37 +80,37 @@
       <a-card title="超级签名V2" :bordered="false" style="height: 96%;">
         <ele-dashboard type="success" style="margin-right: 18px">
           <div style="line-height: 1">
-            <span style="font-size: 48px">{{superSign.todayCharged }}</span>
+            <span style="font-size: 40px">{{superSign.todayCharged }}</span>
           </div>
           <div style="margin-top: 4px">今日充值量</div>
         </ele-dashboard>
         <ele-dashboard type="warning" style="margin-right: 18px">
           <div style="line-height: 1">
-            <span style="font-size: 48px">{{superSign.sevenDayCharged }}</span>
+            <span style="font-size: 40px">{{superSign.sevenDayCharged }}</span>
           </div>
           <div style="margin-top: 4px">七日充值量</div>
         </ele-dashboard>
         <ele-dashboard type="danger" style="margin-right: 18px">
           <div style="line-height: 1">
-            <span style="font-size: 48px">{{ superSign.thirtyDayCharged }}</span>
+            <span style="font-size: 40px">{{ superSign.thirtyDayCharged }}</span>
           </div>
           <div style="margin-top: 4px">三十日充值量</div>
         </ele-dashboard>
         <ele-dashboard type="info" style="margin-right: 18px">
           <div style="line-height: 1">
-            <span style="font-size: 48px">{{superSign.todayUsed }}</span>
+            <span style="font-size: 40px">{{superSign.todayUsed }}</span>
           </div>
           <div style="margin-top: 4px">今日签发消耗量</div>
         </ele-dashboard>
         <ele-dashboard type="warning" style="margin-right: 18px">
           <div style="line-height: 1">
-            <span style="font-size: 48px">{{superSign.sevenDayUsed }}</span>
+            <span style="font-size: 40px">{{superSign.sevenDayUsed }}</span>
           </div>
           <div style="margin-top: 4px">七日签发消耗量</div>
         </ele-dashboard>
         <ele-dashboard type="danger">
           <div style="line-height: 1">
-            <span style="font-size: 48px">{{ superSign.thirtyDayUsed }}</span>
+            <span style="font-size: 40px">{{ superSign.thirtyDayUsed }}</span>
           </div>
           <div style="margin-top: 4px">三十日签发消耗量</div>
         </ele-dashboard>
