@@ -144,12 +144,20 @@
             </a-space>
           </template>
         </template>
-        <template #customFilterDropdown>
-          <span class="tooltiptext">
-            设置里可修改安装方式
-            <br />公开：用户可自主安装应用
-            <br />滑块验证：用户下载应用时需要滑块验证通过后方可安装应用
-            <br />下载码：用户下载应用时需要输入对应的下载码，验证通过后方可安装应用，设置里可生成下载码
+        <template #installType>
+          <span>
+            安装方式
+            <a-tooltip>
+              <template #title>
+                <p>
+                  设置里可修改安装方式
+                  <br />公开：用户可自主安装应用
+                  <br />滑块验证：用户下载应用时需要滑块验证通过后方可安装应用
+                  <br />下载码：用户下载应用时需要输入对应的下载码，验证通过后方可安装应用，设置里可生成下载码
+                </p>
+              </template>
+              <info-circle-outlined />
+            </a-tooltip>
           </span>
         </template>
       </ele-pro-table>
@@ -163,6 +171,7 @@ import { message, Modal } from 'ant-design-vue/es';
 import {
   ExclamationCircleOutlined,
   CopyOutlined,
+  InfoCircleOutlined,
   AppleOutlined,
   AndroidOutlined
 } from '@ant-design/icons-vue';
@@ -234,7 +243,8 @@ const columns = ref([
     align: 'center',
     width: 200,
     ellipsis: true,
-    customFilterDropdown: true,
+    // customFilterDropdown: true,
+    slots: { title: 'installType' },
     customRender: ({ text }) => {
       if (text === 1) {
         return '滑块验证';
@@ -404,33 +414,5 @@ export default {
   display: inline-block;
   /* 设置底部的边框 */
   border-bottom: 1px dashed black;
-}
-
-.ant-table-filter-dropdown .tooltiptext {
-  font-size: 12px;
-  /* 隐藏该元素 */
-  width: 160px;
-  background-color: #555;
-  color: #fff;
-  text-align: left;
-  border-radius: 6px;
-  padding: 5px;
-  position: absolute;
-  z-index: 1;
-  top: 125%;
-  left: 50%;
-  margin-left: -60px;
-  transition: opacity 1s;
-}
-
-.ant-table-filter-dropdown .tooltiptext::before {
-  content: '';
-  position: absolute;
-  top: -10px;
-  left: 70%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent transparent #555 transparent;
 }
 </style>

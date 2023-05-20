@@ -6,7 +6,7 @@ import request from '@/utils/request';
 export async function pageUsers(params) {
   const res = await request.post('/backstage/getAllAppByPage', params);
   if (res.data.code === 200) {
-    return res.data.data.record;
+    return { list: res.data.data.record, count: res.data.data.total };
   }
   return Promise.reject(new Error(res.data.message));
 }
@@ -23,7 +23,7 @@ export async function IssuingRecords(params) {
   }
   const res = await request.post('/backstage/getIssuingRecords', params);
   if (res.data.code === 200) {
-    return res.data.data.record;
+    return { list: res.data.data.record, count: res.data.data.total };
   }
   return Promise.reject(new Error(res.data.message));
 }
@@ -40,7 +40,7 @@ export async function AllUserOrderByPage(params) {
   }
   const res = await request.post('/backstage/getAllUserOrderByPage', params);
   if (res.data.code === 200) {
-    return res.data.data.record;
+    return { list: res.data.data.record, count: res.data.data.total };
   }
   return Promise.reject(new Error(res.data.message));
 }
@@ -57,7 +57,7 @@ export async function UserStatistics(params) {
   }
   const res = await request.post('/backstage/getUserStatistics', params);
   if (res.data.code === 200) {
-    return res.data.data.record;
+    return { list: res.data.data.record, count: res.data.data.total };
   }
   return Promise.reject(new Error(res.data.message));
 }
@@ -68,7 +68,7 @@ export async function UserStatistics(params) {
 export async function AllUserInfo(params) {
   const res = await request.post('/backstage/getAllUserInfo', params);
   if (res.data.code === 200) {
-    return res.data.data.record;
+    return { list: res.data.data.record, count: res.data.data.total };
   }
   return Promise.reject(new Error(res.data.message));
 }
@@ -96,7 +96,7 @@ export async function trendStat(params) {
 export async function WebClipList(params) {
   const res = await request.post('/webclip/getWebClipList', params);
   if (res.data.code === 200) {
-    return res.data.data.record;
+    return { list: res.data.data.record, count: res.data.data.total };
   }
   return Promise.reject(new Error(res.data.message));
 }

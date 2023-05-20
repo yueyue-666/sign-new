@@ -48,24 +48,60 @@
           </a-col>
         </a-row>
       </a-form>
+      <a-row :gutter="8">
+        <a-col :xl="5" :lg="6" :md="7" :sm="24" :xs="24">
+          <a-select v-model:value="signform.cerNameOld" placeholder="请选择" allow-clear>
+            <a-select-option :value="i" v-for="(item,i) in SignNewList" :key="i">{{ item }}</a-select-option>
+          </a-select>&nbsp;替换为&nbsp;
+          <a-select v-model:value="signform.cerNameNew" placeholder="请选择" allow-clear>
+            <a-select-option :value="i" v-for="(item,i) in SignNewList" :key="i">{{ item }}</a-select-option>
+          </a-select>
+        </a-col>
+        <a-col :xl="5" :lg="6" :md="7" :sm="24" :xs="24">
+          <a-button type="primary" class="ele-btn-icon" @click="signAllIpas()">
+            <template #icon>
+              <EditOutlined />
+            </template>
+            <span>立即重签</span>
+          </a-button>
+        </a-col>
+      </a-row>
       <!-- 表格 -->
       <ele-pro-table
         ref="tableRef"
-        row-key="userId"
+        row-key="appId"
         :columns="columns"
         :datasource="datasource"
         :scroll="{ x: 1000 }"
         :where="defaultWhere"
+        v-model:selection="selection"
         cache-key="proSystemUserTable"
       >
-        <!-- :toolkit="[]" -->
         <template #toolbar>
           <a-space :size="10">
-            <a-button type="primary" class="ele-btn-icon" @click="visible5=true">
+            <a-button type="primary" class="ele-btn-icon" :danger="1" :disabled="!(selection.length > 0)" @click="removeBatch">
               <template #icon>
-                <plus-outlined />
+                <delete-outlined />
               </template>
-              <span>添加</span>
+              <span>批量删除</span>
+            </a-button>
+            <a-button type="primary" class="ele-btn-icon" :danger="1" :disabled="!(selection.length > 0)" @click="signV2V3Batch(0)">
+              <template #icon>
+                <EditOutlined />
+              </template>
+              <span>批量重签V2</span>
+            </a-button>
+            <a-button type="primary" class="ele-btn-icon" :danger="1" :disabled="!(selection.length > 0)" @click="signV2V3Batch(1)">
+              <template #icon>
+                <EditOutlined />
+              </template>
+              <span>批量重签V3</span>
+            </a-button>
+            <a-button type="primary" class="ele-btn-icon" :danger="1" @click="signAllV3">
+              <template #icon>
+                <EditOutlined />
+              </template>
+              <span>重签所有V3</span>
             </a-button>
           </a-space>
         </template>
@@ -308,6 +344,8 @@ import { pageUsers } from '@/api/system/user';
 import { removePageTab } from '@/utils/page-tab-util';
 import { useRouter } from 'vue-router';
 import {
+  EditOutlined,
+  DeleteOutlined,
   AppleOutlined,
   AndroidOutlined,
   CopyOutlined,
@@ -588,6 +626,7 @@ const datasource = ({ page, limit, where, orders }) => {
 
 /* 搜索 */
 const reload = (where) => {
+  selection.value = [];
   tableRef?.value?.reload({ page: 1, ...form });
 };
 // ----------------------------------------------
@@ -845,6 +884,124 @@ const pick = (row, e) => {
 
 // ----------------------------------------------
 
+// 表格选中数据
+const selection = ref([]);
+
+/* 批量删除 */
+const removeBatch = () => {
+  Modal.confirm({
+    title: '提示',
+    content: '确定要删除选中的应用吗?',
+    icon: createVNode(ExclamationCircleOutlined),
+    maskClosable: true,
+    onOk: () => {
+      let appIds = [];
+      selection.value.forEach((element) => {
+        appIds.push(element.appId);
+      });
+      let body = { appIds: appIds };
+      request
+        .post('/backstage/batchDeleteApp', body)
+        .then((res) => {
+          reload();
+          message.success(res.data.msg);
+        })
+        .catch((e) => {
+          message.error(e.response.data.msg);
+        });
+    }
+  });
+};
+
+/* 批量重签V2，V3 */
+const signV2V3Batch = (e) => {
+  Modal.confirm({
+    title: '提示',
+    content: '确定批量签名吗?',
+    icon: createVNode(ExclamationCircleOutlined),
+    maskClosable: true,
+    onOk: () => {
+      let ipaNames = [];
+      selection.value.forEach((element) => {
+        ipaNames.push(`${element.ipaPathOriginal + '&' + element.appId}`);
+      });
+      let body = {
+        ipaNames: JSON.stringify(ipaNames),
+        signType: e
+      };
+      console.log(body);
+      request
+        .post('/ipa/enter/sign', body)
+        .then((res) => {
+          reload();
+          message.success(res.data.msg);
+        })
+        .catch((e) => {
+          message.error(e.response.data.msg);
+        });
+    }
+  });
+};
+
+/* 重签所有V3 */
+const signAllV3 = () => {
+  Modal.confirm({
+    title: '提示',
+    content: '确认全部签名V3吗?',
+    icon: createVNode(ExclamationCircleOutlined),
+    maskClosable: true,
+    onOk: () => {
+      request
+        .post('/ipa/enter/signAllV3', {})
+        .then((res) => {
+          reload();
+          message.success(res.data.msg);
+        })
+        .catch((e) => {
+          message.error(e.response.data.msg);
+        });
+    }
+  });
+};
+
+// ----------------------------------------------
+
+const SignNewList = ref({});
+// 获取下拉
+const getSignNewList = () => {
+  request
+    .post('/backstage/getSignNewList', {})
+    .then((res) => {
+      SignNewList.value = res.data.data;
+    })
+    .catch((e) => {
+      message.error(e.response.data.msg);
+    });
+};
+
+const signform = ref({});
+
+/* 重签 */
+const signAllIpas = () => {
+  Modal.confirm({
+    title: '提示',
+    content: '确认签名吗?',
+    icon: createVNode(ExclamationCircleOutlined),
+    maskClosable: true,
+    onOk: () => {
+      request
+        .post('/ipa/enters/signAllIpas', signform.value)
+        .then((res) => {
+          reload();
+          message.success(res.data.msg);
+        })
+        .catch((e) => {
+          message.error(e.response.data.msg);
+        });
+    }
+  });
+};
+// ----------------------------------------------
 const getfilesize = (size) => {
   if (!size) return '';
   var num = 1024.0;
@@ -856,6 +1013,9 @@ const getfilesize = (size) => {
     return (size / Math.pow(num, 3)).toFixed(2) + 'G';
   return (size / Math.pow(num, 4)).toFixed(2) + 'T';
 };
+
+// 获取下拉
+getSignNewList();
 </script>
 
 <script>
