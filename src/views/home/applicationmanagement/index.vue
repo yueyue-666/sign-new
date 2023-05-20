@@ -51,10 +51,10 @@
       <a-row :gutter="8">
         <a-col :xl="5" :lg="6" :md="7" :sm="24" :xs="24">
           <a-select v-model:value="signform.cerNameOld" placeholder="请选择" allow-clear>
-            <a-select-option :value="i" v-for="(item,i) in SignNewList" :key="i">{{ item }}</a-select-option>
+            <a-select-option :value="item" v-for="(item,i) in SignNewList" :key="i">{{ item }}</a-select-option>
           </a-select>&nbsp;替换为&nbsp;
           <a-select v-model:value="signform.cerNameNew" placeholder="请选择" allow-clear>
-            <a-select-option :value="i" v-for="(item,i) in SignNewList" :key="i">{{ item }}</a-select-option>
+            <a-select-option :value="item" v-for="(item,i) in SignNewList" :key="i">{{ item }}</a-select-option>
           </a-select>
         </a-col>
         <a-col :xl="5" :lg="6" :md="7" :sm="24" :xs="24">
