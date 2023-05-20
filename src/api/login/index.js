@@ -31,6 +31,8 @@ export async function login(data) {
     localStorage.setItem('isShowSubData', res.data.data.isShowSubData);
     localStorage.setItem('isDownloadData', res.data.data.isDownloadData);
     localStorage.setItem('flagId', res.data.data.flagId);
+    //打开商户后台
+    localStorage.setItem('adminrouter', JSON.stringify(true));
 
     return res.data.msg;
   }

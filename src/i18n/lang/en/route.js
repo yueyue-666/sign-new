@@ -8,6 +8,12 @@ export default {
     analysis: { _name: 'Analysis' },
     monitor: { _name: 'Monitor' }
   },
+  home: {
+    _name: 'home',
+    frontpage: { _name: 'frontpage' },
+    analysis: { _name: 'Analysis' },
+    monitor: { _name: 'Monitor' }
+  },
   // system: {
   //   _name: 'System',
   //   user: {

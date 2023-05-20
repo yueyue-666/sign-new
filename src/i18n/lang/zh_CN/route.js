@@ -15,6 +15,15 @@ export default {
     finance: { _name: '财务信息' },
     crash: { _name: '闪退助手' }
   }
+  // home: {
+  //   _name: 'home',
+  //   frontpage: { _name: '仪表盘' },
+  //   UserManagemen: { _name: '用户管理' }
+  // },
+  // home2: {
+  //   _name: '应用管理',
+  //   applicationmanagement: { _name: '应用管理' }
+  // }
   // system: {
   //   _name: '系统管理',
   //   user: {

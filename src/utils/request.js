@@ -88,8 +88,16 @@ service.interceptors.response.use(
     }
   },
   (error) => {
-    console.log(error);
-    return Promise.reject(error);
+    if ([403].includes(error.response.data.code)) {
+      logout(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+      return Promise.reject(error);
+    } else {
+      return Promise.reject(error);
+    }
+
     // return Promise.reject(new Error(error.response.data.message));
     // return Promise.reject(error.response.data.message);
   }
