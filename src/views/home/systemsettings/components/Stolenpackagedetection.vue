@@ -110,7 +110,6 @@
           </template>
           <template v-else-if="column.key === 'action'">
             <a-space>
-              <!-- <a @click="mark(record)">备注</a> -->
               <a-popconfirm placement="topRight" title="确定立即闪退？" @confirm="remove(record,1,0)" v-if="record.isCrash===0">
                 <a class="ele-text-center">立即闪退</a>
               </a-popconfirm>

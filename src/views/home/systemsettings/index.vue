@@ -68,7 +68,7 @@ import { useUserStore } from '@/store/modules/user';
 const userStore = useUserStore();
 
 // tab 页选中
-const active = ref('15');
+const active = ref('1');
 
 // 保存按钮 loading
 const loading = ref(false);
