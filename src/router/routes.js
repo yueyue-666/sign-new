@@ -17,12 +17,12 @@ export const routes = [
     path: '/forget',
     component: () => import('@/views/forget/index.vue'),
     meta: { title: '忘记密码' }
-  },
-  // 404
-  {
-    path: '/:path(.*)*',
-    component: () => import('@/views/exception/404/index.vue')
   }
+  // 404
+  // {
+  //   path: '/:path(.*)*',
+  //   component: () => import('@/views/exception/404/index.vue')
+  // }
 ];
 
 /**
