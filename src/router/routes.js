@@ -3,7 +3,7 @@ import { HOME_PATH, LAYOUT_PATH, REDIRECT_PATH } from '@/config/setting';
 import EleLayout from '@/layout/index.vue';
 import RedirectLayout from '@/components/RedirectLayout';
 const modules = import.meta.glob('/src/views/**/index.vue');
-
+const adminrouter = JSON.parse(localStorage.getItem('adminrouter'));
 /**
  * 静态路由
  */
@@ -17,12 +17,16 @@ export const routes = [
     path: '/forget',
     component: () => import('@/views/forget/index.vue'),
     meta: { title: '忘记密码' }
-  }
+  },
   // 404
-  // {
-  //   path: '/:path(.*)*',
-  //   component: () => import('@/views/exception/404/index.vue')
-  // }
+  {
+    path: '/:path(.*)*',
+    component: () => {
+      adminrouter
+        ? import('@/views/dashboard/workplace/index.vue')
+        : import('@/views/home/frontpage/index.vue');
+    }
+  }
 ];
 
 /**
