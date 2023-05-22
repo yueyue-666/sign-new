@@ -2,8 +2,12 @@
   <div>
     <a-card :bordered="false" :body-style="{ paddingTop: '0px', minHeight: '600px' }">
       <a-tabs v-model:active-key="active" size="large">
-        <a-tab-pane tab="链接设置" key="1">1</a-tab-pane>
-        <a-tab-pane tab="防封链接" key="2">2</a-tab-pane>
+        <a-tab-pane tab="链接设置" key="1">
+          <linksettings />
+        </a-tab-pane>
+        <a-tab-pane tab="防封链接" key="2">
+          <Antiblockinglink />
+        </a-tab-pane>
         <a-tab-pane tab="当前证书v2" key="3">3</a-tab-pane>
         <a-tab-pane tab="当前证书v3" key="4">4</a-tab-pane>
         <a-tab-pane tab="签名证书1" key="5">5</a-tab-pane>
@@ -13,10 +17,18 @@
         <a-tab-pane tab="V3证书1" key="9">9</a-tab-pane>
         <a-tab-pane tab="V3证书2" key="10">10</a-tab-pane>
         <a-tab-pane tab="V3证书3" key="11">11</a-tab-pane>
-        <a-tab-pane tab="MDM推送证书" key="12">12</a-tab-pane>
-        <a-tab-pane tab="证书检测" key="13">13</a-tab-pane>
-        <a-tab-pane tab="动态库bulid" key="14">14</a-tab-pane>
-        <a-tab-pane tab="偷包检测" key="15">15</a-tab-pane>
+        <a-tab-pane tab="MDM推送证书" key="12">
+          <pushcertificate />
+        </a-tab-pane>
+        <a-tab-pane tab="证书检测" key="13">
+          <certificatedetection />
+        </a-tab-pane>
+        <a-tab-pane tab="动态库bulid" key="14">
+          <Dynamiclibrarybuild />
+        </a-tab-pane>
+        <a-tab-pane tab="偷包检测" key="15">
+          <Stolenpackagedetection />
+        </a-tab-pane>
       </a-tabs>
     </a-card>
   </div>
@@ -29,6 +41,12 @@ import { message, Modal } from 'ant-design-vue/es';
 import { getUser } from '@/api/system/user';
 import { removePageTab } from '@/utils/page-tab-util';
 import request from '@/utils/request';
+import Antiblockinglink from './components/Antiblockinglink.vue';
+import certificatedetection from './components/certificatedetection.vue';
+import Dynamiclibrarybuild from './components/Dynamiclibrarybuild.vue';
+import linksettings from './components/linksettings.vue';
+import pushcertificate from './components/pushcertificate.vue';
+import Stolenpackagedetection from './components/Stolenpackagedetection.vue';
 
 import {
   InfoCircleOutlined,
@@ -50,7 +68,7 @@ import { useUserStore } from '@/store/modules/user';
 const userStore = useUserStore();
 
 // tab 页选中
-const active = ref('1');
+const active = ref('15');
 
 // 保存按钮 loading
 const loading = ref(false);

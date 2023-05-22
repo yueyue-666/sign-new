@@ -46,6 +46,23 @@ export async function AllUserOrderByPage(params) {
 }
 
 /**
+ * 分页偷包检测
+ */
+export async function getBadApp(params) {
+  function getTimestamp(time) {
+    return new Date(time).getTime() / 1000;
+  }
+  if (getTimestamp(params.endTime) - getTimestamp(params.startTime) > 1728000) {
+    return Promise.reject(new Error('查询范围时间不能超过20天'));
+  }
+  const res = await request.post('/ipa/getBadApp', params);
+  if (res.data.code === 200) {
+    return { list: res.data.data.record, count: res.data.data.total };
+  }
+  return Promise.reject(new Error(res.data.message));
+}
+
+/**
  * 分页用户统计
  */
 export async function UserStatistics(params) {
