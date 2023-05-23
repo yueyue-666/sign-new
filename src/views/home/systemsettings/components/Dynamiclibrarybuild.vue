@@ -2,7 +2,7 @@
   <div class="ele-body">
     <a-spin :spinning="loading">
       <a-card :bordered="false">
-        <a-row :gutter="8" v-for="(item,i) in AllConfigList" :key="i" v-show="item.typeValue">
+        <a-row :gutter="8" v-for="(item,i) in AllConfigList" :key="i" v-show="[6].includes(item.type)">
           <a-col :xl="12" :lg="12" :md="12" :sm="12" :xs="12">
             <a-form-item :label="item.typeStr" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
               <a-input allow-clear :maxlength="20" placeholder="请输入" v-model:value="item.typeValue" />
@@ -14,6 +14,9 @@
                 <a-button type="primary" @click="updateConfig(item)">提交</a-button>
               </a-space>
             </a-form-item>
+          </a-col>
+          <a-col :xl="15" :lg="15" :md="15" :sm="15" :xs="15">
+            <a-alert type="info" description="描述：每次掉签，更换证书之后请将build+1非掉签情况不要轻易改动，这个主要是用于防止别人偷包的标识"></a-alert>
           </a-col>
         </a-row>
       </a-card>
@@ -51,6 +54,10 @@ const getAllConfig = () => {
 };
 
 const updateConfig = (row) => {
+  if (row.typeValue === '') {
+    message.info('提交不能为空！');
+    return;
+  }
   loading.value = true;
   let body = { type: row.type, typeValue: row.typeValue };
   request

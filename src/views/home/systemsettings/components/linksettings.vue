@@ -2,7 +2,12 @@
   <div class="ele-body">
     <a-spin :spinning="loading">
       <a-card :bordered="false">
-        <a-row :gutter="8" v-for="(item,i) in AllConfigList" :key="i" v-show="item.typeValue">
+        <a-row
+          :gutter="8"
+          v-for="(item,i) in AllConfigList"
+          :key="i"
+          v-show="[1, 2, 4,9,10,11,12,14,16,17,18,20,21,22,23,24,25,32,33,35,37,38,39,40].includes(item.type)"
+        >
           <a-col :xl="12" :lg="12" :md="12" :sm="12" :xs="12">
             <a-form-item :label="item.typeStr" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
               <a-input allow-clear :maxlength="20" placeholder="请输入" v-model:value="item.typeValue" />
@@ -51,6 +56,10 @@ const getAllConfig = () => {
 };
 
 const updateConfig = (row) => {
+  if (row.typeValue === '') {
+    message.info('提交不能为空！');
+    return;
+  }
   loading.value = true;
   let body = { type: row.type, typeValue: row.typeValue };
   request
