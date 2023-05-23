@@ -17,16 +17,16 @@ export const routes = [
     path: '/forget',
     component: () => import('@/views/forget/index.vue'),
     meta: { title: '忘记密码' }
-  },
-  // 404
-  {
-    path: '/:path(.*)*',
-    component: () => {
-      adminrouter
-        ? import('@/views/dashboard/workplace/index.vue')
-        : import('@/views/home/frontpage/index.vue');
-    }
   }
+  // 404
+  // {
+  //   path: '/:path(.*)*',
+  //   component: () => {
+  //     adminrouter
+  //       ? import('@/views/dashboard/workplace/index.vue')
+  //       : import('@/views/home/frontpage/index.vue');
+  //   }
+  // }
 ];
 
 /**
