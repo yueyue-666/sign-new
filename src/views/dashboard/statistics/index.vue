@@ -91,7 +91,7 @@ var s1 =
     ? '0' + (date.getMonth() + 1)
     : date.getMonth() + 1) +
     '-') +
-  date.getDate();
+  (date.getDate() + 1 < 10 ? '0' + date.getDate() : date.getDate());
 // 20天前的时间
 date.setTime(date.getTime() - 480 * 60 * 60 * 1000);
 var s2 =
