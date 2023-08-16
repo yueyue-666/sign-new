@@ -70,7 +70,6 @@ const rowSelection = ref({
     // );
   },
   onSelect: (record, selected, selectedRows) => {
-    console.log(record);
     if (record.cerStatus === '0') {
       message.error('该证书已无效');
     } else {
