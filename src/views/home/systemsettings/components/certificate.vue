@@ -1,34 +1,36 @@
 
 <template>
   <div class="certificate-class">
-    <a-form autocomplete="off" :label-col="{ style: { width: '150px' } }" :wrapper-col="{ span: 10 }">
-      <a-form-item label="P12文件" name="p12" v-bind="validateInfos.p12">
-        <a-upload accept=".p12" :show-upload-list="false" :customRequest="doUpload">
-          <a-button type="primary">
-            <cloud-upload-outlined />请上传P12格式的证书
-          </a-button>
-          <span class="red-class">{{ getIsUploadP12 }}</span>
-        </a-upload>
-      </a-form-item>
-      <a-form-item label="描述文件" name="mobileprovision" v-bind="validateInfos.mobileprovision">
-        <a-upload accept=".mobileprovision" :show-upload-list="false" :customRequest="doUploadMo">
-          <a-button type="primary">
-            <cloud-upload-outlined />请上传mobileprovision格式的证书
-          </a-button>
-          <span class="red-class">{{ getIsUploadMobileprovision }}</span>
-        </a-upload>
-      </a-form-item>
-      <a-form-item label="密码" name="password" v-bind="validateInfos.password">
-        <a-input v-model:value="formState.password" placeholder="请输入证书密码" />
-      </a-form-item>
-      <a-form-item label="证书名称" name="cerName" v-bind="validateInfos.cerName">
-        <a-input v-model:value="formState.cerName" placeholder="请输入证书名称" />
-      </a-form-item>
-      <a-form-item label="证书状态" name="cerStatus">{{ formState.cerStatus }}</a-form-item>
-      <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
-        <a-button type="primary" @click="onFinish">提交</a-button>
-      </a-form-item>
-    </a-form>
+    <a-spin :spinning="loading">
+      <a-form autocomplete="off" :label-col="{ style: { width: '150px' } }" :wrapper-col="{ span: 10 }">
+        <a-form-item label="P12文件" name="p12" v-bind="validateInfos.p12">
+          <a-upload accept=".p12" :show-upload-list="false" :customRequest="doUpload">
+            <a-button type="primary">
+              <cloud-upload-outlined />请上传P12格式的证书
+            </a-button>
+            <span class="red-class">{{ getIsUploadP12 }}</span>
+          </a-upload>
+        </a-form-item>
+        <a-form-item label="描述文件" name="mobileprovision" v-bind="validateInfos.mobileprovision">
+          <a-upload accept=".mobileprovision" :show-upload-list="false" :customRequest="doUploadMo">
+            <a-button type="primary">
+              <cloud-upload-outlined />请上传mobileprovision格式的证书
+            </a-button>
+            <span class="red-class">{{ getIsUploadMobileprovision }}</span>
+          </a-upload>
+        </a-form-item>
+        <a-form-item label="密码" name="password" v-bind="validateInfos.password">
+          <a-input v-model:value="formState.password" placeholder="请输入证书密码" />
+        </a-form-item>
+        <a-form-item label="证书名称" name="cerName" v-bind="validateInfos.cerName">
+          <a-input v-model:value="formState.cerName" placeholder="请输入证书名称" />
+        </a-form-item>
+        <a-form-item label="证书状态" name="cerStatus">{{ formState.cerStatus }}</a-form-item>
+        <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
+          <a-button type="primary" @click="onFinish">提交</a-button>
+        </a-form-item>
+      </a-form>
+    </a-spin>
   </div>
 </template>
 
@@ -42,6 +44,9 @@ import request from '@/utils/request';
 import { message, Modal } from 'ant-design-vue/es';
 import { API_P12_URL } from '@/config/setting';
 const useForm = Form.useForm;
+
+// 请求状态
+const loading = ref(false);
 
 const props = defineProps({
   type: Number
@@ -99,7 +104,10 @@ async function doUpload({ file }) {
   formData.append('file', file);
   formData.append('type', type);
   formData.append('flagId', flagId);
-  const res = await requestImage.post(`${API_P12_URL}/api/file/p12/upload`, formData);
+  const res = await requestImage.post(
+    `${API_P12_URL}/api/file/p12/upload`,
+    formData
+  );
   if (res.data.status == 200) {
     localStorage.setItem(`p12type${type}`, 'true');
     p12Status.value = 'true';
@@ -114,7 +122,10 @@ async function doUploadMo({ file }) {
   formData.append('file', file);
   formData.append('type', type);
   formData.append('flagId', flagId);
-  const res = await requestImage.post(`${API_P12_URL}/api/file/mobileprovision/upload`, formData);
+  const res = await requestImage.post(
+    `${API_P12_URL}/api/file/mobileprovision/upload`,
+    formData
+  );
   if (res.data.status == 200) {
     localStorage.setItem(`mobileprovisiontype${type}`, 'true');
     mobileprovisionStatus.value = 'true';
@@ -154,6 +165,7 @@ const onFinish = () => {
 };
 
 async function getDetail() {
+  loading.value = true;
   const type = props.type;
   const params = {
     type: type
@@ -161,6 +173,7 @@ async function getDetail() {
   const result = await request.post('/cer/detail', params);
   formState.cerName = result.data.data.cerName;
   formState.cerStatus = result.data.data.cerStatus;
+  loading.value = false;
 }
 onMounted(() => {
   getDetail();

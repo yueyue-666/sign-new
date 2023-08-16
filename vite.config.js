@@ -10,6 +10,7 @@ import { resolve } from 'path';
 export default defineConfig(({ command }) => {
   const isBuild = command === 'build';
   return {
+    // base: 'https://d1mmyucyptd30c.cloudfront.net/resource1/', // 打包oss地址
     resolve: {
       alias: {
         '@/': resolve('src') + '/',

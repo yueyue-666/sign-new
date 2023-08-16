@@ -29,7 +29,7 @@ const url = ref('');
 const cityCode = ref('河北');
 const list = ref([]);
 // 请求状态
-const loading = ref(true);
+const loading = ref(false);
 
 async function getDataList() {
   loading.value = true;
@@ -61,7 +61,6 @@ async function addCity(index, url, name) {
   }
 }
 const getLabel = (index, name) => {
-  console.log(index, name);
   var city = '';
   if (name === '是否泛解析') {
     city = '江苏中间域名';
