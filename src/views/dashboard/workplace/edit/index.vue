@@ -1,7 +1,7 @@
 <template>
   <div class="ele-body ele-body-card">
     <a-row :gutter="16" style="column-gap: 10px;">
-      <a-col :xxl="6" :xl="7" :lg="9" :md="10" :sm="24" :xs="24" class="cloumn-class">
+      <a-col :xxl="6" :xl="7" :lg="9" :md="24" :sm="24" :xs="24" class="cloumn-class">
         <a-card :bordered="false">
           <div class="user-info-list" style="margin-top:0;">
             <div class="ele-text-center">
@@ -129,7 +129,7 @@
           </div>
         </a-card>
       </a-col>
-      <a-col :xxl="17" :xl="16" :lg="15" :md="13" :sm="23" :xs="23" class="cloumn-class">
+      <a-col :xxl="17" :xl="16" :lg="14" :md="24" :sm="24" :xs="24" class="cloumn-class">
         <a-card :bordered="false" :body-style="{ paddingTop: '0px', minHeight: '600px' }">
           <a-tabs v-model:activeKey="active" size="large">
             <a-tab-pane tab="基础设置" key="info">
@@ -378,7 +378,7 @@
               <statistics />
             </a-tab-pane>
             <a-tab-pane tab="合并安卓" key="hebing">
-              <MergeAndroid :form="form"/>
+              <MergeAndroid :form="form" />
             </a-tab-pane>
           </a-tabs>
         </a-card>
@@ -452,7 +452,7 @@ import {
 } from '@ant-design/icons-vue';
 
 import { useUserStore } from '@/store/modules/user';
-import {API_IPA_URL} from '@/config/setting';
+import { API_IPA_URL } from '@/config/setting';
 
 const userStore = useUserStore();
 
@@ -648,12 +648,14 @@ const onCrop = (result) => {
   formData.append('imgType', 1);
 
   visible.value = false;
-  requestImage.postForm(`${API_IPA_URL}/file/uploadAppInfo`, formData).then((res) => {
-    if (res.data.status == 200) {
-      // window.location.reload();
-      downloadAppInfo();
-    }
-  });
+  requestImage
+    .postForm(`${API_IPA_URL}/file/uploadAppInfo`, formData)
+    .then((res) => {
+      if (res.data.status == 200) {
+        // window.location.reload();
+        downloadAppInfo();
+      }
+    });
   // .catch((e) => {
   //   message.error(e.response.data.msg);
   // });
@@ -850,12 +852,12 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.ele-body-card{
+.ele-body-card {
   // display: flex;
   // justify-content: flex-start;
   // align-items: flex-start;
 }
-.cloumn-class{
+.cloumn-class {
   background: #fff;
 }
 .btns-class {
