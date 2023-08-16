@@ -1,6 +1,6 @@
 <!-- 用户导入弹窗 -->
 <template>
-  <ele-modal :width="520" :footer="null" title="发布应用" :visible="visible" @update:visible="updateVisible"
+  <ele-modal :width="520" :footer="null" :title="title" :visible="visible" @update:visible="updateVisible" v-bind="$attrs"
     @cancel="cancelModal">
     <a-spin :spinning="loading">
       <div style="max-width: 800px; margin: 0 auto">
@@ -40,7 +40,7 @@
             <a-upload accept=".ipa" :show-upload-list="false" :customRequest="doUpload" v-if="errorUpload">
               <img :src="appInfo.icon" alt="">
             </a-upload>
-            <img :src="appInfo.icon" alt=""  v-else>
+            <img :src="appInfo.icon" alt="" v-else>
           </div>
           <div class="tip-class" v-if="complete == 0">
             正在检查安装包，请稍等...
@@ -152,23 +152,41 @@
 </template>
 
 <script setup>
-import { onMounted, ref, reactive } from 'vue';
+import { onMounted, ref, reactive, computed } from 'vue';
 import { message } from 'ant-design-vue/es';
 import { CloudUploadOutlined } from '@ant-design/icons-vue';
 import { importUsers } from '@/api/system/user';
 import requestImage from '@/utils/requestImage';
 import request from '@/utils/request';
-import { dataURLtoFile, fileSizeFmt,getLowerCharacter26 } from '@/utils/image';
+import { dataURLtoFile, fileSizeFmt, getLowerCharacter26 } from '@/utils/image';
 import { InfoCircleOutlined } from '@ant-design/icons-vue';
 const emit = defineEmits(['done', 'update:visible']);
 import { useRouter } from 'vue-router';
 const { push } = useRouter();
 import axios from 'axios';
 import {API_IPA_URL} from '@/config/setting';
-defineProps({
-  // 是否打开弹窗
-  visible: Boolean
-});
+const props = defineProps({
+  visible: {
+    type:Boolean,
+    default:false
+  },
+  signType: {
+    type:Number,
+    default:0
+  },
+  title: {
+    type:String,
+    default:'发布应用'
+  },
+  isUpdate: {
+    type:Boolean,
+    default:false
+  },
+  uploadParams:{
+    type:Object,
+    default:{}
+  }
+})
 
 // 导入请求状态
 const loading = ref(false);
@@ -176,7 +194,9 @@ const loading = ref(false);
 const subLoading = ref(false);
 //上传失败可以直接点图片在选择文件上传一下
 const errorUpload = ref(false);
-
+const title = computed(()=>{
+  return props.title
+})
 // 选中步骤
 const active = ref(0);
 
@@ -185,7 +205,7 @@ const form = reactive({
   downloadType: '',
   guideType: '',
   installType: 0,
-  signType: 0,
+  signType: props.signType,
   autoInstallFlag: 1,
   antiCrash: 0,
   lang: 0,
@@ -206,6 +226,7 @@ const rules = reactive({
 //提交
 async function save() {
   const params = {
+    ...props.uploadParams,
     "appDisplayName": appInfo.value.CFBundleDisplayName || appInfo.value.CFBundleName,
     "build": appInfo.value.CFBundleName,
     "bundleId": appInfo.value.CFBundleIdentifier,
@@ -223,7 +244,7 @@ async function save() {
     "signType": form.signType,
     "antiCustomUrl": form.antiCustomUrl
   }
-  if(!iconPath.value){
+  if (!iconPath.value) {
     let icourl = "/website-images/" + getLowerCharacter26() + '_icon.png'
     params['icon'] = icourl;
   }
@@ -238,10 +259,10 @@ async function save() {
     emit('update:visible', false);
     emit('done');
 
-  }finally{
+  } finally {
     subLoading.value = false
   }
- 
+
 }
 
 const onDone = (data) => {
@@ -284,10 +305,10 @@ const doUpload = async ({ file }) => {
   console.log(appInfo.value);
   const iocnFile = dataURLtoFile(appInfo.value.icon, "image/png");
   const formData = new FormData();
-  formData.append('ipaFile', file);
   const flagId = localStorage.getItem('flagId') || '';
   formData.append('flagId', flagId);
-  if(iocnFile){
+  formData.append('ipaFile', file);
+  if (iocnFile) {
     formData.append('imgFile', iocnFile);
   }
   complete.value = 0;

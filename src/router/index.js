@@ -2,7 +2,7 @@
  * 路由配置
  */
 import NProgress from 'nprogress';
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory,createWebHashHistory } from 'vue-router';
 import { WHITE_LIST, REDIRECT_PATH, LAYOUT_PATH } from '@/config/setting';
 import { useUserStore } from '@/store/modules/user';
 import { getToken } from '@/utils/token-util';
@@ -17,7 +17,7 @@ NProgress.configure({
 
 const router = createRouter({
   routes,
-  history: createWebHistory(),
+  history: createWebHashHistory(import.meta.env.VITE_PUBLIC_PATH),
   scrollBehavior() {
     return { top: 0 };
   }

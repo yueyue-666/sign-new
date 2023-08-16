@@ -44,7 +44,7 @@
       </div>
     </div>
 
-    <ele-modal :width="400" title="充值客服" v-model:visible="visible" :resizable="true" :maxable="true" :footer="false">
+    <ele-modal :width="400" title="充值客服" v-model:visible="visible" :resizable="true" :maxable="true" :footer="null">
       <div style="padding: 30px 0;">请联系客服</div>
     </ele-modal>
   </a-card>

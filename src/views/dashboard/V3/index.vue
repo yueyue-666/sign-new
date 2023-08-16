@@ -2,7 +2,7 @@
   <div class="ele-body">
     <a-card :bordered="false">
       <!-- 搜索表单 -->
-      <search-form @search="reload" @expand-change="onExpandChange" />
+      <search-form @search="reload" />
       <!-- 表格 -->
       <ele-pro-table
         :bordered="bordered"
@@ -243,7 +243,6 @@ const columns = ref([
     align: 'center',
     width: 200,
     ellipsis: true,
-    slots: { title: 'installType' },
     customFilterDropdown: true,
     customRender: ({ text }) => {
       if (text === 1) {
@@ -400,6 +399,17 @@ const getfilesize = (size) => {
     return (size / Math.pow(num, 3)).toFixed(2) + 'G';
   return (size / Math.pow(num, 4)).toFixed(2) + 'T';
 };
+
+//设置
+function reply(record){
+  const path = '/dashboard/workplace/v3-edit';
+  removePageTab({ key: path });
+    push({
+      path,
+      query: { appId: record.appId}
+    });
+}
+
 </script>
 
 <script>

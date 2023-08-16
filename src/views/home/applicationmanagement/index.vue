@@ -123,7 +123,6 @@
             <a-button
               type="primary"
               class="ele-btn-icon"
-              :danger="1"
               :disabled="!(selection.length > 0)"
               @click="removeBatch"
             >
@@ -135,7 +134,6 @@
             <a-button
               type="primary"
               class="ele-btn-icon"
-              :danger="1"
               :disabled="!(selection.length > 0)"
               @click="signV2V3Batch(0)"
             >
@@ -147,7 +145,6 @@
             <a-button
               type="primary"
               class="ele-btn-icon"
-              :danger="1"
               :disabled="!(selection.length > 0)"
               @click="signV2V3Batch(1)"
             >
@@ -159,7 +156,6 @@
             <a-button
               type="primary"
               class="ele-btn-icon"
-              :danger="1"
               @click="signAllV3"
             >
               <template #icon>
@@ -260,7 +256,7 @@
                 >
                 <a-divider type="vertical" />
               </template>
-              <a class="ele-text-success">设置</a>
+              <a class="ele-text-success" @click="reply(record)">设置</a>
               <a-divider type="vertical" />
               <a-popconfirm
                 placement="topRight"
@@ -457,7 +453,7 @@
     </ele-modal>
 
     <!-- 添加用户弹窗 -->
-    <ele-modal
+    <!-- <ele-modal
       :width="400"
       title="添加用户"
       v-model:visible="visible5"
@@ -487,7 +483,7 @@
           />
         </a-form-item>
       </a-form>
-    </ele-modal>
+    </ele-modal> -->
   </div>
 </template>
 
@@ -546,7 +542,7 @@
       width: 120,
       ellipsis: true,
       default: true,
-      slots: { title: 'downloadDeductCount' }
+      // slots: { title: 'downloadDeductCount' }
     },
     {
       title: '动态库日消耗量',
@@ -688,7 +684,7 @@
       width: 120,
       ellipsis: true,
       // customFilterDropdown: true,
-      slots: { title: 'installType' },
+      // slots: { title: 'installType' },
       customRender: ({ text }) => {
         if (text === 1) {
           return '滑块验证';
@@ -1174,6 +1170,15 @@
       return (size / Math.pow(num, 3)).toFixed(2) + 'G';
     return (size / Math.pow(num, 4)).toFixed(2) + 'T';
   };
+//设置
+function reply(record){
+  const path = '/dashboard/workplace/applicationmanagement-edit';
+  removePageTab({ key: path });
+    push({
+      path,
+      query: { appId: record.appId,isAdmin:true}
+    });
+}
 
   // 获取下拉
   getSignNewList();

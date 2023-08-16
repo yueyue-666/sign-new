@@ -140,9 +140,9 @@ const datasource = ({ page, limit, where, orders }) => {
 };
 
 /* 搜索 */
-// const reload = (where) => {
-//   tableRef?.value?.reload({ page: 1, where });
-// };
+const reload = (where) => {
+  tableRef?.value?.reload({ page: 1, where });
+};
 
 /* 打开编辑弹窗 */
 const openEdit = (row) => {

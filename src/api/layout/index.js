@@ -44,8 +44,8 @@ export async function getUserInfo() {
         ],
         authorities: [
           {
-            menuId: 211,
-            parentId: 22,
+            menuId: 1,
+            parentId: 0,
             title: '仪表盘',
             path: '/home/frontpage',
             component: '/home/frontpage',
@@ -61,8 +61,8 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 212,
-            parentId: 22,
+            menuId: 2,
+            parentId: 0,
             title: '用户管理',
             path: '/home/UserManagemen',
             component: '/home/UserManagemen',
@@ -78,8 +78,8 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 311,
-            parentId: 33,
+            menuId: 3,
+            parentId: 0,
             title: '应用管理',
             path: '/home2',
             component: '/home2',
@@ -95,8 +95,8 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 1,
-            parentId: 311,
+            menuId: 4,
+            parentId: 3,
             title: '应用管理',
             path: '/home/applicationmanagement',
             component: '/home/applicationmanagement',
@@ -112,8 +112,26 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 411,
-            parentId: 44,
+            menuId: 13,
+            parentId: 4,
+            title: '应用详情',
+            path: '/dashboard/workplace/applicationmanagement-edit',
+            component: '/dashboard/workplace/edit',
+            menuType: 0,
+            sortNumber: 4,
+            authority: null,
+            icon: 'team-outlined',
+            hide: 1,
+            meta: '{"active": "/home/applicationmanagement"}',
+            deleted: 0,
+            tenantId: 2,
+            children: null,
+            checked: null
+          },
+
+          {
+            menuId: 5,
+            parentId: 0,
             title: '交易管理',
             path: '/home/transactionmanagement',
             component: '/home/transactionmanagement',
@@ -129,8 +147,8 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 1,
-            parentId: 411,
+            menuId: 6,
+            parentId: 5,
             title: '下级充值记录',
             path: '/home/transactionmanagement/Subordinaterecharge',
             component: '/home/transactionmanagement/Subordinaterecharge',
@@ -146,8 +164,8 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 2,
-            parentId: 411,
+            menuId: 7,
+            parentId: 5,
             title: '我的交易记录',
             path: '/home/transactionmanagement/mydeal',
             component: '/home/transactionmanagement/mydeal',
@@ -163,8 +181,8 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 511,
-            parentId: 55,
+            menuId: 8,
+            parentId: 0,
             title: '数据统计',
             path: '/home/Statistics',
             component: '/home/Statistics',
@@ -180,8 +198,8 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 512,
-            parentId: 511,
+            menuId: 9,
+            parentId: 8,
             title: '超级签名V2',
             path: '/home/Statistics/V2',
             component: '/home/Statistics/V2',
@@ -197,8 +215,8 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 1,
-            parentId: 512,
+            menuId: 10,
+            parentId: 9,
             title: '签发走势',
             path: '/home/Statistics/V2/trend',
             component: '/home/Statistics/V2/trend',
@@ -214,8 +232,8 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 2,
-            parentId: 512,
+            menuId: 11,
+            parentId: 9,
             title: '用户统计',
             path: '/home/Statistics/V2/Userstatistics',
             component: '/home/Statistics/V2/Userstatistics',
@@ -231,8 +249,8 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 1,
-            parentId: 66,
+            menuId: 12,
+            parentId: 0,
             title: '系统设置',
             path: '/home/systemsettings',
             component: '/home/systemsettings',
@@ -308,8 +326,8 @@ export async function getUserInfo() {
           //   checked: null
           // },
           {
-            menuId: 111,
-            parentId: 11,
+            menuId: 1,
+            parentId: 0,
             title: '账户首页',
             path: '/dashboard/workplace',
             component: '/dashboard/workplace',
@@ -325,8 +343,8 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 112,
-            parentId: 11,
+            menuId: 14,
+            parentId: 1,
             title: '应用详情',
             path: '/dashboard/workplace/edit',
             component: '/dashboard/workplace/edit',
@@ -341,9 +359,27 @@ export async function getUserInfo() {
             children: null,
             checked: null
           },
+
           {
-            menuId: 113,
-            parentId: 11,
+            menuId: 3,
+            parentId: 1,
+            title: '应用详情',
+            path: '/dashboard/workplace/v2-edit',
+            component: '/dashboard/workplace/edit',
+            menuType: 0,
+            sortNumber: 4,
+            authority: null,
+            icon: 'team-outlined',
+            hide: 1,
+            meta: '{"active": "/dashboard/V2"}',
+            deleted: 0,
+            tenantId: 2,
+            children: null,
+            checked: null
+          },
+          {
+            menuId: 3,
+            parentId: 0,
             title: '超级签名V2',
             path: '/dashboard/V2',
             component: '/dashboard/V2',
@@ -359,8 +395,25 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 114,
-            parentId: 11,
+            menuId: 12,
+            parentId: 4,
+            title: '应用详情',
+            path: '/dashboard/workplace/v3-edit',
+            component: '/dashboard/workplace/edit',
+            menuType: 0,
+            sortNumber: 4,
+            authority: null,
+            icon: 'team-outlined',
+            hide: 1,
+            meta: '{"active": "/dashboard/V3"}',
+            deleted: 0,
+            tenantId: 2,
+            children: null,
+            checked: null
+          },
+          {
+            menuId: 4,
+            parentId: 0,
             title: '超级签名V3',
             path: '/dashboard/V3',
             component: '/dashboard/V3',
@@ -376,8 +429,25 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 115,
-            parentId: 11,
+            menuId: 13,
+            parentId: 5,
+            title: '应用详情',
+            path: '/dashboard/workplace/listPageAll-edit',
+            component: '/dashboard/workplace/edit',
+            menuType: 0,
+            sortNumber: 4,
+            authority: null,
+            icon: 'team-outlined',
+            hide: 1,
+            meta: '{"active": "/dashboard/listPageAll"}',
+            deleted: 0,
+            tenantId: 2,
+            children: null,
+            checked: null
+          },
+          {
+            menuId: 5,
+            parentId: 0,
             title: '混合签名',
             path: '/dashboard/listPageAll',
             component: '/dashboard/listPageAll',
@@ -393,8 +463,8 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 116,
-            parentId: 11,
+            menuId: 7,
+            parentId: 0,
             title: '签发记录',
             path: '/dashboard/listPage',
             component: '/dashboard/listPage',
@@ -410,8 +480,8 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 117,
-            parentId: 11,
+            menuId: 8,
+            parentId: 0,
             title: '数据统计',
             path: '/dashboard/statistics',
             component: '/dashboard/statistics',
@@ -427,8 +497,8 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 118,
-            parentId: 11,
+            menuId: 9,
+            parentId: 0,
             title: '财务信息',
             path: '/dashboard/finance',
             component: '/dashboard/finance',
@@ -444,8 +514,8 @@ export async function getUserInfo() {
             checked: null
           },
           {
-            menuId: 119,
-            parentId: 11,
+            menuId: 11,
+            parentId: 0,
             title: '闪退助手',
             path: '/dashboard/crash',
             component: '/dashboard/crash',

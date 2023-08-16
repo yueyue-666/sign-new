@@ -8,25 +8,58 @@
         <a-tab-pane tab="防封链接" key="2">
           <Antiblockinglink />
         </a-tab-pane>
-        <a-tab-pane tab="当前证书v2" key="3">3</a-tab-pane>
-        <a-tab-pane tab="当前证书v3" key="4">4</a-tab-pane>
-        <a-tab-pane tab="签名证书1" key="5">5</a-tab-pane>
-        <a-tab-pane tab="签名证书2" key="6">6</a-tab-pane>
-        <a-tab-pane tab="签名证书3" key="7">7</a-tab-pane>
-        <a-tab-pane tab="签名证书4" key="8">8</a-tab-pane>
-        <a-tab-pane tab="V3证书1" key="9">9</a-tab-pane>
-        <a-tab-pane tab="V3证书2" key="10">10</a-tab-pane>
-        <a-tab-pane tab="V3证书3" key="11">11</a-tab-pane>
-        <a-tab-pane tab="MDM推送证书" key="12">
+        <a-tab-pane tab="当前证书v2" key="3">
+          <currentcertificate :tab="1" />
+        </a-tab-pane>
+        <a-tab-pane tab="当前证书v3" key="4">
+          <currentcertificate :tab="2" />
+        </a-tab-pane>
+
+        <a-tab-pane tab="V2证书1" key="5">
+          <Certificate :type="1" />
+        </a-tab-pane>
+        <a-tab-pane tab="V2证书2" key="6">
+          <Certificate :type="2" />
+        </a-tab-pane>
+        <a-tab-pane tab="V2证书3" key="7">
+          <Certificate :type="3" />
+        </a-tab-pane>
+        <a-tab-pane tab="V2证书4" key="8">
+          <Certificate :type="4" />
+        </a-tab-pane>
+        <a-tab-pane tab="V2证书5" key="9">
+          <Certificate :type="5" />
+        </a-tab-pane>
+        <a-tab-pane tab="V2证书6" key="10">
+          <Certificate :type="6" />
+        </a-tab-pane>
+
+        <a-tab-pane tab="V3证书1" key="11">
+          <Certificate :type="7" />
+        </a-tab-pane>
+        <a-tab-pane tab="V3证书2" key="12">
+          <Certificate :type="8" />
+        </a-tab-pane>
+        <a-tab-pane tab="V3证书3" key="13">
+          <Certificate :type="9" />
+        </a-tab-pane>
+        <a-tab-pane tab="V3证书4" key="14">
+          <Certificate :type="10" />
+        </a-tab-pane>
+        <a-tab-pane tab="V3证书5" key="15">
+          <Certificate :type="11" />
+        </a-tab-pane>
+
+        <a-tab-pane tab="MDM推送证书" key="16">
           <pushcertificate />
         </a-tab-pane>
-        <a-tab-pane tab="证书检测" key="13">
+        <a-tab-pane tab="证书检测" key="17">
           <certificatedetection />
         </a-tab-pane>
-        <a-tab-pane tab="动态库bulid" key="14">
+        <a-tab-pane tab="动态库bulid" key="18">
           <Dynamiclibrarybuild />
         </a-tab-pane>
-        <a-tab-pane tab="偷包检测" key="15">
+        <a-tab-pane tab="偷包检测" key="19">
           <Stolenpackagedetection />
         </a-tab-pane>
       </a-tabs>
@@ -42,11 +75,13 @@ import { getUser } from '@/api/system/user';
 import { removePageTab } from '@/utils/page-tab-util';
 import request from '@/utils/request';
 import Antiblockinglink from './components/Antiblockinglink.vue';
+import currentcertificate from './components/currentcertificate.vue';
 import certificatedetection from './components/certificatedetection.vue';
 import Dynamiclibrarybuild from './components/Dynamiclibrarybuild.vue';
 import linksettings from './components/linksettings.vue';
 import pushcertificate from './components/pushcertificate.vue';
 import Stolenpackagedetection from './components/Stolenpackagedetection.vue';
+import Certificate from './components/certificate.vue';
 
 import {
   InfoCircleOutlined,

@@ -6,14 +6,14 @@
     <a-form ref="formRef" :model="form" :rules="rules" class="login-form ele-bg-white">
       <h4>{{ t('login.title') }}</h4>
       <a-form-item name="username">
-        <a-input allow-clear size="large" v-model:value="form.username" :placeholder="t('login.username')">
+        <a-input allow-clear size="large" v-model:value="form.username" :placeholder="t('login.username')" @keyup.enter="submit">
           <template #prefix>
             <user-outlined />
           </template>
         </a-input>
       </a-form-item>
       <a-form-item name="password">
-        <a-input-password size="large" v-model:value="form.password" :placeholder="t('login.password')">
+        <a-input-password size="large" v-model:value="form.password" :placeholder="t('login.password')" @keyup.enter="submit">
           <template #prefix>
             <lock-outlined />
           </template>
@@ -21,7 +21,7 @@
       </a-form-item>
       <a-form-item name="verifyCode">
         <div class="login-input-group">
-          <a-input allow-clear size="large" v-model:value="form.verifyCode" :placeholder="t('login.code')">
+          <a-input allow-clear size="large" v-model:value="form.verifyCode" :placeholder="t('login.code')" @keyup.enter="submit">
             <template #prefix>
               <safety-certificate-outlined />
             </template>
@@ -36,7 +36,7 @@
         <router-link to="/forget" class="ele-pull-right" style="line-height: 22px">{{ t('login.forget') }}</router-link>
       </a-form-item>-->
       <a-form-item>
-        <a-button block size="large" type="primary" :loading="loading" @click="submit">{{ loading ? t('login.loading') : t('login.login') }}</a-button>
+        <a-button block size="large" type="primary" :loading="loading"  @click="submit">{{ loading ? t('login.loading') : t('login.login') }}</a-button>
       </a-form-item>
       <!-- <div class="ele-text-center" style="padding-bottom: 32px">
         <qq-outlined class="login-oauth-icon" style="background: #3492ed" />
@@ -158,13 +158,16 @@ const submit = () => {
       .then((msg) => {
         message.success(msg);
         // cleanPageTabs();
-        // goHome();
+        goHome();
 
-        goHomeRoute('/');
+        // goHomeRoute('/home/frontpage');
         // window.location.reload();
       })
       .catch((e) => {
-        message.error(e.msg);
+        message.error(e.response.data.msg);
+        if(e.response.data.code == 1002 || e.response.data.code ==1003){
+          changeCaptcha();
+        }
         loading.value = false;
       });
   });

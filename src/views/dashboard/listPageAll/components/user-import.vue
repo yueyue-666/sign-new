@@ -10,9 +10,9 @@
             <a-step title="第三步" description="上传完成" />
           </a-steps>
         </div>
-        <step-edit v-if="active === 0" @done="onDone" />
+        <!-- <step-edit v-if="active === 0" @done="onDone" />
         <step-confirm v-if="active === 1" :data="form" @done="onNext" @back="onBack" />
-        <step-success v-if="active === 2" :data="form" @back="onBack" />
+        <step-success v-if="active === 2" :data="form" @back="onBack" /> -->
       </div>
       <div v-if="active === 0">
         <a-alert type="info">

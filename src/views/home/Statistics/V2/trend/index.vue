@@ -52,6 +52,7 @@ import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { LineChart } from 'echarts/charts';
 import useFormData from '@/utils/use-form-data';
+import { BarChart } from 'echarts/charts';
 import request from '@/utils/request';
 import {
   GridComponent,
@@ -63,10 +64,11 @@ import { trendStat } from '@/api/system/user';
 import useEcharts from '@/utils/use-echarts';
 use([
   CanvasRenderer,
-  LineChart,
+  BarChart,
   GridComponent,
-  TooltipComponent,
-  LegendComponent
+  LegendComponent,
+  TooltipComponent
+
 ]);
 const { currentRoute } = useRouter();
 
@@ -179,22 +181,42 @@ const visitHourChartOption = reactive({});
 /* 获取最近一周数据统计数据 */
 const getVisitHourData = () => {
   trendStat(form)
-    .then((data) => {
+    .then((res) => {
+      const data = res.sort((a,b)=>{
+        return new Date(a.day) -  new Date(b.day)
+      })
       Object.assign(visitHourChartOption, {
         tooltip: {
           trigger: 'axis'
-        },
-        legend: {
-          data: ['充值量', '签发消耗总量'],
-          right: 20
-        },
-        xAxis: [
+        }, xAxis: [
           {
             type: 'category',
-            boundaryGap: false,
             data: data.map((d) => d.day)
           }
         ],
+
+        legend: {
+          // top: '5%', // 控制 板块控制器的位置
+          right: 'center',
+          // icon: 'rect',//形状  类型包括 circle，rect,line，roundRect，triangle，diamond，pin，arrow，none
+          // itemWidth: 10,  // 设置宽度
+          // itemHeight: 4, // 设置高度
+          itemGap: 40, // 设置两个legend之间的间距
+          data: [
+            {
+              name: '充值量',  // 这个name需要和 series 里面的 name 对应起来
+              textStyle: {
+                color: '#5470c6' // 单独设置某一个图列的颜色
+              }
+            },
+            {
+              name: '签发消耗总量',  // 这个name需要和 series 里面的 name 对应起来
+              textStyle: {
+                color: '#9cc986' // 单独设置某一个图列的颜色
+              }
+            }
+          ]
+        },
         yAxis: [
           {
             type: 'value'
@@ -202,29 +224,24 @@ const getVisitHourData = () => {
         ],
         series: [
           {
-            name: '充值量',
-            type: 'line',
-            smooth: true,
-            symbol: 'none',
-            areaStyle: {
-              opacity: 0.5
-            },
-            data: data.map((d) => d.totalCharges)
-          },
-          {
-            name: '签发消耗总量',
-            type: 'line',
-            smooth: true,
-            symbol: 'none',
-            areaStyle: {
-              opacity: 0.5
+            name: '充值量',  // 这个name需要和 legend下面data里面的 name 对应起
+            type: 'bar',
+            itemStyle: {
+              color: '#5470c6' // 蓝色柱子颜色
             },
             data: data.map((d) => d.totalSigns)
+          },
+          {
+            name: '签发消耗总量',  // 这个name需要和 legend下面data里面的 name 对应起来
+            type: 'bar',
+            itemStyle: {
+              color: '#9cc986' // 蓝色柱子颜色
+            },
+            data: data.map((d) => d.totalCharges)
           }
         ]
       });
 
-      Object.assign(DownloadList, data[0]);
     })
     .catch((e) => {
       message.error(e.message);

@@ -1,5 +1,5 @@
 <template>
-  <!-- 表格 -->
+
   <ele-pro-table
     ref="tableRef"
     row-key="userId"

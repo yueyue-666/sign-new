@@ -4,7 +4,7 @@
 import axios from 'axios';
 import { unref } from 'vue';
 import router from '@/router';
-import { Modal } from 'ant-design-vue/es';
+import { message,Modal } from 'ant-design-vue/es';
 import { API_BASE_URL, TOKEN_HEADER_NAME, LAYOUT_PATH } from '@/config/setting';
 import { getToken, setToken } from './token-util';
 import { logout } from './page-tab-util';
@@ -74,13 +74,19 @@ service.interceptors.response.use(
     //   setToken(token);
     // }
     // return res;
-
+    if(res.data.status == 200){
+      return res.data.data
+    }
     if (res.data.code !== 200) {
       if ([403].includes(res.data.code)) {
         logout(true);
         setTimeout(() => {
           window.location.reload();
         }, 1500);
+      }else{
+        const msg = res?.data?.msg || res?.msg
+        message.error(msg);
+        return Promise.reject(msg);
       }
       // return Promise.reject(new Error(res));
     } else {

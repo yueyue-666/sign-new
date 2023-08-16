@@ -1,5 +1,7 @@
 // 接口地址
 export const API_BASE_URL = import.meta.env.VITE_API_URL;
+export const API_IPA_URL = import.meta.env.VITE_API_IPA_URL;
+export const API_P12_URL = import.meta.env.VITE_API_P12_URL;
 
 // 项目名称
 export const PROJECT_NAME = import.meta.env.VITE_APP_NAME;
@@ -55,7 +57,7 @@ export const THEME_STORE_NAME = 'theme';
 export const I18N_CACHE_NAME = 'i18n-lang';
 
 // 是否开启国际化功能
-export const I18N_ENABLE = true;
+export const I18N_ENABLE = false;
 
 // 高德地图 key , 自带的只能用于测试, 正式项目请自行到高德地图官网申请 key
 export const MAP_KEY = '006d995d433058322319fa797f2876f5';

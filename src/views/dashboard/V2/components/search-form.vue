@@ -82,7 +82,8 @@
     </ele-modal>
 
     <!-- 发布应用弹窗 -->
-    <user-import v-model:visible="showImport" @done="reload" />
+    <!-- <user-import v-model:visible="showImport" @done="reload" /> -->
+    <UploadIpa  v-model:visible="showImport" @done="reload"></UploadIpa>
   </a-card>
 </template>
 
@@ -90,6 +91,7 @@
 import { ref } from 'vue';
 import useFormData from '@/utils/use-form-data';
 import UserImport from './user-import.vue';
+import UploadIpa from '@/components/UploadIpa/index.vue';
 
 const emit = defineEmits(['search', 'expand-change']);
 
@@ -130,8 +132,7 @@ const onOk = () => {
 };
 
 const reload = (where) => {
-  selection.value = [];
-  tableRef?.value?.reload({ page: 1, where });
+  emit('search', form);
 };
 </script>
 <style lang="less" scoped>

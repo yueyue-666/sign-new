@@ -1,15 +1,7 @@
 <template>
-  <!-- <a-card :bordered="false">
-      <a-spin :spinning="loading">
-        <a-space size="middle">
-          <a-button @click="onClose">关闭</a-button>
-          <a-button type="primary" :loading="loading" @click="save">保存</a-button>
-        </a-space>
-      </a-spin>
-  </a-card>-->
   <div class="ele-body ele-body-card">
-    <a-row :gutter="16">
-      <a-col :xxl="6" :xl="7" :lg="9" :md="10" :sm="24" :xs="24">
+    <a-row :gutter="16" style="column-gap: 10px;">
+      <a-col :xxl="6" :xl="7" :lg="9" :md="10" :sm="24" :xs="24" class="cloumn-class">
         <a-card :bordered="false">
           <div class="user-info-list" style="margin-top:0;">
             <div class="ele-text-center">
@@ -21,15 +13,15 @@
             <div class="ele-cell">
               <edit-outlined />
               <div class="ele-cell-content">
-                <a @click="visible1=true" style="cursor:pointer;">备注</a>
+                <a @click="visible1 = true" style="cursor:pointer;">备注</a>
               </div>
             </div>
             <div class="ele-cell">
               <tag-outlined />
               <div class="ele-cell-content">
                 <span>{{ AppInfo.name }}</span> &nbsp;&nbsp;&nbsp;&nbsp;
-                <ele-tag size="mini" shape="round" color="red" v-if="AppInfo.signType===1">V3</ele-tag>
-                <ele-tag size="mini" shape="round" color="red" v-else-if="AppInfo.signType===2">混合</ele-tag>
+                <ele-tag size="mini" shape="round" color="red" v-if="AppInfo.signType === 1">V3</ele-tag>
+                <ele-tag size="mini" shape="round" color="red" v-else-if="AppInfo.signType === 2">混合</ele-tag>
                 <ele-tag size="mini" shape="round" color="red" v-else>V2</ele-tag>
               </div>
             </div>
@@ -126,20 +118,20 @@
             </div>
           </div>
           <a-divider style="margin:10px 0;" dashed />
-          <div class="ele-text-center">
-            <a-button
-              type="primary"
-              :danger="AppInfo.appStatus === 1"
-              @click="editStatus(AppInfo.appStatus)"
-            >{{AppInfo.appStatus === 1 ? '下架' : '上架'}}</a-button>&nbsp;&nbsp;
-            <a-button type="primary">更新</a-button>&nbsp;&nbsp;
+          <div class="btns-class">
+            <a-button type="primary" :danger="AppInfo.appStatus === 1" @click="editStatus(AppInfo.appStatus)">
+              {{
+              AppInfo.appStatus === 1 ? '下架' : '上架' }}
+            </a-button>
+            <a-button type="primary" @click="updateApp(isAdmin ? '更新源包' : '更新应用')">{{ isAdmin ? '更新源包' : '更新' }}</a-button>
+            <a-button type="primary" @click="updateApp('更新已重签包')" v-if="isAdmin">更新已重签包</a-button>
             <a-button @click="onClose">关闭</a-button>
           </div>
         </a-card>
       </a-col>
-      <a-col :xxl="18" :xl="17" :lg="15" :md="14" :sm="24" :xs="24">
+      <a-col :xxl="17" :xl="16" :lg="15" :md="13" :sm="23" :xs="23" class="cloumn-class">
         <a-card :bordered="false" :body-style="{ paddingTop: '0px', minHeight: '600px' }">
-          <a-tabs v-model:active-key="active" size="large">
+          <a-tabs v-model:activeKey="active" size="large">
             <a-tab-pane tab="基础设置" key="info">
               <a-spin :spinning="loading">
                 <a-form
@@ -168,11 +160,11 @@
                       <a-radio :value="2">模式二</a-radio>
                     </a-radio-group>
                     <p
-                      v-if="form.downloadType===1"
+                      v-if="form.downloadType === 1"
                       style="color:red;font-size:12px;margin-bottom:0;"
                     >当用户在本平台第一次安装V2模式应用时，会安装两次描述文件，重新下载或者再次下载其它本平台应用时，不会出现MDM负载不匹配的情况。</p>
                     <p
-                      v-if="form.downloadType===2"
+                      v-if="form.downloadType === 2"
                       style="color:red;font-size:12px;margin-bottom:0;"
                     >当用户下载V2模式应用时，只会安装一次描述文件，重新下载或者再次下载其它本平台应用时，可能会出现MDM负载不匹配的情况。</p>
                   </a-form-item>
@@ -189,11 +181,11 @@
                       <a-radio :value="2">每次安装都弹</a-radio>
                       <a-radio :value="3">不主动弹出</a-radio>
                       <p
-                        v-if="form.guideType===1"
+                        v-if="form.guideType === 1"
                         style="color:red;font-size:12px;margin-bottom:0;"
                       >用户第一次安装的时候，安装页面会主动弹出【MDM有效负载不匹配】的帮助文档提示框。若用户重新下载时就不会再弹了。</p>
-                      <p v-if="form.guideType===2" style="color:red;font-size:12px;margin-bottom:0;">用户每次安装app都会主动弹出【MDM有效负载不匹配】的帮助提示框。</p>
-                      <p v-if="form.guideType===3" style="color:red;font-size:12px;margin-bottom:0;">用户安装app的时候都不主动弹出【MDM有效负载不匹配】的帮助提示框。</p>
+                      <p v-if="form.guideType === 2" style="color:red;font-size:12px;margin-bottom:0;">用户每次安装app都会主动弹出【MDM有效负载不匹配】的帮助提示框。</p>
+                      <p v-if="form.guideType === 3" style="color:red;font-size:12px;margin-bottom:0;">用户安装app的时候都不主动弹出【MDM有效负载不匹配】的帮助提示框。</p>
                     </a-radio-group>
                   </a-form-item>
                   <a-form-item style="flex-wrap: nowrap">
@@ -224,12 +216,12 @@
                       <a-radio :value="2">混合模式</a-radio>
 
                       <p
-                        v-if="form.signType===0"
+                        v-if="form.signType === 0"
                         style="color:red;font-size:12px;margin-bottom:0;"
                       >MDM安装模式，若出现负载不匹配等情況，需要用户去设置里面卸载已有的移动管理文件，然后再进行签名安装。</p>
-                      <p v-if="form.signType===1" style="color:red;font-size:12px;margin-bottom:0;">不会出现MDM负载不匹配的问题，可直接安装应用，但需要用户手动信任证书。</p>
+                      <p v-if="form.signType === 1" style="color:red;font-size:12px;margin-bottom:0;">不会出现MDM负载不匹配的问题，可直接安装应用，但需要用户手动信任证书。</p>
                       <p
-                        v-if="form.signType===2"
+                        v-if="form.signType === 2"
                         style="color:red;font-size:12px;margin-bottom:0;"
                       >用户优先使用V2的MDM模式进行签名安装，若出现MDM负载不匹配等情况，用户可点击【重试】使用V3模式，减少用户操作步骤，保证用户都能安装成功，提高应用的注册率。</p>
                     </a-radio-group>
@@ -257,7 +249,7 @@
                       <a-radio :value="1">开启</a-radio>
                       <a-radio :value="0">关闭</a-radio>
                       <a-radio :value="2">自定义链接</a-radio>
-                      <a-input v-if="form.antiCrash===2" v-model:value="form.antiCustomUrl" placeholder="建议输入您落地页的链接" allow-clear />
+                      <a-input v-if="form.antiCrash === 2" v-model:value="form.antiCustomUrl" placeholder="建议输入您落地页的链接" allow-clear />
                     </a-radio-group>
                   </a-form-item>
 
@@ -299,7 +291,7 @@
                   :model="form2"
                   :label-col="{ lg: 4, md: 6, sm: 4, xs: 24 }"
                   :wrapper-col="{ lg: 20, md: 18, sm: 20, xs: 24 }"
-                  style="max-width: 580px; margin-top: 20px"
+                  style=" margin-top: 20px"
                 >
                   <!-- <a-form-item label="昵称" name="nickname">
                 <a-input v-model:value="form.nickname" placeholder="请输入昵称" allow-clear />
@@ -318,8 +310,8 @@
                       <a-radio :value="1">模板一</a-radio>
                       <a-radio :value="2">模板二</a-radio>
                     </a-radio-group>
-                    <p v-if="form2.downloadStyle===1" style="color:red;font-size:12px;margin-bottom:0;">App Store经典下载页模板</p>
-                    <p v-if="form2.downloadStyle===2" style="color:red;font-size:12px;margin-bottom:0;">下载页顶部会展示MDM安装的引导教程</p>
+                    <p v-if="form2.downloadStyle === 1" style="color:red;font-size:12px;margin-bottom:0;">App Store经典下载页模板</p>
+                    <p v-if="form2.downloadStyle === 2" style="color:red;font-size:12px;margin-bottom:0;">下载页顶部会展示MDM安装的引导教程</p>
                   </a-form-item>
                   <a-form-item label="在线客服">
                     <a-textarea v-model:value="form2.chatLink" placeholder="填写在线客服网址，下载页面将展示客服信息" :rows="4" />
@@ -335,7 +327,7 @@
                       <a-radio :value="0">竖屏</a-radio>
                       <a-radio :value="1">横屏</a-radio>
                     </a-radio-group>
-                    <p v-if="form2.imageType===0">
+                    <p v-if="form2.imageType === 0">
                       <span style="color: #999;font-size: 12px;">
                         建议上传
                         <label style="color: red;" class="slide-size-hint">720*1280</label>图片，
@@ -343,7 +335,7 @@
                         <label style="color: red;">6</label>张
                       </span>
                     </p>
-                    <p v-if="form2.imageType===1">
+                    <p v-if="form2.imageType === 1">
                       <span style="color: #999;font-size: 12px;">
                         建议上传
                         <label style="color: red;" class="slide-size-hint">1920*1080</label>图片，
@@ -351,6 +343,27 @@
                         <label style="color: red;">6</label>张
                       </span>
                     </p>
+                  </a-form-item>
+                  <a-form-item label=" " :colon="false">
+                    <div class="imgs-class" :class="[form2.imageType == 0 ? 'verticalScreen' : 'landscapeScreen']">
+                      <div class="img-warp" v-for="(item, index) in getCureenImages" :key="index">
+                        <img :src="item" />
+                        <img src="@/assets/close.webp" class="cleanUp-class" @click="closeImg(index)" />
+                      </div>
+                      <a-upload-dragger
+                        accept="image/*"
+                        :show-upload-list="false"
+                        :customRequest="doUpload"
+                        v-show="uploadImage.length <= 5"
+                        style="padding: 24px 0; margin-bottom: 16px; transition: width 1s;"
+                        :style="{ 'width': form2.imageType == 0 ? '140px' : '250px', 'height': form2.imageType == 0 ? '250px' : '140px', }"
+                      >
+                        <p class="ant-upload-drag-icon">
+                          <cloud-upload-outlined />
+                        </p>
+                        <p class="ant-upload-hint">点击上传，或将图片拖拽到此处</p>
+                      </a-upload-dragger>
+                    </div>
                   </a-form-item>
                   <a-form-item :wrapper-col="{ md: { offset: 6 } }">
                     <a-button type="primary" :loading="loading" @click="save2">{{ loading ? '提交中..' : '提交' }}</a-button>
@@ -364,17 +377,20 @@
             <a-tab-pane tab="数据统计" key="tongji">
               <statistics />
             </a-tab-pane>
-            <a-tab-pane tab="合并安卓" key="hebing">555</a-tab-pane>
+            <a-tab-pane tab="合并安卓" key="hebing">
+              <MergeAndroid :form="form"/>
+            </a-tab-pane>
           </a-tabs>
         </a-card>
       </a-col>
     </a-row>
     <!-- 头像裁剪弹窗 -->
     <ele-cropper-modal
-      :src="form.avatar"
+      :src="AppInfo.avatar"
       v-model:visible="visible"
       :options="{ autoCropArea: 1, viewMode: 1, dragMode: 'move' }"
       @done="onCrop"
+      :to-blob="true"
     />
     <!-- 备注弹窗 -->
     <ele-modal
@@ -383,7 +399,7 @@
       v-model:visible="visible1"
       :resizable="true"
       :maxable="true"
-      @cancel="visible1=false"
+      @cancel="visible1 = false"
       @ok="remarksave"
     >
       <a-form ref="remarkformRef" :model="remarkform" :label-col="{ flex: '70px' }" :wrapper-col="{ flex: '1' }">
@@ -392,20 +408,34 @@
         </a-form-item>
       </a-form>
     </ele-modal>
+
+    <UploadIpa v-model:visible="showImport" @done="downloadAppInfo" isUpdate :title="title" :uploadParams="uploadParams"></UploadIpa>
   </div>
 </template>
 
 <script setup>
-import { createVNode, ref, unref, reactive, computed } from 'vue';
+import {
+  createVNode,
+  ref,
+  unref,
+  reactive,
+  computed,
+  onMounted,
+  watch
+} from 'vue';
 import { useRouter } from 'vue-router';
 import { message, Modal } from 'ant-design-vue/es';
 import { getUser } from '@/api/system/user';
 import { removePageTab } from '@/utils/page-tab-util';
 import request from '@/utils/request';
+import requestImage from '@/utils/requestImage';
 import ListPage from './component/list-page.vue';
 import Statistics from './component/statistics.vue';
-
+import MergeAndroid from './component/mergeAndroid.vue';
+import { getBase64WithFile, getBase64Image } from '@/utils/image';
+import UploadIpa from '@/components/UploadIpa/index.vue';
 import {
+  CloudUploadOutlined,
   InfoCircleOutlined,
   ExclamationCircleOutlined,
   EditOutlined,
@@ -422,6 +452,8 @@ import {
 } from '@ant-design/icons-vue';
 
 import { useUserStore } from '@/store/modules/user';
+import {API_IPA_URL} from '@/config/setting';
+
 const userStore = useUserStore();
 
 //
@@ -431,6 +463,8 @@ const formRef2 = ref(null);
 //
 const remarkformRef = ref(null);
 
+const title = ref('更新应用');
+const uploadParams = ref({});
 // tab 页选中
 const active = ref('info');
 
@@ -449,17 +483,35 @@ const loginUser = computed(() => userStore.info ?? {});
 // 表单数据
 const form = reactive({
   downloadType: '',
+  androidUrl: '',
   guideType: '',
   installType: '',
   signType: '',
   autoInstallFlag: 1,
+  isOpenAndroid: 0,
   antiCrash: '',
   lang: '',
   cnzz: '',
   introduction: '',
   antiCustomUrl: ''
 });
+const showImport = ref(false);
+function updateApp(modelTitle) {
+  title.value = modelTitle;
+  if (title.value == '更新已重签包') {
+    uploadParams.value = {
+      isUploadSignedIpa: 1,
+      isTest: location.href.indexOf('mytest1234') > -1 ? 1 : 0
+    };
+  }
+  if (title.value == '更新源包') {
+    uploadParams.value = {
+      isTest: location.href.indexOf('mytest1234') > -1 ? 1 : 0
+    };
+  }
 
+  showImport.value = true;
+}
 // 表单数据
 const form2 = reactive({});
 
@@ -568,6 +620,8 @@ const save2 = () => {
   const { query } = unref(currentRoute);
   let body = form2;
   body.appId = query.appId;
+  body.downloadStyleType = 1;
+  body.settingPage = 2; //好像标识的在哪个页签
 
   // body.autoInstallFlag = form.autoInstallFlag + '';
 
@@ -576,6 +630,7 @@ const save2 = () => {
     .then((res) => {
       downloadAppInfo();
       loading.value = false;
+      message.success(res.data.msg);
     })
     .catch((e) => {
       message.error(e.response.data.msg);
@@ -584,9 +639,24 @@ const save2 = () => {
 
 /* 头像裁剪完成回调 */
 const onCrop = (result) => {
-  form.avatar = result;
+  // updateLoginUser(form);
+  const { query } = unref(currentRoute);
+  const token = localStorage.getItem('token') || '';
+  const formData = new FormData();
+  formData.append('imgFile', result);
+  formData.append('appId', query.appId);
+  formData.append('imgType', 1);
+
   visible.value = false;
-  updateLoginUser(form);
+  requestImage.postForm(`${API_IPA_URL}/file/uploadAppInfo`, formData).then((res) => {
+    if (res.data.status == 200) {
+      // window.location.reload();
+      downloadAppInfo();
+    }
+  });
+  // .catch((e) => {
+  //   message.error(e.response.data.msg);
+  // });
 };
 
 /* 打开图片裁剪 */
@@ -595,9 +665,13 @@ const openCropper = () => {
 };
 
 const { currentRoute, push } = useRouter();
+// const appId = ref('');
+// appId.value = currentRoute.value.query.appId
 
 // 查询状态
 // const loading = ref(false);
+
+const uploadImage = ref([]);
 
 const AppInfo = ref({});
 
@@ -611,6 +685,7 @@ const downloadAppInfo = () => {
       remarkform.remark = res.data.data.remark; // 备注回显
 
       // 基础设置回显
+      form.androidUrl = res.data.data.androidUrl;
       form.downloadType = res.data.data.downloadType;
       form.guideType = res.data.data.guideType;
       form.installType = res.data.data.installType;
@@ -618,13 +693,30 @@ const downloadAppInfo = () => {
       form.antiCrash = res.data.data.antiCrash;
       form.lang = res.data.data.lang;
       form.cnzz = res.data.data.cnzz;
+      form.isOpenAndroid = res.data.data.isOpenAndroid;
       form.introduction = res.data.data.introduction;
       AppInfo.value = res.data.data;
+      // AppInfo.value.avatar = res.data.data.icon?getBase64Image(res.data.data.icon):'';
+      AppInfo.value.avatar = res.data.data.icon;
+
+      form2.comment = res.data.data.comment;
+      form2.commentTitle = res.data.data.commentTitle;
+      form2.chatLink = res.data.data.chatLink;
+      form2.downloadStyle = res.data.data.downloadStyle;
+      form2.imageType = res.data.data.imageType;
+      form2.images = res.data.data.images;
+      if (JSON.parse(form2.images)) {
+        uploadImage.value = JSON.parse(form2.images);
+      }
     })
     .catch((e) => {
       message.error(e.response.data.msg);
     });
 };
+
+const getCureenImages = computed(() => {
+  return uploadImage.value;
+});
 
 const UserData = ref({});
 
@@ -692,10 +784,64 @@ const getfilesize = (size) => {
   return (size / Math.pow(num, 4)).toFixed(2) + 'T';
 };
 
-// 获取应用详情
-downloadAppInfo();
-//获取下载量
-UserDataList();
+function doUpload({ file }) {
+  const formData = new FormData();
+  const flagId = localStorage.getItem('flagId') || '';
+  formData.append('flagId', flagId);
+  formData.append('imgFile', file);
+
+  requestImage
+    .post('https://file.xiaohuagnchong.com/file/uploadAppInfo', formData, {
+      onUploadProgress(progressEvent) {
+        const schedule =
+          ((progressEvent.loaded / progressEvent.total) * 100) | 0;
+        if (schedule != 100) {
+          // complete.value = schedule
+        } else {
+          // complete.value = 99
+        }
+      }
+    })
+    .then(async (res) => {
+      // 1.获取到地址 2.存到form2.images内
+      const images = JSON.parse(form2.images);
+      images.push(res.data.data.iconPath);
+      form2.images = JSON.stringify(images);
+      const base64 = await getBase64WithFile(file);
+      uploadImage.value.push(base64.result);
+    })
+    .catch((e) => {
+      errorUpload.value = true;
+      message.error('上传失败！');
+    });
+}
+
+function closeImg(index) {
+  const images = JSON.parse(form2.images);
+  const fliterImages = images.filter((i, ind) => {
+    return ind != index;
+  });
+  form2.images = JSON.stringify(fliterImages);
+  uploadImage.value = uploadImage.value.filter((i, ind) => {
+    return ind != index;
+  });
+}
+
+// watch(()=>currentRoute,(n,o)=>{
+//   const { query  } = n.value
+//   debugger
+// },{immediate:true})
+const isAdmin = ref(false);
+onMounted(() => {
+  const { query } = unref(currentRoute);
+  if (query.isAdmin) {
+    isAdmin.value = true;
+  }
+  // 获取应用详情
+  downloadAppInfo();
+  //获取下载量
+  UserDataList();
+});
 </script>
 
 <script>
@@ -704,6 +850,22 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.ele-body-card{
+  // display: flex;
+  // justify-content: flex-start;
+  // align-items: flex-start;
+}
+.cloumn-class{
+  background: #fff;
+}
+.btns-class {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: 10px;
+}
+
 /* 用户资料卡片 */
 .user-info-avatar-group {
   margin: 16px 0;
@@ -792,6 +954,45 @@ export default {
     &.anticon-alipay {
       background: #1476fe;
     }
+  }
+}
+
+.imgs-class {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+
+  img {
+    transition: width 1s;
+  }
+
+  .img-warp {
+    position: relative;
+
+    .cleanUp-class {
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+      position: absolute;
+      top: -2px;
+      right: -2px;
+    }
+  }
+}
+
+.verticalScreen {
+  img {
+    width: 140px;
+    height: 200px;
+  }
+}
+
+.landscapeScreen {
+  img {
+    width: 250px;
+    height: 170px;
   }
 }
 </style>

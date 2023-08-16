@@ -2,7 +2,7 @@
   <div class="ele-body">
     <a-card :bordered="false">
       <!-- 搜索表单 -->
-      <search-form @search="reload" @expand-change="onExpandChange" />
+      <search-form @search="reload"/>
       <!-- 表格 -->
       <ele-pro-table
         :bordered="bordered"
@@ -176,9 +176,11 @@ import {
   AndroidOutlined
 } from '@ant-design/icons-vue';
 import searchForm from './components/search-form.vue';
-
+import { removePageTab } from '@/utils/page-tab-util';
 import request from '@/utils/request';
 import { pageUsers } from '@/api/system/user';
+import { useRouter } from 'vue-router';
+const { push } = useRouter();
 
 // 表格实例
 const tableRef = ref(null);
@@ -244,7 +246,7 @@ const columns = ref([
     width: 200,
     ellipsis: true,
     // customFilterDropdown: true,
-    slots: { title: 'installType' },
+    // slots: { title: 'installType' },
     customRender: ({ text }) => {
       if (text === 1) {
         return '滑块验证';
@@ -307,18 +309,18 @@ const tableHeight = computed(() => {
     : void 0;
 });
 const customRow = (record) => {
-  return {
-    // 行点击事件
-    onClick: () => {
-      if (selection.value.some((d) => d.userId === record.userId)) {
-        selection.value = selection.value.filter(
-          (d) => d.userId !== record.userId
-        );
-      } else {
-        selection.value = selection.value.concat([record]);
-      }
-    }
-  };
+  // return {
+  //   // 行点击事件
+  //   onClick: () => {
+  //     if (selection.value.some((d) => d.userId === record.userId)) {
+  //       selection.value = selection.value.filter(
+  //         (d) => d.userId !== record.userId
+  //       );
+  //     } else {
+  //       selection.value = selection.value.concat([record]);
+  //     }
+  //   }
+  // };
 };
 // 默认搜索条件
 const defaultWhere = reactive({});
@@ -400,6 +402,16 @@ const getfilesize = (size) => {
     return (size / Math.pow(num, 3)).toFixed(2) + 'G';
   return (size / Math.pow(num, 4)).toFixed(2) + 'T';
 };
+
+//设置
+function reply(record){
+  const path = '/dashboard/workplace/v2-edit';
+  removePageTab({ key: path });
+    push({
+      path,
+      query: { appId: record.appId}
+    });
+}
 </script>
 
 <script>

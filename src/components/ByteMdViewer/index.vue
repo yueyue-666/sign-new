@@ -1,6 +1,5 @@
 <!-- markdown 解析 -->
 <template>
-  <!-- eslint-disable vue/no-v-html -->
   <div
     ref="rootRef"
     v-html="content"

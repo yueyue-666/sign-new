@@ -17,7 +17,12 @@ export const routes = [
     path: '/forget',
     component: () => import('@/views/forget/index.vue'),
     meta: { title: '忘记密码' }
-  }
+  },
+  // 404
+  // {
+  //   path: '/:path(.*)*',
+  //   component: () => import('@/views/exception/404/index.vue')
+  // }
   // 404
   // {
   //   path: '/:path(.*)*',
@@ -47,6 +52,12 @@ export function getMenuRoutes(menus, homePath) {
   eachTreeData(menuToRoutes(menus, getComponent), (route) => {
     routes.push({ ...route, children: void 0 });
   });
+  console.log({
+    path: LAYOUT_PATH,
+    component: EleLayout,
+    redirect: HOME_PATH ?? homePath,
+    children: routes
+  })
   return {
     path: LAYOUT_PATH,
     component: EleLayout,
