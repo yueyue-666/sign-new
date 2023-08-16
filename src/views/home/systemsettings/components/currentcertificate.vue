@@ -2,7 +2,8 @@
 <template>
   <div>
     <a-spin :spinning="loading">
-      <a-table :columns="columns" :data-source="data" :row-selection="rowSelection" rowKey="isCurrentCer">
+      <!-- rowKey="isCurrentCer" -->
+      <a-table :columns="columns" :data-source="data" :row-selection="rowSelection">
         <template #bodyCell="{ column, record, index }">
           <template v-if="column.key === 'index'">{{ cer + (index + 1) }}</template>
           <template v-if="column.key === 'cerStatus'">
