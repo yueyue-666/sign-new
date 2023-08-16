@@ -2,8 +2,7 @@
 <template>
   <div>
     <a-spin :spinning="loading">
-      <!-- rowKey="isCurrentCer" -->
-      <a-table :columns="columns" :data-source="data" :row-selection="rowSelection">
+      <a-table :columns="columns" :data-source="data" :row-selection="rowSelection" rowKey="cerName">
         <template #bodyCell="{ column, record, index }">
           <template v-if="column.key === 'index'">{{ cer + (index + 1) }}</template>
           <template v-if="column.key === 'cerStatus'">
@@ -64,20 +63,25 @@ const rowSelection = ref({
   checkStrictly: false,
   type: 'radio',
   onChange: (selectedRowKeys, selectedRows) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      'selectedRows: ',
-      selectedRows
-    );
+    // console.log(
+    //   `selectedRowKeys: ${selectedRowKeys}`,
+    //   'selectedRows: ',
+    //   selectedRows
+    // );
   },
   onSelect: (record, selected, selectedRows) => {
-    console.log(record, selected, selectedRows);
+    console.log(record);
+    if (record.cerStatus === '0') {
+      message.error('该证书已无效');
+    } else {
+      selectCer(record);
+    }
   },
   onSelectAll: (selected, selectedRows, changeRows) => {
-    console.log(selected, selectedRows, changeRows);
+    // console.log(selected, selectedRows, changeRows);
   },
   //默认选择
-  selectedRowKeys: [1]
+  selectedRowKeys: []
 });
 
 function onChangeCerStatus(checked, row) {
@@ -103,10 +107,29 @@ function onChangeCerStatus(checked, row) {
   });
 }
 
+function selectCer(record) {
+  let url = props.tab === 1 ? '/cer/selectCer' : '/cer/selectCerV3';
+  let body = { type: record.type };
+  request
+    .post(url, body)
+    .then((res) => {
+      getlist();
+      message.success(res.data.msg);
+    })
+    .catch((e) => {
+      message.error(e.response.data.msg);
+    });
+}
+
 async function getlist() {
   loading.value = true;
   let url = props.tab === 1 ? '/cer/list' : '/cer/list_v3';
   const result = await request.post(url, {});
+  result.data.data.forEach((element) => {
+    if (element.isCurrentCer === 1) {
+      rowSelection.value.selectedRowKeys = [element.cerName];
+    }
+  });
   data.value = result.data.data;
   loading.value = false;
 }
