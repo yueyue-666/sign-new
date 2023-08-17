@@ -30,14 +30,14 @@ export default defineConfig(({ command }) => {
             importStyle: isBuild ? 'less' : false
           })
         ]
-      }),
-      // gzip 压缩
-      ViteCompression({
-        disable: !isBuild,
-        threshold: 10240,
-        algorithm: 'gzip',
-        ext: '.gz'
       })
+      // gzip 压缩
+      // ViteCompression({
+      //   disable: !isBuild,
+      //   threshold: 10240,
+      //   algorithm: 'gzip',
+      //   ext: '.gz'
+      // })
     ],
     css: {
       preprocessorOptions: {
