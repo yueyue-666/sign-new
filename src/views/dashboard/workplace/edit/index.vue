@@ -425,7 +425,6 @@ import {
 } from 'vue';
 import { useRouter } from 'vue-router';
 import { message, Modal } from 'ant-design-vue/es';
-import { getUser } from '@/api/system/user';
 import { removePageTab } from '@/utils/page-tab-util';
 import request from '@/utils/request';
 import requestImage from '@/utils/requestImage';
@@ -745,23 +744,6 @@ const onClose = () => {
   removePageTab({ key: unref(currentRoute).path });
   push('/dashboard/workplace');
 };
-
-/* 查询用户信息 */
-// const query = () => {
-//   const { query } = unref(currentRoute);
-//   if (query.id) {
-//     getUser(Number(query.id))
-//       .then((data) => {
-//         loading.value = false;
-//         user.value = data;
-//       })
-//       .catch((e) => {
-//         message.error(e.message);
-//       });
-//   }
-// };
-
-// query();
 
 // 复制下载地址
 const copyDetail = (value) => {

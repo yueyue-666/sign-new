@@ -2,37 +2,11 @@
   <div class="ele-body ele-body-card">
     <profile-card />
     <statistics-card />
-    <!-- <link-card ref="linkCardRef" /> -->
     <a-row :gutter="16" ref="wrapRef">
       <a-col v-for="(item, index) in data" :key="item.name" :lg="item.lg" :md="item.md" :sm="item.sm" :xs="item.xs">
         <component :is="item.name" :title="item.title" @remove="onRemove(index)" @edit="onEdit(index)" />
       </a-col>
     </a-row>
-
-    <!-- <a-card :bordered="false" :body-style="{ padding: 0 }">
-      <div class="ele-cell" style="line-height: 42px">
-        <div class="ele-cell-content ele-text-primary workplace-bottom-btn" @click="add">
-          <plus-circle-outlined />添加视图
-        </div>
-        <a-divider type="vertical" />
-        <div class="ele-cell-content ele-text-primary workplace-bottom-btn" @click="reset">
-          <undo-outlined />重置布局
-        </div>
-      </div>
-    </a-card>-->
-    <!-- <ele-modal :width="680" v-model:visible="visible" title="未添加的视图" :footer="null">
-      <a-row :gutter="16">
-        <a-col v-for="item in notAddedData" :key="item.name" :md="8" :sm="12" :xs="24">
-          <div class="workplace-card-item ele-border-split" @click="addView(item)">
-            <div class="workplace-card-header ele-border-split">{{ item.title }}</div>
-            <div class="workplace-card-body ele-text-placeholder">
-              <plus-circle-outlined />
-            </div>
-          </div>
-        </a-col>
-      </a-row>
-      <a-empty v-if="!notAddedData.length" description="已添加所有视图" />
-    </ele-modal>-->
   </div>
 </template>
 
@@ -40,9 +14,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import SortableJs from 'sortablejs';
 import { message } from 'ant-design-vue/es';
-// import { PlusCircleOutlined, UndoOutlined } from '@ant-design/icons-vue';
 import ProfileCard from './components/profile-card.vue';
-import LinkCard from './components/link-card.vue';
 
 import StatisticsCard from './components/statistics-card.vue';
 

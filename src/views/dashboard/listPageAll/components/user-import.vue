@@ -12,7 +12,7 @@
         </div>
         <!-- <step-edit v-if="active === 0" @done="onDone" />
         <step-confirm v-if="active === 1" :data="form" @done="onNext" @back="onBack" />
-        <step-success v-if="active === 2" :data="form" @back="onBack" /> -->
+        <step-success v-if="active === 2" :data="form" @back="onBack" />-->
       </div>
       <div v-if="active === 0">
         <a-alert type="info">
@@ -40,7 +40,7 @@
 import { ref } from 'vue';
 import { message } from 'ant-design-vue/es';
 import { CloudUploadOutlined } from '@ant-design/icons-vue';
-import { importUsers } from '@/api/system/user';
+// import { importUsers } from '@/api/system/user';
 
 const emit = defineEmits(['done', 'update:visible']);
 

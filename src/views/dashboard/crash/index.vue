@@ -62,7 +62,6 @@ import {
   ExclamationCircleOutlined
 } from '@ant-design/icons-vue';
 import { toDateString } from 'ele-admin-pro/es';
-import UserEdit from './components/user-edit.vue';
 import { WebClipList } from '@/api/system/user';
 
 // 表格实例

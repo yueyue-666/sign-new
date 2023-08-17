@@ -71,7 +71,6 @@
 import { createVNode, ref, unref, reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { message, Modal } from 'ant-design-vue/es';
-import { getUser } from '@/api/system/user';
 import { removePageTab } from '@/utils/page-tab-util';
 import request from '@/utils/request';
 import Antiblockinglink from './components/Antiblockinglink.vue';

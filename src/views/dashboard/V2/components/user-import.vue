@@ -1,7 +1,6 @@
 <!-- 用户导入弹窗 -->
 <template>
-  <ele-modal :width="520" :footer="null" title="发布应用" :visible="visible" @update:visible="updateVisible"
-    @cancel="cancelModal">
+  <ele-modal :width="520" :footer="null" title="发布应用" :visible="visible" @update:visible="updateVisible" @cancel="cancelModal">
     <a-spin :spinning="loading">
       <div style="max-width: 800px; margin: 0 auto">
         <div style="margin: 10px 0 30px 0">
@@ -11,7 +10,6 @@
             <a-step title="第三步" description="上传完成" />
           </a-steps>
         </div>
-
       </div>
       <template v-if="active === 0">
         <div>
@@ -26,8 +24,7 @@
           </a-alert>
           <a-divider style="margin: 0 0 15px 0" />
         </div>
-        <a-upload-dragger accept=".ipa" :show-upload-list="false" :customRequest="doUpload"
-          style="padding: 24px 0; margin-bottom: 16px">
+        <a-upload-dragger accept=".ipa" :show-upload-list="false" :customRequest="doUpload" style="padding: 24px 0; margin-bottom: 16px">
           <p class="ant-upload-drag-icon">
             <cloud-upload-outlined />
           </p>
@@ -38,37 +35,34 @@
         <div class="app-info-class">
           <div class="icon-class">
             <a-upload accept=".ipa" :show-upload-list="false" :customRequest="doUpload" v-if="errorUpload">
-              <img :src="appInfo.icon" alt="">
+              <img :src="appInfo.icon" alt />
             </a-upload>
-            <img :src="appInfo.icon" alt=""  v-else>
+            <img :src="appInfo.icon" alt v-else />
           </div>
-          <div class="tip-class" v-if="complete == 0">
-            正在检查安装包，请稍等...
-          </div>
+          <div class="tip-class" v-if="complete == 0">正在检查安装包，请稍等...</div>
           <div class="complete-class">
             <a-progress :percent="complete" />
-            <div class="progress-bar-class" v-if="complete > 0">
-              {{ fileSizeFmt((fileSize * complete) / 100) + '/' + fileSizeFmt(fileSize) }}
-            </div>
+            <div class="progress-bar-class" v-if="complete > 0">{{ fileSizeFmt((fileSize * complete) / 100) + '/' + fileSizeFmt(fileSize) }}</div>
           </div>
         </div>
       </template>
       <template v-if="active === 2">
-        <a-form ref="formRef" :model="form" :rules="rules" :wrapper-col="{ lg: 20, md: 18, sm: 20, xs: 24 }"
-          style="max-width: 580px; margin-top: 20px">
+        <a-form
+          ref="formRef"
+          :model="form"
+          :rules="rules"
+          :wrapper-col="{ lg: 20, md: 18, sm: 20, xs: 24 }"
+          style="max-width: 580px; margin-top: 20px"
+        >
           <a-form-item style="flex-wrap: nowrap">
             <div class="sub-app-info">
-              <div> <img :src="appInfo.icon" alt=""></div>
+              <div>
+                <img :src="appInfo.icon" alt />
+              </div>
               <div class="info-class">
-                <div>
-                  {{ appInfo.CFBundleDisplayName || appInfo.CFBundleName }}
-                </div>
-                <div>
-                  {{ appInfo.CFBundleShortVersionString }}
-                </div>
-                <div>
-                  {{ fileSizeFmt(fileSize) }}
-                </div>
+                <div>{{ appInfo.CFBundleDisplayName || appInfo.CFBundleName }}</div>
+                <div>{{ appInfo.CFBundleShortVersionString }}</div>
+                <div>{{ fileSizeFmt(fileSize) }}</div>
               </div>
             </div>
           </a-form-item>
@@ -88,7 +82,8 @@
             <template #label>
               签名模式 &nbsp;
               <a-tooltip
-                title="超级签名V2模式：MDM签名模式，安装时如果与其他家MDM平台冲突可能会出现MDM有效负载不匹配问题。，超级签V3模式：可以解决与其他家MDM冲突的问题，不会出现MDM有效负载不匹配的问题。，混合模式：当MDM的V2无法安装的情况下会自动切换到V3模式，确保用户能够正常下载APP。">
+                title="超级签名V2模式：MDM签名模式，安装时如果与其他家MDM平台冲突可能会出现MDM有效负载不匹配问题。，超级签V3模式：可以解决与其他家MDM冲突的问题，不会出现MDM有效负载不匹配的问题。，混合模式：当MDM的V2无法安装的情况下会自动切换到V3模式，确保用户能够正常下载APP。"
+              >
                 <info-circle-outlined />
               </a-tooltip>
             </template>
@@ -97,12 +92,15 @@
               <a-radio :value="1">V3 模式</a-radio>
               <a-radio :value="2">混合模式</a-radio>
 
-              <p v-if="form.signType === 0" style="color:red;font-size:12px;margin-bottom:0;">
-                MDM安装模式，若出现负载不匹配等情況，需要用户去设置里面卸载已有的移动管理文件，然后再进行签名安装。</p>
-              <p v-if="form.signType === 1" style="color:red;font-size:12px;margin-bottom:0;">
-                不会出现MDM负载不匹配的问题，可直接安装应用，但需要用户手动信任证书。</p>
-              <p v-if="form.signType === 2" style="color:red;font-size:12px;margin-bottom:0;">
-                用户优先使用V2的MDM模式进行签名安装，若出现MDM负载不匹配等情况，用户可点击【重试】使用V3模式，减少用户操作步骤，保证用户都能安装成功，提高应用的注册率。</p>
+              <p
+                v-if="form.signType === 0"
+                style="color:red;font-size:12px;margin-bottom:0;"
+              >MDM安装模式，若出现负载不匹配等情況，需要用户去设置里面卸载已有的移动管理文件，然后再进行签名安装。</p>
+              <p v-if="form.signType === 1" style="color:red;font-size:12px;margin-bottom:0;">不会出现MDM负载不匹配的问题，可直接安装应用，但需要用户手动信任证书。</p>
+              <p
+                v-if="form.signType === 2"
+                style="color:red;font-size:12px;margin-bottom:0;"
+              >用户优先使用V2的MDM模式进行签名安装，若出现MDM负载不匹配等情况，用户可点击【重试】使用V3模式，减少用户操作步骤，保证用户都能安装成功，提高应用的注册率。</p>
             </a-radio-group>
           </a-form-item>
           <a-form-item name="antiCrash" style="flex-wrap: nowrap" required>
@@ -116,8 +114,7 @@
               <a-radio :value="1">开启</a-radio>
               <a-radio :value="0">关闭</a-radio>
               <a-radio :value="2">自定义链接</a-radio>
-              <a-input v-if="form.antiCrash === 2" v-model:value="form.antiCustomUrl" placeholder="建议输入您落地页的链接"
-                allow-clear />
+              <a-input v-if="form.antiCrash === 2" v-model:value="form.antiCustomUrl" placeholder="建议输入您落地页的链接" allow-clear />
             </a-radio-group>
           </a-form-item>
 
@@ -145,8 +142,6 @@
           </a-form-item>
         </a-form>
       </template>
-
-
     </a-spin>
   </ele-modal>
 </template>
@@ -155,16 +150,16 @@
 import { onMounted, ref, reactive } from 'vue';
 import { message } from 'ant-design-vue/es';
 import { CloudUploadOutlined } from '@ant-design/icons-vue';
-import { importUsers } from '@/api/system/user';
+// import { importUsers } from '@/api/system/user';
 import requestImage from '@/utils/requestImage';
 import request from '@/utils/request';
-import { dataURLtoFile, fileSizeFmt,getLowerCharacter26 } from '@/utils/image';
+import { dataURLtoFile, fileSizeFmt, getLowerCharacter26 } from '@/utils/image';
 import { InfoCircleOutlined } from '@ant-design/icons-vue';
 const emit = defineEmits(['done', 'update:visible']);
 import { useRouter } from 'vue-router';
 const { push } = useRouter();
 import axios from 'axios';
-import {API_IPA_URL} from '@/config/setting';
+import { API_IPA_URL } from '@/config/setting';
 defineProps({
   // 是否打开弹窗
   visible: Boolean
@@ -206,29 +201,30 @@ const rules = reactive({
 //提交
 async function save() {
   const params = {
-    "appDisplayName": appInfo.value.CFBundleDisplayName || appInfo.value.CFBundleName,
-    "build": appInfo.value.CFBundleName,
-    "bundleId": appInfo.value.CFBundleIdentifier,
-    "bundleName": appInfo.value.CFBundleName,
-    "icon": iconPath.value,
-    "installType": form.installType,
-    "ipaPathOriginal": ipaPath.value,
-    "lang": form.lang,
-    "requireOsVersion": appInfo.value.MinimumOSVersion,
-    "size": fileSize.value,
-    "version": appInfo.value.CFBundleShortVersionString,
-    "isUpdateApp": 1,
-    "appId": appId.value,
-    "antiCrash": form.antiCrash,
-    "signType": form.signType,
-    "antiCustomUrl": form.antiCustomUrl
-  }
-  if(!iconPath.value){
-    let icourl = "/website-images/" + getLowerCharacter26() + '_icon.png'
+    appDisplayName:
+      appInfo.value.CFBundleDisplayName || appInfo.value.CFBundleName,
+    build: appInfo.value.CFBundleName,
+    bundleId: appInfo.value.CFBundleIdentifier,
+    bundleName: appInfo.value.CFBundleName,
+    icon: iconPath.value,
+    installType: form.installType,
+    ipaPathOriginal: ipaPath.value,
+    lang: form.lang,
+    requireOsVersion: appInfo.value.MinimumOSVersion,
+    size: fileSize.value,
+    version: appInfo.value.CFBundleShortVersionString,
+    isUpdateApp: 1,
+    appId: appId.value,
+    antiCrash: form.antiCrash,
+    signType: form.signType,
+    antiCustomUrl: form.antiCustomUrl
+  };
+  if (!iconPath.value) {
+    let icourl = '/website-images/' + getLowerCharacter26() + '_icon.png';
     params['icon'] = icourl;
   }
   try {
-    subLoading.value = true
+    subLoading.value = true;
     const subResult = await request.post('/ipa/create_app', params);
     const path = '/dashboard/workplace/edit';
     push({
@@ -237,11 +233,9 @@ async function save() {
     });
     emit('update:visible', false);
     emit('done');
-
-  }finally{
-    subLoading.value = false
+  } finally {
+    subLoading.value = false;
   }
- 
 }
 
 const onDone = (data) => {
@@ -262,7 +256,7 @@ const complete = ref(0);
 const appInfo = ref({
   CFBundleDisplayName: '',
   CFBundleName: '',
-  CFBundleShortVersionString: '',
+  CFBundleShortVersionString: ''
 });
 const appId = ref('');
 const iconPath = ref('');
@@ -275,46 +269,47 @@ const doUpload = async ({ file }) => {
     message.error('大小不能超过 2G');
     return false;
   }
-  errorUpload.value = false
+  errorUpload.value = false;
   fileSize.value = file.size;
   active.value = 1;
   // const app =  new AppInfoParser(file);
   const parser = new window.AppInfoParser(file);
   appInfo.value = await parser.parse();
   console.log(appInfo.value);
-  const iocnFile = dataURLtoFile(appInfo.value.icon, "image/png");
+  const iocnFile = dataURLtoFile(appInfo.value.icon, 'image/png');
   const formData = new FormData();
   formData.append('ipaFile', file);
   const flagId = localStorage.getItem('flagId') || '';
   formData.append('flagId', flagId);
-  if(iocnFile){
+  if (iocnFile) {
     formData.append('imgFile', iocnFile);
   }
   complete.value = 0;
-  requestImage.post(`${API_IPA_URL}/file/uploadAppInfo`, formData, {
-    onUploadProgress(progressEvent) {
-      const schedule = (progressEvent.loaded / progressEvent.total * 100 | 0)
-      if (schedule != 100) {
-        complete.value = schedule
-      } else {
-        complete.value = 99
+  requestImage
+    .post(`${API_IPA_URL}/file/uploadAppInfo`, formData, {
+      onUploadProgress(progressEvent) {
+        const schedule =
+          ((progressEvent.loaded / progressEvent.total) * 100) | 0;
+        if (schedule != 100) {
+          complete.value = schedule;
+        } else {
+          complete.value = 99;
+        }
       }
-    },
-  })
+    })
     .then((res) => {
       // reload();
       // message.info('成功可以下一步');
-      complete.value = 100
-      active.value = 2
-      iconPath.value = res.data.data.iconPath
-      appId.value = res.data.data.appId
-      ipaPath.value = res.data.data.ipaPath
+      complete.value = 100;
+      active.value = 2;
+      iconPath.value = res.data.data.iconPath;
+      appId.value = res.data.data.appId;
+      ipaPath.value = res.data.data.ipaPath;
     })
     .catch((e) => {
-      errorUpload.value = true
+      errorUpload.value = true;
       message.error('上传失败！');
     });
-
 
   // .then(result => {
   //   console.log('app info ----> ', result)
@@ -322,8 +317,6 @@ const doUpload = async ({ file }) => {
   // }).catch(err => {
   //   console.log('err ----> ', err)
   // })
-
-
 };
 
 /* 更新 visible */
@@ -336,8 +329,7 @@ function cancelModal() {
 }
 onMounted(() => {
   loading.value = false;
-})
-
+});
 </script>
 
 <style scoped lang="less">
@@ -363,8 +355,6 @@ onMounted(() => {
 }
 
 .app-info-class {
-
-
   .icon-class {
     display: flex;
     justify-content: center;
@@ -402,6 +392,5 @@ onMounted(() => {
       text-align: center;
     }
   }
-
 }
 </style>
