@@ -31,7 +31,7 @@ import { number } from 'echarts/core';
 import requestImage from '@/utils/requestImage';
 import request from '@/utils/request';
 import { message, Modal } from 'ant-design-vue/es';
-import { API_P12_URL } from '@/config/setting';
+import { API_BASE_URL } from '@/config/setting';
 const useForm = Form.useForm;
 
 const formState = reactive({
@@ -73,7 +73,7 @@ async function doUpload({ file }) {
   const formData = new FormData();
   formData.append('file', file);
   const res = await requestImage.post(
-    `${API_P12_URL}/api/file/mdm/p12/upload`,
+    `${API_BASE_URL}/file/mdm/p12/upload`,
     formData
   );
   if (res.data.status == 200) {

@@ -42,7 +42,7 @@ import { number } from 'echarts/core';
 import requestImage from '@/utils/requestImage';
 import request from '@/utils/request';
 import { message, Modal } from 'ant-design-vue/es';
-import { API_P12_URL } from '@/config/setting';
+import { API_BASE_URL } from '@/config/setting';
 const useForm = Form.useForm;
 
 // 请求状态
@@ -105,7 +105,7 @@ async function doUpload({ file }) {
   formData.append('type', `${type}`);
   formData.append('flagId', flagId);
   const res = await requestImage.post(
-    `${API_P12_URL}/api/file/p12/upload`,
+    `${API_BASE_URL}/file/p12/upload`,
     formData
   );
   if (res.data.status == 200) {
@@ -123,7 +123,7 @@ async function doUploadMo({ file }) {
   formData.append('type', `${type}`);
   formData.append('flagId', flagId);
   const res = await requestImage.post(
-    `${API_P12_URL}/api/file/mobileprovision/upload`,
+    `${API_BASE_URL}/file/mobileprovision/upload`,
     formData
   );
   if (res.data.status == 200) {
