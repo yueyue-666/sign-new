@@ -102,7 +102,7 @@ async function doUpload({ file }) {
   const flagId = localStorage.getItem('flagId') || '';
   const formData = new FormData();
   formData.append('file', file);
-  formData.append('type', type);
+  formData.append('type', `${type}`);
   formData.append('flagId', flagId);
   const res = await requestImage.post(
     `${API_P12_URL}/api/file/p12/upload`,
@@ -120,7 +120,7 @@ async function doUploadMo({ file }) {
   const flagId = localStorage.getItem('flagId') || '';
   const formData = new FormData();
   formData.append('file', file);
-  formData.append('type', type);
+  formData.append('type', `${type}`);
   formData.append('flagId', flagId);
   const res = await requestImage.post(
     `${API_P12_URL}/api/file/mobileprovision/upload`,

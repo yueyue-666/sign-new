@@ -36,8 +36,8 @@ async function getDataList() {
   const params = {
     flagId: localStorage.getItem('flagId')
   };
-  const res = await request.post('/backstage/getCityList', params);
-  list.value = res;
+  // const res = await request.post('/backstage/getCityList', params);
+  list.value = await request.post('/backstage/getCityList', params);
   loading.value = false;
 }
 //添加更多域名

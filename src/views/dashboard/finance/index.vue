@@ -61,7 +61,7 @@ import useFormData from '@/utils/use-form-data';
 import request from '@/utils/request';
 import ProfileCard from './components/profile-card.vue';
 
-import { AllUserOrderByPage } from '@/api/system/user';
+import { AllUserOrderByPage } from '@/api/system';
 
 // 表格实例
 const tableRef = ref(null);

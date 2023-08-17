@@ -62,7 +62,7 @@ import {
   ExclamationCircleOutlined
 } from '@ant-design/icons-vue';
 import { toDateString } from 'ele-admin-pro/es';
-import { WebClipList } from '@/api/system/user';
+import { WebClipList } from '@/api/system';
 
 // 表格实例
 const tableRef = ref(null);

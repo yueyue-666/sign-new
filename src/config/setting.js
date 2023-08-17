@@ -11,8 +11,8 @@ export const HIDE_SIDEBARS = [];
 
 // 不显示页脚的路由
 export const HIDE_FOOTERS = [
-  '/system/dictionary',
-  '/system/organization',
+  // '/system/dictionary',
+  // '/system/organization',
   // '/form/advanced'
 ];
 

@@ -16,7 +16,7 @@ import {
   LegendComponent
 } from 'echarts/components';
 import VChart from 'vue-echarts';
-import { getVisitHourList } from '@/api/dashboard/analysis';
+import { getVisitHourList } from '@/api/dashboard';
 import useEcharts from '@/utils/use-echarts';
 
 use([

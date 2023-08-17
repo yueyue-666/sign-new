@@ -60,7 +60,7 @@ import {
   LegendComponent
 } from 'echarts/components';
 import VChart from 'vue-echarts';
-import { trendStat } from '@/api/system/user';
+import { trendStat } from '@/api/system';
 import useEcharts from '@/utils/use-echarts';
 use([
   CanvasRenderer,
@@ -68,7 +68,6 @@ use([
   GridComponent,
   LegendComponent,
   TooltipComponent
-
 ]);
 const { currentRoute } = useRouter();
 
@@ -139,7 +138,7 @@ var s1 =
     ? '0' + (date.getMonth() + 1)
     : date.getMonth() + 1) +
     '-') +
-    (date.getDate() + 1 < 10 ? '0' + (date.getDate()) : date.getDate());
+  (date.getDate() + 1 < 10 ? '0' + date.getDate() : date.getDate());
 // 20天前的时间
 date.setTime(date.getTime() - 480 * 60 * 60 * 1000);
 var s2 =
@@ -182,13 +181,14 @@ const visitHourChartOption = reactive({});
 const getVisitHourData = () => {
   trendStat(form)
     .then((res) => {
-      const data = res.sort((a,b)=>{
-        return new Date(a.day) -  new Date(b.day)
-      })
+      const data = res.sort((a, b) => {
+        return new Date(a.day) - new Date(b.day);
+      });
       Object.assign(visitHourChartOption, {
         tooltip: {
           trigger: 'axis'
-        }, xAxis: [
+        },
+        xAxis: [
           {
             type: 'category',
             data: data.map((d) => d.day)
@@ -204,13 +204,13 @@ const getVisitHourData = () => {
           itemGap: 40, // 设置两个legend之间的间距
           data: [
             {
-              name: '充值量',  // 这个name需要和 series 里面的 name 对应起来
+              name: '充值量', // 这个name需要和 series 里面的 name 对应起来
               textStyle: {
                 color: '#5470c6' // 单独设置某一个图列的颜色
               }
             },
             {
-              name: '签发消耗总量',  // 这个name需要和 series 里面的 name 对应起来
+              name: '签发消耗总量', // 这个name需要和 series 里面的 name 对应起来
               textStyle: {
                 color: '#9cc986' // 单独设置某一个图列的颜色
               }
@@ -224,7 +224,7 @@ const getVisitHourData = () => {
         ],
         series: [
           {
-            name: '充值量',  // 这个name需要和 legend下面data里面的 name 对应起
+            name: '充值量', // 这个name需要和 legend下面data里面的 name 对应起
             type: 'bar',
             itemStyle: {
               color: '#5470c6' // 蓝色柱子颜色
@@ -232,7 +232,7 @@ const getVisitHourData = () => {
             data: data.map((d) => d.totalSigns)
           },
           {
-            name: '签发消耗总量',  // 这个name需要和 legend下面data里面的 name 对应起来
+            name: '签发消耗总量', // 这个name需要和 legend下面data里面的 name 对应起来
             type: 'bar',
             itemStyle: {
               color: '#9cc986' // 蓝色柱子颜色
@@ -241,7 +241,6 @@ const getVisitHourData = () => {
           }
         ]
       });
-
     })
     .catch((e) => {
       message.error(e.message);

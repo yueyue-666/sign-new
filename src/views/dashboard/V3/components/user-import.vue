@@ -40,7 +40,6 @@
 import { ref } from 'vue';
 import { message } from 'ant-design-vue/es';
 import { CloudUploadOutlined } from '@ant-design/icons-vue';
-// import { importUsers } from '@/api/system/user';
 
 const emit = defineEmits(['done', 'update:visible']);
 
@@ -76,18 +75,6 @@ const doUpload = ({ file }) => {
     return false;
   }
   loading.value = true;
-  // importUsers(file)
-  //   .then((msg) => {
-  //     loading.value = false;
-  //     message.success(msg);
-  //     updateVisible(false);
-  //     emit('done');
-  //   })
-  //   .catch((e) => {
-  //     loading.value = false;
-  //     message.error(e.message);
-  //   });
-  // return false;
 
   const formData = new FormData();
   formData.append('file', file);

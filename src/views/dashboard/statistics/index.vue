@@ -5,21 +5,21 @@
         <a-col :xl="6" :lg="12" :md="12" :sm="24" :xs="24">
           <a-form-item label="应用">
             <a-select v-model:value="form.appId" placeholder="请选择" allow-clear>
-              <a-select-option :value="item.appId" v-for="(item, i) in appList" :key="i">{{ item.appName
-              }}</a-select-option>
+              <a-select-option :value="item.appId" v-for="(item, i) in appList" :key="i">
+                {{ item.appName
+                }}
+              </a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
         <a-col :xl="6" :lg="12" :md="12" :sm="24" :xs="24">
           <a-form-item label="日期">
-            <a-date-picker class="ele-fluid" placeholder="请选择" value-format="YYYY-MM-DD HH:mm:ss"
-              v-model:value="form.startTime" />
+            <a-date-picker class="ele-fluid" placeholder="请选择" value-format="YYYY-MM-DD HH:mm:ss" v-model:value="form.startTime" />
           </a-form-item>
         </a-col>
         <a-col :xl="6" :lg="12" :md="12" :sm="24" :xs="24">
           <a-form-item>
-            <a-date-picker class="ele-fluid" placeholder="请选择" value-format="YYYY-MM-DD HH:mm:ss"
-              v-model:value="form.endTime" />
+            <a-date-picker class="ele-fluid" placeholder="请选择" value-format="YYYY-MM-DD HH:mm:ss" v-model:value="form.endTime" />
           </a-form-item>
         </a-col>
         <a-col :xl="6" :lg="12" :md="12" :sm="24" :xs="24">
@@ -32,7 +32,7 @@
         </a-col>
       </a-row>
     </a-form>
-    <!-- 
+    <!--
     <a-row :gutter="24">
       <a-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
         <a-alert show-icon type="info" icon>
@@ -49,7 +49,7 @@
           </template>
         </a-alert>
       </a-col>
-    </a-row> -->
+    </a-row>-->
 
     <v-chart ref="visitHourChartRef" :option="visitHourChartOption" style="padding-top:50px;height: 600px" />
   </a-card>
@@ -66,10 +66,10 @@ import request from '@/utils/request';
 import {
   GridComponent,
   LegendComponent,
-  TooltipComponent,
+  TooltipComponent
 } from 'echarts/components';
 import VChart from 'vue-echarts';
-import { getSevenDaysDownload } from '@/api/dashboard/analysis';
+import { getSevenDaysDownload } from '@/api/dashboard';
 import useEcharts from '@/utils/use-echarts';
 
 use([
@@ -78,7 +78,6 @@ use([
   GridComponent,
   LegendComponent,
   TooltipComponent
-
 ]);
 
 const props = defineProps({
@@ -150,13 +149,14 @@ const visitHourChartOption = reactive({});
 const getVisitHourData = () => {
   getSevenDaysDownload(form)
     .then((res) => {
-      const data = res.sort((a,b)=>{
-        return new Date(a.datetime) -  new Date(b.datetime)
-      })
+      const data = res.sort((a, b) => {
+        return new Date(a.datetime) - new Date(b.datetime);
+      });
       Object.assign(visitHourChartOption, {
         tooltip: {
           trigger: 'axis'
-        }, xAxis: [
+        },
+        xAxis: [
           {
             type: 'category',
             data: data.map((d) => d.datetime)
@@ -172,19 +172,19 @@ const getVisitHourData = () => {
           itemGap: 40, // 设置两个legend之间的间距
           data: [
             {
-              name: 'iOS消耗量',  // 这个name需要和 series 里面的 name 对应起来
+              name: 'iOS消耗量', // 这个name需要和 series 里面的 name 对应起来
               textStyle: {
                 color: '#5daeff' // 单独设置某一个图列的颜色
               }
             },
             {
-              name: 'iOS下载量',  // 这个name需要和 series 里面的 name 对应起来
+              name: 'iOS下载量', // 这个name需要和 series 里面的 name 对应起来
               textStyle: {
                 color: '#43cdcf' // 单独设置某一个图列的颜色
               }
             },
             {
-              name: 'Android下载量',  // 这个name需要和 series 里面的 name 对应起来
+              name: 'Android下载量', // 这个name需要和 series 里面的 name 对应起来
               textStyle: {
                 color: '#f9904f' // 单独设置某一个图列的颜色
               }
@@ -198,7 +198,7 @@ const getVisitHourData = () => {
         ],
         series: [
           {
-            name: 'iOS消耗量',  // 这个name需要和 legend下面data里面的 name 对应起
+            name: 'iOS消耗量', // 这个name需要和 legend下面data里面的 name 对应起
             type: 'bar',
             itemStyle: {
               color: '#5daeff' // 蓝色柱子颜色
@@ -206,7 +206,7 @@ const getVisitHourData = () => {
             data: data.map((d) => d.downloadDeductCount)
           },
           {
-            name: 'iOS下载量',  // 这个name需要和 legend下面data里面的 name 对应起来
+            name: 'iOS下载量', // 这个name需要和 legend下面data里面的 name 对应起来
             type: 'bar',
             itemStyle: {
               color: '#43cdcf' // 蓝色柱子颜色
@@ -214,7 +214,7 @@ const getVisitHourData = () => {
             data: data.map((d) => d.downloadCount)
           },
           {
-            name: 'Android下载量',  // 这个name需要和 legend下面data里面的 name 对应起来
+            name: 'Android下载量', // 这个name需要和 legend下面data里面的 name 对应起来
             type: 'bar',
             itemStyle: {
               color: '#f9904f' // 蓝色柱子颜色

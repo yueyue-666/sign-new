@@ -2,7 +2,7 @@
   <div class="ele-body">
     <a-card :bordered="false">
       <!-- 搜索表单 -->
-      <search-form @search="reload"/>
+      <search-form @search="reload" />
       <!-- 表格 -->
       <ele-pro-table
         :bordered="bordered"
@@ -178,7 +178,7 @@ import {
 import searchForm from './components/search-form.vue';
 import { removePageTab } from '@/utils/page-tab-util';
 import request from '@/utils/request';
-import { pageUsers } from '@/api/system/user';
+import { pageUsers } from '@/api/system';
 import { useRouter } from 'vue-router';
 const { push } = useRouter();
 
@@ -404,13 +404,13 @@ const getfilesize = (size) => {
 };
 
 //设置
-function reply(record){
+function reply(record) {
   const path = '/dashboard/workplace/v2-edit';
   removePageTab({ key: path });
-    push({
-      path,
-      query: { appId: record.appId}
-    });
+  push({
+    path,
+    query: { appId: record.appId }
+  });
 }
 </script>
 

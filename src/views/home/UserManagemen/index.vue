@@ -290,7 +290,7 @@ import { toDateString } from 'ele-admin-pro/es';
 import useFormData from '@/utils/use-form-data';
 import request from '@/utils/request';
 import { message, Modal } from 'ant-design-vue/es';
-import { AllUserInfo } from '@/api/system/user';
+import { AllUserInfo } from '@/api/system';
 import { removePageTab } from '@/utils/page-tab-util';
 import { useRouter } from 'vue-router';
 import {

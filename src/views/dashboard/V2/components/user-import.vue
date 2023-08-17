@@ -150,7 +150,6 @@
 import { onMounted, ref, reactive } from 'vue';
 import { message } from 'ant-design-vue/es';
 import { CloudUploadOutlined } from '@ant-design/icons-vue';
-// import { importUsers } from '@/api/system/user';
 import requestImage from '@/utils/requestImage';
 import request from '@/utils/request';
 import { dataURLtoFile, fileSizeFmt, getLowerCharacter26 } from '@/utils/image';

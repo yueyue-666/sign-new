@@ -58,7 +58,7 @@ import { toDateString } from 'ele-admin-pro/es';
 import useFormData from '@/utils/use-form-data';
 import request from '@/utils/request';
 
-import { IssuingRecords } from '@/api/system/user';
+import { IssuingRecords } from '@/api/system';
 
 // 表格实例
 const tableRef = ref(null);

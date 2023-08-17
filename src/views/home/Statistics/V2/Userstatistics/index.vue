@@ -66,7 +66,7 @@ import { toDateString } from 'ele-admin-pro/es';
 import useFormData from '@/utils/use-form-data';
 import request from '@/utils/request';
 import { message, Modal } from 'ant-design-vue/es';
-import { UserStatistics } from '@/api/system/user';
+import { UserStatistics } from '@/api/system';
 import { removePageTab } from '@/utils/page-tab-util';
 import { useRouter } from 'vue-router';
 // 表格实例
@@ -135,7 +135,7 @@ var s1 =
     ? '0' + (date.getMonth() + 1)
     : date.getMonth() + 1) +
     '-') +
-    (date.getDate() + 1 < 10 ? '0' + (date.getDate()) : date.getDate());
+  (date.getDate() + 1 < 10 ? '0' + date.getDate() : date.getDate());
 // 7天前的时间
 date.setTime(date.getTime() - 480 * 60 * 60 * 1000);
 var s2 =
