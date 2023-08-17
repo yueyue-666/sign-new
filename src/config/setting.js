@@ -13,7 +13,7 @@ export const HIDE_SIDEBARS = [];
 export const HIDE_FOOTERS = [
   '/system/dictionary',
   '/system/organization',
-  '/form/advanced'
+  // '/form/advanced'
 ];
 
 // 页签同路由不同参数可重复打开的路由
