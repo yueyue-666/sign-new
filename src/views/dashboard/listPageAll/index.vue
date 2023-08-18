@@ -43,6 +43,22 @@
             <a-divider type="vertical" />
           </a-space>
         </template>
+        <template #headerCell="{ column }">
+          <template v-if="column.key === 'installType'">
+            <span>安装方式</span>&nbsp;
+            <a-tooltip>
+              <template #title>
+                <p>
+                  设置里可修改安装方式
+                  <br />公开：用户可自主安装应用
+                  <br />滑块验证：用户下载应用时需要滑块验证通过后方可安装应用
+                  <br />下载码：用户下载应用时需要输入对应的下载码，验证通过后方可安装应用，设置里可生成下载码
+                </p>
+              </template>
+              <info-circle-outlined />
+            </a-tooltip>
+          </template>
+        </template>
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'name'">
             <div style="display: flex;align-items: center;" v-if="record.signType === 1">
@@ -144,22 +160,6 @@
             </a-space>
           </template>
         </template>
-        <template #installType>
-          <span>
-            安装方式
-            <a-tooltip>
-              <template #title>
-                <p>
-                  设置里可修改安装方式
-                  <br />公开：用户可自主安装应用
-                  <br />滑块验证：用户下载应用时需要滑块验证通过后方可安装应用
-                  <br />下载码：用户下载应用时需要输入对应的下载码，验证通过后方可安装应用，设置里可生成下载码
-                </p>
-              </template>
-              <info-circle-outlined />
-            </a-tooltip>
-          </span>
-        </template>
       </ele-pro-table>
     </a-card>
   </div>
@@ -238,12 +238,12 @@ const columns = ref([
     ellipsis: true
   },
   {
-    // title: '安装方式',
+    name: '安装方式',
     dataIndex: 'installType',
+    key: 'installType',
     align: 'center',
     width: 200,
     ellipsis: true,
-    // customFilterDropdown: true,
     customRender: ({ text }) => {
       if (text === 1) {
         return '滑块验证';

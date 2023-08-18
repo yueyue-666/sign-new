@@ -105,6 +105,36 @@
             </a-button>
           </a-space>
         </template>
+        <template #headerCell="{ column }">
+          <template v-if="column.key === 'installType'">
+            <span>安装方式</span>&nbsp;
+            <a-tooltip>
+              <template #title>
+                <p>
+                  设置里可修改安装方式
+                  <br />公开：用户可自主安装应用
+                  <br />滑块验证：用户下载应用时需要滑块验证通过后方可安装应用
+                  <br />下载码：用户下载应用时需要输入对应的下载码，验证通过后方可安装应用，设置里可生成下载码
+                </p>
+              </template>
+              <info-circle-outlined />
+            </a-tooltip>
+          </template>
+          <template v-if="column.key === 'downloadDeductCount'">
+            <span>
+              iOS总消耗量
+              <a-tooltip>
+                <template #title>
+                  <p>
+                    应用的累计消耗设备量：
+                    <br />同一苹果手机设备多次下载同一应用只计算一次消耗量
+                  </p>
+                </template>
+                <info-circle-outlined />
+              </a-tooltip>
+            </span>
+          </template>
+        </template>
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'name'">
             <div class="name" v-if="record.signType === 1" @click="dlpath(record)">
@@ -292,38 +322,6 @@
             </div>
           </template>
         </template>
-
-        <template #downloadDeductCount>
-          <span>
-            iOS总消耗量
-            <a-tooltip>
-              <template #title>
-                <p>
-                  应用的累计消耗设备量：
-                  <br />同一苹果手机设备多次下载同一应用只计算一次消耗量
-                </p>
-              </template>
-              <info-circle-outlined />
-            </a-tooltip>
-          </span>
-        </template>
-
-        <template #installType>
-          <span>
-            安装方式
-            <a-tooltip>
-              <template #title>
-                <p>
-                  设置里可修改安装方式
-                  <br />公开：用户可自主安装应用
-                  <br />滑块验证：用户下载应用时需要滑块验证通过后方可安装应用
-                  <br />下载码：用户下载应用时需要输入对应的下载码，验证通过后方可安装应用，设置里可生成下载码
-                </p>
-              </template>
-              <info-circle-outlined />
-            </a-tooltip>
-          </span>
-        </template>
       </ele-pro-table>
     </a-card>
 
@@ -428,13 +426,13 @@ const columns = ref([
     ellipsis: true
   },
   {
-    // title: 'iOS总消耗量',
+    name: 'iOS总消耗量',
     dataIndex: 'downloadDeductCount',
+    key: 'downloadDeductCount',
     align: 'center',
     width: 120,
     ellipsis: true,
     default: true
-    // slots: { title: 'downloadDeductCount' }
   },
   {
     title: '动态库日消耗量',
@@ -570,13 +568,12 @@ const columns = ref([
     ellipsis: true
   },
   {
-    title: '安装方式',
+    name: '安装方式',
     dataIndex: 'installType',
+    key: 'installType',
     align: 'center',
     width: 120,
     ellipsis: true,
-    customFilterDropdown: true,
-    // slots: { title: 'installType' },
     customRender: ({ text }) => {
       if (text === 1) {
         return '滑块验证';

@@ -4,6 +4,7 @@ export default {
   header: {
     profile: '管理后台',
     profile2: '用户主页',
+    profile3: '余量报警',
     password: '修改密码',
     logout: '退出登录'
   },
