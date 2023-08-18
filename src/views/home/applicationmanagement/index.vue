@@ -122,7 +122,7 @@
           </template>
           <template v-if="column.key === 'downloadDeductCount'">
             <span>
-              iOS总消耗量
+              <span>iOS总消耗量</span>&nbsp;
               <a-tooltip>
                 <template #title>
                   <p>
