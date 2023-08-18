@@ -14,10 +14,15 @@ export const routes = [
     meta: { title: '登录' }
   },
   {
-    path: '/forget',
-    component: () => import('@/views/forget/index.vue'),
-    meta: { title: '忘记密码' }
-  },
+    path: '/register',
+    component: () => import('@/views/register/index.vue'),
+    meta: { title: '注册账号' }
+  }
+  // {
+  //   path: '/forget',
+  //   component: () => import('@/views/forget/index.vue'),
+  //   meta: { title: '忘记密码' }
+  // },
   // 404
   // {
   //   path: '/:path(.*)*',
@@ -57,7 +62,7 @@ export function getMenuRoutes(menus, homePath) {
     component: EleLayout,
     redirect: HOME_PATH ?? homePath,
     children: routes
-  })
+  });
   return {
     path: LAYOUT_PATH,
     component: EleLayout,

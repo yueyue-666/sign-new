@@ -19,7 +19,7 @@ export const HIDE_FOOTERS = [
 export const REPEATABLE_TABS = [];
 
 // 不需要登录的路由
-export const WHITE_LIST = ['/login', '/forget'];
+export const WHITE_LIST = ['/login', '/register'];
 
 // 开启 KeepAlive 后仍然不需要缓存的路由地址
 export const KEEP_ALIVE_EXCLUDES = [];
