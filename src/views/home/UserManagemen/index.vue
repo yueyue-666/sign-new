@@ -530,7 +530,7 @@ const visible2 = ref(false);
 
 // 充值数据
 const rechargeform = reactive({
-  userId: ''
+  userId: localStorage.getItem('userId')
 });
 
 // 充值
@@ -623,13 +623,13 @@ const BalanceNoticesave = () => {
       message.error('账号格式错误');
       return false;
     }
-    BalanceNoticeform.publicAlarmTelegrams = JSON.stringify(alarms.split(','));
+    // BalanceNoticeform.publicAlarmTelegrams = JSON.stringify(alarms.split(','));
   }
   let body = {
     userId: BalanceNoticeform.userId,
     balance: BalanceNoticeform.publicAlarmNum,
     balanceV3: BalanceNoticeform.publicAlarmNumV3,
-    telegramIds: BalanceNoticeform.publicAlarmTelegrams
+    telegramIds: JSON.stringify(alarms.split(','))
   };
   request
     .post('/backstage/settingBalanceNotice', body)

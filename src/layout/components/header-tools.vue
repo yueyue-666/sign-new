@@ -38,6 +38,14 @@
                 </div>
               </div>
             </a-menu-item>
+            <a-menu-divider v-if="!adminrouter" />
+            <a-menu-item v-if="!adminrouter" key="marginAlert">
+              <div class="ele-cell">
+                <warning-outlined />
+                <div class="ele-cell-content">{{ t('layout.header.profile3') }}</div>
+              </div>
+            </a-menu-item>
+            <a-menu-divider />
             <a-menu-item key="password">
               <div class="ele-cell">
                 <key-outlined />
@@ -64,6 +72,9 @@
   <password-modal v-model:visible="passwordVisible" />
   <!-- 主题设置抽屉 -->
   <setting-drawer v-model:visible="settingVisible" />
+
+  <!-- 余量报警弹窗 -->
+  <margin-modal v-model:visible="marginVisible" />
 </template>
 
 <script setup>
@@ -80,10 +91,12 @@ import {
   LogoutOutlined,
   ExclamationCircleOutlined,
   FullscreenOutlined,
-  FullscreenExitOutlined
+  FullscreenExitOutlined,
+  WarningOutlined
 } from '@ant-design/icons-vue';
 import HeaderNotice from './header-notice.vue';
 import PasswordModal from './password-modal.vue';
+import marginModal from './margin-modal.vue';
 import SettingDrawer from './setting-drawer.vue';
 import I18nIcon from './i18n-icon.vue';
 import { useUserStore } from '@/store/modules/user';
@@ -105,6 +118,9 @@ const passwordVisible = ref(false);
 // 是否显示主题设置抽屉
 const settingVisible = ref(false);
 
+// 是否显示修改密码弹窗
+const marginVisible = ref(false);
+
 // 当前用户信息
 const loginUser = computed(() => userStore.info ?? {});
 
@@ -122,6 +138,8 @@ const goHome = () => {
 const onUserDropClick = ({ key }) => {
   if (key === 'password') {
     passwordVisible.value = true;
+  } else if (key === 'marginAlert') {
+    marginVisible.value = true;
   } else if (key === 'profile') {
     if (adminrouter) {
       localStorage.setItem('adminrouter', JSON.stringify(false));
