@@ -5,6 +5,9 @@ import request from '@/utils/request';
  */
 export async function getUserInfo() {
   // const res = await request.get('/auth/user');
+  const userRole = localStorage.getItem('userRole');
+  const isUseV3 = localStorage.getItem('isUseV3');
+  const isUseMix = localStorage.getItem('isUseMix');
   const adminrouter = JSON.parse(localStorage.getItem('adminrouter'));
   let res = {};
   if (adminrouter) {
@@ -258,7 +261,7 @@ export async function getUserInfo() {
             sortNumber: 2,
             authority: null,
             icon: 'setting-outlined',
-            hide: 0,
+            hide: userRole === '3' ? 0 : 1,
             meta: null,
             deleted: 0,
             tenantId: 2,
@@ -421,7 +424,7 @@ export async function getUserInfo() {
             sortNumber: 1,
             authority: null,
             icon: 'control-outlined',
-            hide: 0,
+            hide: isUseV3 === '1' ? 0 : 1,
             meta: '{"badge": "New", "badgeColor": "#faad14"}',
             deleted: 0,
             tenantId: 2,
@@ -455,7 +458,7 @@ export async function getUserInfo() {
             sortNumber: 1,
             authority: null,
             icon: 'control-outlined',
-            hide: 0,
+            hide: isUseMix === '1' ? 0 : 1,
             meta: '{"badge": "New", "badgeColor": "#faad14"}',
             deleted: 0,
             tenantId: 2,

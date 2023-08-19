@@ -22,7 +22,7 @@
           </div>
           <h2>{{ UserInfo.superSignBalance }}台</h2>
         </div>
-        <div class="workplace-count-item">
+        <div class="workplace-count-item" v-if="isUseV3 === '1' || isUseMix === '1'">
           <div class="workplace-count-header">
             <ele-tag color="orange" shape="circle" size="small">
               <check-square-outlined />
@@ -60,6 +60,10 @@ import {
 } from '@ant-design/icons-vue';
 import { useUserStore } from '@/store/modules/user';
 import request from '@/utils/request';
+
+
+const isUseV3 = localStorage.getItem("isUseV3");
+const isUseMix = localStorage.getItem("isUseMix");
 
 const userStore = useUserStore();
 

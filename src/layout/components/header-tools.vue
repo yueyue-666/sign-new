@@ -38,8 +38,8 @@
                 </div>
               </div>
             </a-menu-item>
-            <a-menu-divider v-if="!adminrouter" />
-            <a-menu-item v-if="!adminrouter" key="marginAlert">
+            <a-menu-divider v-if="!adminrouter && userRole==='2'" />
+            <a-menu-item v-if="!adminrouter && userRole==='2'" key="marginAlert">
               <div class="ele-cell">
                 <warning-outlined />
                 <div class="ele-cell-content">{{ t('layout.header.profile3') }}</div>
@@ -107,6 +107,8 @@ defineProps({
   // 是否是全屏
   fullscreen: Boolean
 });
+
+const userRole = localStorage.getItem('userRole');
 
 const { push } = useRouter();
 const { t } = useI18n();
