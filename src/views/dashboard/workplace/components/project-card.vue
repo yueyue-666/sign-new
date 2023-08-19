@@ -25,6 +25,19 @@
             <info-circle-outlined />
           </a-tooltip>
         </template>
+        <template v-if="column.key === 'downloadDeductCount'">
+          <span>Ios消耗量</span>&nbsp;
+          <a-tooltip>
+            <template #title>
+              <p>
+                应用的累计消耗设备量：
+                <br />同一苹果手机设备多次下载
+                <br />同一应用只计算一次消耗量
+              </p>
+            </template>
+            <info-circle-outlined />
+          </a-tooltip>
+        </template>
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'name'">
@@ -127,13 +140,6 @@
           </a-space>
         </template>
       </template>
-      <template #customFilterDropdown>
-        <span class="tooltiptext">
-          应用的累计消耗设备量：
-          <br />同一苹果手机设备多次下载
-          <br />同一应用只计算一次消耗量
-        </span>
-      </template>
     </a-table>
   </a-card>
 </template>
@@ -146,6 +152,7 @@ import { messageLoading } from 'ele-admin-pro/es';
 import { removePageTab } from '@/utils/page-tab-util';
 import { useRouter } from 'vue-router';
 import {
+  InfoCircleOutlined,
   CopyOutlined,
   AppleOutlined,
   AndroidOutlined,
@@ -174,12 +181,12 @@ const projectColumns = ref([
     ellipsis: true
   },
   {
-    title: 'Ios消耗量',
+    name: 'Ios消耗量',
     dataIndex: 'downloadDeductCount',
+    key: 'downloadDeductCount',
     align: 'center',
     width: 120,
-    ellipsis: true,
-    customFilterDropdown: true
+    ellipsis: true
   },
   {
     title: 'Android下载量',
