@@ -3,46 +3,34 @@
       'login-wrapper',
       ['', 'login-form-right', 'login-form-left'][direction]
     ]">
-    <a-form ref="formRef" :model="form" :rules="rules" class="login-form ele-bg-white">
-      <h4>{{ t('login.title') }}</h4>
-      <a-form-item name="username">
-        <a-input allow-clear size="large" v-model:value="form.username" :placeholder="t('login.username')" @keyup.enter="submit">
-          <template #prefix>
-            <user-outlined />
-          </template>
-        </a-input>
+    <a-form ref="formRef" :model="form" :rules="rules" class="login-form ele-bg-white" :label-col="labelCol" :wrapper-col="wrapperCol">
+      <h4>用户注册</h4>
+      <a-form-item label="用户名" name="username" :rules="[{ required: true, message: '字母和数字的组合,不少于5位' }]">
+        <a-input v-model:value="form.username" placeholder="字母和数字的组合，不少于5位" @keyup.enter="submit"></a-input>
       </a-form-item>
-      <a-form-item name="password">
-        <a-input-password size="large" v-model:value="form.password" :placeholder="t('login.password')" @keyup.enter="submit">
-          <template #prefix>
-            <lock-outlined />
-          </template>
-        </a-input-password>
+      <a-form-item label="邀请码" name="inviteCode" :rules="[{ required: true, message: '请输入邀请码' }]">
+        <a-input v-model:value="form.inviteCode" placeholder="请输入邀请码" @keyup.enter="submit"></a-input>
       </a-form-item>
-      <a-form-item name="verifyCode">
+      <a-form-item label="密码" name="password" :rules="[{ required: true, message: '密码是字母/数字且不少于5位' }]">
+        <a-input-password size="large" v-model:value="form.password" :placeholder="t('login.password')" @keyup.enter="submit"></a-input-password>
+      </a-form-item>
+      <a-form-item label="确认密码" name="username" :rules="[{ required: true, message: '请再一次输入密码' }]">
+        <a-input-password size="large" v-model:value="passwordagain" :placeholder="t('login.password')" @keyup.enter="submit"></a-input-password>
+      </a-form-item>
+      <a-form-item label="验证码" name="verifyCode" :rules="[{ required: true, message: '请输入验证码' }]">
         <div class="login-input-group">
-          <a-input allow-clear size="large" v-model:value="form.verifyCode" :placeholder="t('login.code')" @keyup.enter="submit">
-            <template #prefix>
-              <safety-certificate-outlined />
-            </template>
-          </a-input>
+          <a-input allow-clear size="large" v-model:value="form.verifyCode" :placeholder="t('login.code')" @keyup.enter="submit"></a-input>
           <a-button class="login-captcha" @click="changeCaptcha">
             <img v-if="captcha" :src="captcha" alt />
           </a-button>
         </div>
       </a-form-item>
       <a-form-item>
-        <!-- <a-checkbox v-model:checked="form.remember">{{ t('login.remember') }}</a-checkbox> -->
         <router-link to="/login" class="ele-pull-right" style="line-height: 22px">使用已有账号登录</router-link>
       </a-form-item>
       <a-form-item>
         <a-button block size="large" type="primary" :loading="loading" @click="submit">{{ loading ? t('login.loading') : t('login.login') }}</a-button>
       </a-form-item>
-      <!-- <div class="ele-text-center" style="padding-bottom: 32px">
-        <qq-outlined class="login-oauth-icon" style="background: #3492ed" />
-        <wechat-outlined class="login-oauth-icon" style="background: #4daf29" />
-        <weibo-outlined class="login-oauth-icon" style="background: #cf1900" />
-      </div>-->
     </a-form>
     <!-- <div class="login-copyright">
       copyright © 2022 eleadmin.com all rights reserved.
@@ -51,19 +39,11 @@
     <!-- <div style="position: absolute; right: 30px; top: 20px; z-index: 999">
       <i18n-icon placement="bottomLeft" :style="{ fontSize: '18px', color: '#fff' }" />
     </div>-->
-    <!-- 实际项目去掉这段 -->
-    <!-- <div style="position: absolute; left: 30px; top: 20px; z-index: 999">
-      <a-radio-group v-model:value="direction" size="small">
-        <a-radio-button :value="2">居左</a-radio-button>
-        <a-radio-button :value="0">居中</a-radio-button>
-        <a-radio-button :value="1">居右</a-radio-button>
-      </a-radio-group>
-    </div>-->
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, computed, unref } from 'vue';
+import { ref, reactive, computed, unref, defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue/es';
@@ -78,7 +58,7 @@ import {
 import I18nIcon from '@/layout/components/i18n-icon.vue';
 import { getToken } from '@/utils/token-util';
 import { goHomeRoute, cleanPageTabs } from '@/utils/page-tab-util';
-import { login, getCaptcha } from '@/api/login';
+import { register, getCaptcha } from '@/api/login';
 
 const { currentRoute } = useRouter();
 const { t } = useI18n();
@@ -95,9 +75,9 @@ const loading = ref(false);
 // 表单数据
 const form = reactive({
   username: '',
+  inviteCode: '',
   password: '',
   verifyCode: '',
-  // remember: true
   verifyCodeKey: ''
 });
 
@@ -107,33 +87,17 @@ const captcha = ref('');
 // 验证码内容, 实际项目去掉
 const text = ref('');
 
-// 表单验证规则
-const rules = computed(() => {
+const labelCol = computed(() => {
   return {
-    username: [
-      {
-        required: true,
-        message: t('login.username'),
-        type: 'string',
-        trigger: 'blur'
-      }
-    ],
-    password: [
-      {
-        required: true,
-        message: t('login.password'),
-        type: 'string',
-        trigger: 'blur'
-      }
-    ],
-    verifyCode: [
-      {
-        required: true,
-        message: t('login.code'),
-        type: 'string',
-        trigger: 'blur'
-      }
-    ]
+    style: {
+      width: '100px'
+    }
+  };
+});
+
+const wrapperCol = computed(() => {
+  return {
+    // span: 16
   };
 });
 
@@ -154,7 +118,7 @@ const submit = () => {
     //   return;
     // }
     loading.value = true;
-    login(form)
+    register(form)
       .then((msg) => {
         message.success(msg);
         // cleanPageTabs();
@@ -217,7 +181,7 @@ if (getToken()) {
 
 /* 卡片 */
 .login-form {
-  width: 360px;
+  width: 460px;
   margin: 0 auto;
   max-width: 100%;
   padding: 0 28px;

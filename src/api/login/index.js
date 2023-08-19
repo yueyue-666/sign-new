@@ -13,9 +13,34 @@ import { setToken } from '@/utils/token-util';
 //   }
 //   return Promise.reject(new Error(res.data.message));
 // }
-
 export async function login(data) {
   const res = await request.post('/backstage/login', data);
+  if (res.data.code === 200) {
+    console.log(res);
+    setToken(res.data.data?.token);
+
+    localStorage.setItem('token', res.data.data.token);
+    localStorage.setItem('refreshToken', res.data.data.refreshToken);
+    localStorage.setItem('userRole', res.data.data.userRole);
+    localStorage.setItem('userId', res.data.data.userId);
+    localStorage.setItem('username', res.data.data.username);
+    localStorage.setItem('isUseV3', res.data.data.isUseV3);
+    localStorage.setItem('isUseMix', res.data.data.isUseMix);
+    localStorage.setItem('flagId', res.data.data.flagId);
+    localStorage.setItem('isShowSubData', res.data.data.isShowSubData);
+    localStorage.setItem('isDownloadData', res.data.data.isDownloadData);
+    localStorage.setItem('flagId', res.data.data.flagId);
+    //打开商户后台
+    // localStorage.setItem('adminrouter', JSON.stringify(true));
+
+    return res.data.msg;
+  }
+  return Promise.reject(new Error(res.data.msg));
+  // return Promise.reject(res);
+}
+
+export async function register(data) {
+  const res = await request.post('/backstage/register', data);
   if (res.data.code === 200) {
     console.log(res);
     setToken(res.data.data?.token);
