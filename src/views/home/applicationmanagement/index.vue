@@ -48,7 +48,7 @@
           </a-col>
         </a-row>
       </a-form>
-      <a-row :gutter="8" style="padding: 0 0 10px 0">
+      <a-row :gutter="8" style="padding: 0 0 10px 0" v-if="userRole === '3'">
         <a-col :xl="5" :lg="6" :md="7" :sm="24" :xs="24">
           <a-select v-model:value="signform.cerNameOld" placeholder="请选择" allow-clear>
             <a-select-option :value="item" v-for="(item, i) in SignNewList" :key="i">{{ item }}</a-select-option>
@@ -77,7 +77,7 @@
         v-model:selection="selection"
         cache-key="proSystemUserTable"
       >
-        <template #toolbar>
+        <template #toolbar v-if="userRole === '3'">
           <a-space :size="10">
             <a-button type="primary" class="ele-btn-icon" :disabled="!(selection.length > 0)" @click="removeBatch">
               <template #icon>
@@ -1070,7 +1070,9 @@ function reply(record) {
 }
 
 // 获取下拉
-getSignNewList();
+if (userRole === '3') {
+  getSignNewList();
+}
 </script>
 
 <script>
