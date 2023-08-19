@@ -125,7 +125,9 @@
             </a-button>
             <a-button type="primary" @click="updateApp(isAdmin ? '更新源包' : '更新应用')">{{ isAdmin ? '更新源包' : '更新' }}</a-button>
             <a-button type="primary" @click="updateApp('更新已重签包')" v-if="isAdmin">更新已重签包</a-button>
-            <a-button @click="onClose">关闭</a-button>
+            <a-space :style="{marginTop: isAdmin ?'0.5rem' :'null'}">
+              <a-button @click="onClose">关闭</a-button>
+            </a-space>
           </div>
         </a-card>
       </a-col>
