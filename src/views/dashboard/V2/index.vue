@@ -73,8 +73,8 @@
                 </span>
                 <span>
                   {{ record.size }}
-                  <android-Outlined v-if="record.apkDownPath" />
-                  <apple-Outlined v-else />
+                  <apple-Outlined />
+                  <android-Outlined v-if="record.androidUrl" />
                 </span>
               </div>
             </div>
@@ -90,8 +90,8 @@
                 </span>
                 <span>
                   {{ record.size }}
-                  <android-Outlined v-if="record.apkDownPath" />
-                  <apple-Outlined v-else />
+                  <apple-Outlined />
+                  <android-Outlined v-if="record.androidUrl" />
                 </span>
               </div>
             </div>
@@ -107,8 +107,8 @@
                 </span>
                 <span>
                   {{ getfilesize(record.size) }}
-                  <android-Outlined v-if="record.apkDownPath" />
-                  <apple-Outlined v-else />
+                  <apple-Outlined />
+                  <android-Outlined v-if="record.androidUrl" />
                 </span>
               </div>
             </div>
