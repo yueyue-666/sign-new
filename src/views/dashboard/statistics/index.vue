@@ -5,10 +5,7 @@
         <a-col :xl="6" :lg="12" :md="12" :sm="24" :xs="24">
           <a-form-item label="应用">
             <a-select v-model:value="form.appId" placeholder="请选择" allow-clear>
-              <a-select-option :value="item.appId" v-for="(item, i) in appList" :key="i">
-                {{ item.appName
-                }}
-              </a-select-option>
+              <a-select-option :value="item.appId" v-for="(item, i) in appList" :key="i">{{ item.appName }}</a-select-option>
             </a-select>
           </a-form-item>
         </a-col>

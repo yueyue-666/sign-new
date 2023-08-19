@@ -33,7 +33,6 @@
       </a-form-item>
       <a-form-item>
         <!-- <a-checkbox v-model:checked="form.remember">{{ t('login.remember') }}</a-checkbox> -->
-        <!-- <router-link to="/forget" class="ele-pull-right" style="line-height: 22px">{{ t('login.forget') }}</router-link> -->
         <router-link to="/register" class="ele-pull-right" style="line-height: 22px">注册账号</router-link>
       </a-form-item>
       <a-form-item>

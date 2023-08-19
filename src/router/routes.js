@@ -18,11 +18,6 @@ export const routes = [
     component: () => import('@/views/register/index.vue'),
     meta: { title: '注册账号' }
   }
-  // {
-  //   path: '/forget',
-  //   component: () => import('@/views/forget/index.vue'),
-  //   meta: { title: '忘记密码' }
-  // },
   // 404
   // {
   //   path: '/:path(.*)*',
